@@ -26,7 +26,7 @@ namespace Bounce.Framework
             {
                 if (s_applicationIsQuitting || s_isDestroyed)
                 {
-                    BDebug.LogError(
+                    LDebug.LogError(
                         $"{typeof(T)} [MonoSingleton] is already destroyed. " +
                         $"Please check {nameof(hasInstance)} or {nameof(isDestroyed)} before accessing instance in the destructor.");
                     return null;
@@ -66,7 +66,7 @@ namespace Bounce.Framework
         {
             if (hasInstance)
             {
-                BDebug.LogWarning($"You are trying to Instantiate {typeof(T).FullName}, but it already has an Instance. Please use Instance property instead.");
+                LDebug.LogWarning($"You are trying to Instantiate {typeof(T).FullName}, but it already has an Instance. Please use Instance property instead.");
                 return;
             }
 
@@ -89,7 +89,7 @@ namespace Bounce.Framework
             }
             else if (s_instance != this)
             {
-                BDebug.Log($"MonoSingleton of {typeof(T).FullName} is already exist, this one will be destroyed");
+                LDebug.Log($"MonoSingleton of {typeof(T).FullName} is already exist, this one will be destroyed");
 
                 Destroy(gameObjectCached);
             }

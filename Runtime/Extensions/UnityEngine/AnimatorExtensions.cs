@@ -19,7 +19,7 @@ namespace Bounce.Framework
                 }
             }
 
-            BDebug.Log("Get clip lenght failed: Clip {0} doesn't exist!", clipName);
+            LDebug.Log("Get clip lenght failed: Clip {0} doesn't exist!", clipName);
             return 0f;
         }
     }

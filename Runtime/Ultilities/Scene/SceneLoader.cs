@@ -107,7 +107,7 @@ namespace Bounce.Framework
         {
             if (_stateMachine.CurrentState != State.Idle)
             {
-                BDebug.Log("[{0}] A scene is loading, can't execute load scene command!", typeof(SceneLoader));
+                LDebug.Log("[{0}] A scene is loading, can't execute load scene command!", typeof(SceneLoader));
                 return;
             }
 
@@ -171,7 +171,7 @@ namespace Bounce.Framework
             {
                 if (BFactory.sceneTransitionPrefab == null)
                 {
-                    BDebug.LogWarning($"Unassigned {typeof(SceneLoader)} prefab!");
+                    LDebug.LogWarning($"Unassigned {typeof(SceneLoader)} prefab!");
                     return;
                 }
 

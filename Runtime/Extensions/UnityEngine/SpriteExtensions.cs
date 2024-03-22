@@ -36,7 +36,7 @@ namespace Bounce.Framework
         {
             if (sprite == null)
             {
-                BDebug.LogError("Can't get uvs, sprite is null");
+                LDebug.LogError("Can't get uvs, sprite is null");
                 return;
             }
 

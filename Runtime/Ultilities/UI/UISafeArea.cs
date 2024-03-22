@@ -113,7 +113,7 @@ namespace Bounce.Framework
 
             if (_logging)
             {
-                BDebug.Log($"New safe area applied to {name}: x={r.x}, y={r.y}, w={r.width}, h={r.height} on full extents w={Screen.width}, h={Screen.height}");
+                LDebug.Log($"New safe area applied to {name}: x={r.x}, y={r.y}, w={r.width}, h={r.height} on full extents w={Screen.width}, h={Screen.height}");
             }
         }
     }

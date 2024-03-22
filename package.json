@@ -1,8 +1,8 @@
 {
-  "name": "bounce.unity.frameworks",
-  "displayName": "Bounce Framework",
+  "name": "l.unity.frameworks",
+  "displayName": "L Framework",
   "version": "1.0.2",
-  "unity": "2021.3",
+  "unity": "2022.3",
   "description": "Collection of utility methods, design patterns, and extensions for Unity.",
   "keywords": [
          "pattern",
@@ -10,14 +10,13 @@
          "unity",
          "bounce"
      ],
-  "homepage": "https://bounce.com.vn/",
   "bugs": {
-     "url": "https://github.com/lazycoder71/bounce-framework/issues",
+     "url": "https://github.com/lazycoder71/l-framework/issues",
      "email" : "lamnd.bounce@gmail.com"
    },
   "repository": {
       "type": "git",
-      "url": "ssh://git@github.com:lazycoder71/bounce-framework.git"
+      "url": "ssh://git@github.com:lazycoder71/l-framework.git"
   },
   "license": "MIT",
   "author": {

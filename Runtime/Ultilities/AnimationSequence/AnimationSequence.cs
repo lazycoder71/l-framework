@@ -12,10 +12,10 @@ namespace Bounce.Framework
         [Serializable, Flags]
         public enum ActionOnEnable
         {
-            Construct = 1 << 1,
-            Restart = 1 << 2,
-            Play = 1 << 3,
-            All = Construct | Restart | Play
+            Restart = 1 << 1,
+            Complete = 1 << 2,
+            PlayFoward = 1 << 3,
+            PlayBackwards = 1 << 4,
         }
 
         [Serializable, Flags]
@@ -31,7 +31,7 @@ namespace Bounce.Framework
         [Title("Settings")]
         [SerializeField] bool _isAutoKill = true;
 
-        [SerializeField] ActionOnEnable _actionOnEnable = ActionOnEnable.Construct;
+        [SerializeField] ActionOnEnable _actionOnEnable;
         [SerializeField] ActionOnDisable _actionOnDisable;
 
         [MinValue(-1), HorizontalGroup("Loop")]
@@ -75,7 +75,15 @@ namespace Bounce.Framework
             }
         }
 
-        public Sequence sequence { get { return _sequence; } }
+        public Sequence sequence
+        {
+            get
+            {
+                InitSequence();
+
+                return _sequence;
+            }
+        }
 
         private void OnDestroy()
         {
@@ -84,14 +92,19 @@ namespace Bounce.Framework
 
         private void OnEnable()
         {
-            if (_actionOnEnable.HasFlag(ActionOnEnable.Construct))
-                Construct();
+            InitSequence();
+
+            if (_actionOnEnable.HasFlag(ActionOnEnable.Complete))
+                _sequence?.Complete();
 
             if (_actionOnEnable.HasFlag(ActionOnEnable.Restart))
                 _sequence?.Restart();
 
-            if (_actionOnEnable.HasFlag(ActionOnEnable.Play))
-                _sequence?.Play();
+            if (_actionOnEnable.HasFlag(ActionOnEnable.PlayFoward))
+                _sequence?.PlayForward();
+
+            if (_actionOnEnable.HasFlag(ActionOnEnable.PlayBackwards))
+                _sequence?.PlayBackwards();
         }
 
         private void OnDisable()
@@ -100,7 +113,7 @@ namespace Bounce.Framework
                 _sequence?.Kill();
         }
 
-        private void Construct()
+        private void InitSequence()
         {
             if (_sequence.IsActive())
                 return;
@@ -129,7 +142,7 @@ namespace Bounce.Framework
             {
                 _sequence?.Restart();
 
-                Construct();
+                InitSequence();
 
                 DG.DOTweenEditor.DOTweenEditorPreview.PrepareTweenForPreview(_sequence);
                 DG.DOTweenEditor.DOTweenEditorPreview.Start();

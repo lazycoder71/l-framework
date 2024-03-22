@@ -4,7 +4,7 @@ namespace Bounce.Framework
 {
     public abstract class ScriptableObjectSingleton<T> : ScriptableObject where T : ScriptableObject
     {
-        private static readonly string s_rootFolderName = "SingletonScriptableObjects";
+        public static string s_rootFolderName { get { return "SingletonScriptableObjects"; } }
 
         static T s_instance = null;
 

@@ -1,5 +1,5 @@
 {
-    "name": "Bounce.Framework",
+    "name": "L.Framework",
     "rootNamespace": "",
     "references": [
         "Unity.TextMeshPro",

@@ -37,7 +37,7 @@ namespace Bounce.Framework
             }
             catch (Exception e)
             {
-                BDebug.Log("Something wrong when load data: {0}", e);
+                LDebug.Log("Something wrong when load data: {0}", e);
                 return null;
             }
         }
