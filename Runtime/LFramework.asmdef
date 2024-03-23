@@ -1,11 +1,11 @@
 {
-    "name": "L.Framework",
-    "rootNamespace": "",
+    "name": "LFramework",
+    "rootNamespace": "LFramework",
     "references": [
         "Unity.TextMeshPro",
         "DOTween.Modules",
         "OdinSerializer",
-        "Bounce.Framework.Editor"
+        "LFramework.Editor"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

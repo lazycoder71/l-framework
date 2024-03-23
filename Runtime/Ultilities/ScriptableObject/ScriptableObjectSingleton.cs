@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 
-namespace Bounce.Framework
+namespace LFramework
 {
     public abstract class ScriptableObjectSingleton<T> : ScriptableObject where T : ScriptableObject
     {
-        public static string s_rootFolderName { get { return "SingletonScriptableObjects"; } }
+        public static string s_rootFolderName { get { return "ScriptableObjectSingletons"; } }
 
         static T s_instance = null;
 
@@ -20,6 +20,7 @@ namespace Bounce.Framework
                     if (s_instance == null)
                     {
                         string configPath = string.Format("Assets/Resources/{0}/", s_rootFolderName);
+
                         if (!System.IO.Directory.Exists(configPath))
                             System.IO.Directory.CreateDirectory(configPath);
 

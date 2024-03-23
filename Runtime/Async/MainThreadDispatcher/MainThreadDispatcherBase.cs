@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 
-namespace Bounce.Framework
+namespace LFramework
 {
     abstract class MainThreadDispatcherBase : IMainThreadDispatcher
     {

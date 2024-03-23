@@ -1,4 +1,4 @@
-﻿namespace Bounce.Framework
+﻿namespace LFramework
 {
     /// <summary>
     /// Simplified default <see cref="ObjectPool{T}"/> implementation.

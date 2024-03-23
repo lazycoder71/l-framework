@@ -1,8 +1,9 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-namespace Bounce.Framework
+namespace LFramework
 {
     /// <summary>
     /// Class that contains methods useful for debugging.
@@ -13,60 +14,47 @@ namespace Bounce.Framework
         #region Logs
 
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
-        public static void AssertIfTrue(bool condition, string message, params object[] args)
+        public static void Log(object message)
         {
-            if (condition)
-            {
-                Debug.LogErrorFormat(message, args);
-            }
+            Debug.Log(message);
         }
 
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
-        public static void AssertIfFalse(bool condition, string message, params object[] args)
+        public static void Log(object message, Color color)
         {
-            if (!condition)
-            {
-                Debug.LogErrorFormat(message, args);
-            }
+            Debug.Log($"<color=#{ColorUtility.ToHtmlStringRGB(color)}>{message}</color>");
         }
 
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
-        public static void Log(object message, Color? color = null)
+        public static void Log(object header, object message)
         {
-            if (color.HasValue)
-                Debug.Log("<color=#" + ColorUtility.ToHtmlStringRGB(color.Value) + ">" + message.ToString() + "</color>");
+            Debug.Log($"[{header}] {message}");
+        }
+
+        [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+        public static void Log(object header, object message, Color headerColor)
+        {
+            Debug.Log($"[<color=#{ColorUtility.ToHtmlStringRGB(headerColor)}>{header}</color>] {message}");
+        }
+
+        public static void Log<T>(object message, Color? headerColor)
+        {
+            if (headerColor.HasValue)
+                Log(typeof(T), message, headerColor.Value);
             else
-                Debug.Log(message);
+                Log(typeof(T), message);
         }
 
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
-        public static void Log(string message, params object[] args)
+        public static void LogWarning(object message)
         {
-            Debug.LogFormat(message, args);
+            Debug.LogWarning(message);
         }
 
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
-        public static void Log(string message, Color color, params object[] args)
+        public static void LogError(object message)
         {
-            Debug.LogFormat("<color=#" + ColorUtility.ToHtmlStringRGB(color) + ">" + message + "</color>", args);
-        }
-
-        [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
-        public static void Log<T>(string message, params object[] args)
-        {
-            Debug.Log(string.Format("[{0}]:", typeof(T)) + string.Format(message, args));
-        }
-
-        [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
-        public static void LogWarning(string message, params object[] args)
-        {
-            Debug.LogWarningFormat(message, args);
-        }
-
-        [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
-        public static void LogError(string message, params object[] args)
-        {
-            Debug.LogError(string.Format(message, args));
+            Debug.LogError(message);
         }
 
         #endregion

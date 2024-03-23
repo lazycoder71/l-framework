@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Bounce.Framework
+namespace LFramework
 {
     public static class ColorExtensions
     {

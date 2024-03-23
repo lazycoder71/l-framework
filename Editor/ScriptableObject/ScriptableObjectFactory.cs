@@ -4,7 +4,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace Bounce.Framework.Editor
+namespace LFramework.Editor
 {
     /// <summary>
     /// Helper class for instantiating ScriptableObjects.
@@ -14,7 +14,7 @@ namespace Bounce.Framework.Editor
         [MenuItem("Assets/Create/Scriptable Object", false, 0)]
         public static void CreateAssembly()
         {
-            Create("Assembly-CSharp", "Bounce.Framework", "Game");
+            Create("Assembly-CSharp", "LFramework", "Game");
         }
 
         public static void Create(params string[] assemblyNames)

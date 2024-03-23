@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-namespace Bounce.Framework
+namespace LFramework
 {
     public class AnimationSequenceStepTransformScale : AnimationSequenceStepTransform
     {

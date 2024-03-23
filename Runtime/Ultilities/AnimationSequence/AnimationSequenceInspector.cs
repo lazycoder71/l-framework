@@ -4,7 +4,7 @@ using DG.DOTweenEditor;
 using UnityEditor;
 using UnityEngine;
 
-namespace Bounce.Framework
+namespace LFramework
 {
     [CustomEditor(typeof(AnimationSequence))]
     public class AnimationSequenceInspector : Sirenix.OdinInspector.Editor.OdinEditor

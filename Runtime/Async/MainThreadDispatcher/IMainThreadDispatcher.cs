@@ -1,6 +1,6 @@
 using System;
 
-namespace Bounce.Framework
+namespace LFramework
 {
     interface IMainThreadDispatcher
     {

@@ -2,7 +2,7 @@
 using UnityEditor;
 using System.Collections.Generic;
 
-namespace Bounce.Framework.Editor
+namespace LFramework.Editor
 {
     public static class ScriptableObjectHelper
     {

@@ -1,6 +1,6 @@
 using System;
 
-namespace Bounce.Framework
+namespace LFramework
 {
     [Serializable]
     public abstract class AnimationSequenceStep

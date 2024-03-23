@@ -1,10 +1,10 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Bounce.Framework
+namespace LFramework
 {
     [Serializable]
-    public class BValue<T>
+    public class LValue<T>
     {
         [SerializeField] T _value;
 
@@ -23,7 +23,7 @@ namespace Bounce.Framework
 
         public event Action<T> eventValueChanged;
 
-        public BValue(T defaultValue)
+        public LValue(T defaultValue)
         {
             _value = defaultValue;
         }

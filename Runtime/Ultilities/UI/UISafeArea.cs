@@ -1,7 +1,7 @@
 ﻿using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Bounce.Framework
+namespace LFramework
 {
     /// <summary>
     /// Safe area implementation for notched mobile devices. Usage:

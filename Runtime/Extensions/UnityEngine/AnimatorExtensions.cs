@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Bounce.Framework
+namespace LFramework
 {
     public static class AnimatorExtensions
     {
@@ -19,7 +19,7 @@ namespace Bounce.Framework
                 }
             }
 
-            LDebug.Log("Get clip lenght failed: Clip {0} doesn't exist!", clipName);
+            LDebug.Log(typeof(AnimatorExtensions), $"Get clip length failed: Clip {clipName} doesn't exist!");
             return 0f;
         }
     }

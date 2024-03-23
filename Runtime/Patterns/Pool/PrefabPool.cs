@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Bounce.Framework
+namespace LFramework
 {
     /// <summary>
     /// Simplified prefab implementation.

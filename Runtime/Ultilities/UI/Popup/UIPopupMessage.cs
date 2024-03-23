@@ -1,7 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 
-namespace Bounce.Framework
+namespace LFramework
 {
     public class UIPopupMessage : UIPopupBehaviour
     {

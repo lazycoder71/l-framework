@@ -1,4 +1,4 @@
-﻿namespace Bounce.Framework
+﻿namespace LFramework
 {
     /// <summary>
     /// Singleton pattern implementation.

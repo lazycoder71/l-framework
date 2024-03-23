@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Bounce.Framework
+namespace LFramework
 {
     /// <summary>
     /// Unity API isn't thread safe, so in case you are using threads,

@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-namespace Bounce.Framework
+namespace LFramework
 {
     /// <summary>
     /// Coroutine helper methods and <see cref="MonoBehaviour"/> callbacks.

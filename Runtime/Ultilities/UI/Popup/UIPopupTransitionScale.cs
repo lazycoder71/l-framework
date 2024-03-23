@@ -1,8 +1,8 @@
 ﻿using DG.Tweening;
-using Bounce.Framework;
+using LFramework;
 using UnityEngine;
 
-namespace Bounce.Framework
+namespace LFramework
 {
     public class UIPopupTransitionScale : UIPopupTransition
     {

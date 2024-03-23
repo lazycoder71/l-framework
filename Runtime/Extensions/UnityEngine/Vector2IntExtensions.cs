@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Bounce.Framework
+namespace LFramework
 {
     public static class Vector2IntExtensions 
     {

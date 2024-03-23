@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Bounce.Framework
+namespace LFramework
 {
     public class AnimationSequence : MonoCached
     {

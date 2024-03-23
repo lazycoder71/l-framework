@@ -2,7 +2,7 @@
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Bounce.Framework
+namespace LFramework
 {
     /// <summary>
     /// Component pool. Provided prefab instance will be used as a source for component entities.

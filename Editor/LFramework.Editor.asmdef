@@ -1,6 +1,6 @@
 {
-    "name": "Bounce.Framework.Editor",
-    "rootNamespace": "",
+    "name": "LFramework.Editor",
+    "rootNamespace": "LFramework.Editor",
     "references": [],
     "includePlatforms": [
         "Editor"

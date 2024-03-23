@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Bounce.Framework
+namespace LFramework
 {
     /// <summary>
     /// Interface allows to subscribe and unsubscribe from event bus events.

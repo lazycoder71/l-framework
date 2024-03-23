@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Bounce.Framework
+namespace LFramework
 {
     interface IPoolStackProxy<T>
     {

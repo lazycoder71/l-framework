@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Bounce.Framework
+namespace LFramework
 {
     public static class TransformExtensions
     {

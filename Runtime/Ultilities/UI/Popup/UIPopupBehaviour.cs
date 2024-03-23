@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.Events;
 using Sirenix.OdinInspector;
 
-namespace Bounce.Framework
+namespace LFramework
 {
     [RequireComponent(typeof(CanvasGroup))]
     public class UIPopupBehaviour : MonoCached

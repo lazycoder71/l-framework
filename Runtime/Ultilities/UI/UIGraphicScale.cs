@@ -2,7 +2,7 @@
 using UnityEngine.EventSystems;
 using DG.Tweening;
 
-namespace Bounce.Framework
+namespace LFramework
 {
     public class UIGraphicScale : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerUpHandler, IPointerExitHandler, IPointerClickHandler
     {

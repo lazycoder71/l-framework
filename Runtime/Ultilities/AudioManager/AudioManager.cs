@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 
-namespace Bounce.Framework
+namespace LFramework
 {
     public class AudioManager : MonoSingleton<AudioManager>
     {
-        public static BValue<float> volumeMusic = new BValue<float>(1.0f);
-        public static BValue<float> volumeSound = new BValue<float>(1.0f);
+        public static LValue<float> volumeMusic = new LValue<float>(1.0f);
+        public static LValue<float> volumeSound = new LValue<float>(1.0f);
 
         ComponentPool<AudioScript> _pool;
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine.SceneManagement;
 
-namespace Bounce.Framework
+namespace LFramework
 {
     /// <summary>
     /// The MonoCallback helper class is meant to be used when you need to have MonoBehaviour default Unity callbacks,

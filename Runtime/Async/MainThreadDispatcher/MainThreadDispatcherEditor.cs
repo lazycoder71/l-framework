@@ -1,6 +1,6 @@
 using UnityEditor;
 
-namespace Bounce.Framework
+namespace LFramework
 {
     class MainThreadDispatcherEditor : MainThreadDispatcherBase
     {

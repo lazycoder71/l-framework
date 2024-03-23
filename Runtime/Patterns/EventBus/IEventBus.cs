@@ -1,4 +1,4 @@
-﻿namespace Bounce.Framework
+﻿namespace LFramework
 {
     /// <summary>
     /// An interface for the event bus pattern.

@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Bounce.Framework
+namespace LFramework
 {
-    public class BDataBlock<T> where T : BDataBlock<T>
+    public class LDataBlock<T> where T : LDataBlock<T>
     {
         static T s_instance;
 
@@ -12,7 +12,8 @@ namespace Bounce.Framework
             {
                 if (s_instance == null)
                 {
-                    s_instance = BDataHelper.Load<T>(typeof(T).ToString());
+                    s_instance = LDataHelper.LoadFromDevice<T>(typeof(T).ToString());
+
                     if (s_instance == null)
                         s_instance = (T)Activator.CreateInstance(typeof(T));
 
@@ -54,7 +55,7 @@ namespace Bounce.Framework
         {
             instance.OnSaved();
 
-            BDataHelper.Save(instance, typeof(T).ToString());
+            LDataHelper.SaveToDevice(instance, typeof(T).ToString());
         }
 
         public static void Delete()
@@ -63,7 +64,7 @@ namespace Bounce.Framework
 
             s_instance = null;
 
-            BDataHelper.Delete(typeof(T).ToString());
+            LDataHelper.DeleteFromDevice(typeof(T).ToString());
         }
     }
 }

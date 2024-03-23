@@ -1,9 +1,9 @@
 ﻿using DG.Tweening;
-using Bounce.Framework;
+using LFramework;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Bounce.Framework
+namespace LFramework
 {
     public class UIPopupTransitionBackground : UIPopupTransition
     {

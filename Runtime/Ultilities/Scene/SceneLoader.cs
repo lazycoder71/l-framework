@@ -2,7 +2,7 @@
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 
-namespace Bounce.Framework
+namespace LFramework
 {
     public class SceneLoader : MonoCached
     {
@@ -69,7 +69,7 @@ namespace Bounce.Framework
 
             //Wait until animation is end
             _tween?.Kill();
-            _tween = DOVirtual.DelayedCall(BFactory.sceneTransitionFadeInDuration + BFactory.sceneTransitionLoadDuration, () =>
+            _tween = DOVirtual.DelayedCall(LFactory.sceneTransitionFadeInDuration + LFactory.sceneTransitionLoadDuration, () =>
             {
                 _stateMachine.CurrentState = State.Loading;
                 _sceneAsync.allowSceneActivation = true;
@@ -92,7 +92,7 @@ namespace Bounce.Framework
 
             //Wait until animation is end
             _tween?.Kill();
-            _tween = DOVirtual.DelayedCall(BFactory.sceneTransitionFadeOutDuration, () =>
+            _tween = DOVirtual.DelayedCall(LFactory.sceneTransitionFadeOutDuration, () =>
             {
                 _stateMachine.CurrentState = State.Idle;
                 gameObjectCached.SetActive(false);
@@ -150,11 +150,11 @@ namespace Bounce.Framework
             {
                 if (clip.name == s_fadeIn)
                 {
-                    _fadeInAnimSpeed = clip.length / BFactory.sceneTransitionFadeInDuration;
+                    _fadeInAnimSpeed = clip.length / LFactory.sceneTransitionFadeInDuration;
                 }
                 else if (clip.name == s_fadeOut)
                 {
-                    _fadeOutAnimSpeed = clip.length / BFactory.sceneTransitionFadeOutDuration;
+                    _fadeOutAnimSpeed = clip.length / LFactory.sceneTransitionFadeOutDuration;
                 }
             }
         }
@@ -169,13 +169,13 @@ namespace Bounce.Framework
         {
             if (_instance == null)
             {
-                if (BFactory.sceneTransitionPrefab == null)
+                if (LFactory.sceneTransitionPrefab == null)
                 {
                     LDebug.LogWarning($"Unassigned {typeof(SceneLoader)} prefab!");
                     return;
                 }
 
-                _instance = BFactory.sceneTransitionPrefab.Create().GetComponent<SceneLoader>();
+                _instance = LFactory.sceneTransitionPrefab.Create().GetComponent<SceneLoader>();
                 _instance.Construct();
 
                 GameObject.DontDestroyOnLoad(_instance.gameObjectCached);

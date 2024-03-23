@@ -1,4 +1,4 @@
-namespace Bounce.Framework
+namespace LFramework
 {
     public class UIButtonReloadScene : UIButtonBase
     {

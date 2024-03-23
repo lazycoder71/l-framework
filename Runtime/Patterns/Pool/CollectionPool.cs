@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Bounce.Framework
+namespace LFramework
 {
     /// <summary>
     /// Generic collections pool implementation.
