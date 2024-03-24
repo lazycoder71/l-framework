@@ -107,7 +107,7 @@ namespace LFramework
         {
             if (_stateMachine.CurrentState != State.Idle)
             {
-                LDebug.Log("[{0}] A scene is loading, can't execute load scene command!", typeof(SceneLoader));
+                LDebug.Log<SceneLoader>("A scene is loading, can't execute load scene command!", Color.cyan);
                 return;
             }
 
@@ -171,7 +171,7 @@ namespace LFramework
             {
                 if (LFactory.sceneTransitionPrefab == null)
                 {
-                    LDebug.LogWarning($"Unassigned {typeof(SceneLoader)} prefab!");
+                    LDebug.LogWarning<SceneLoader>($"Unassigned prefab!",Color.cyan);
                     return;
                 }
 

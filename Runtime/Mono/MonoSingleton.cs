@@ -26,9 +26,9 @@ namespace LFramework
             {
                 if (s_applicationIsQuitting || s_isDestroyed)
                 {
-                    LDebug.LogError(
-                        $"{typeof(T)} [MonoSingleton] is already destroyed. " +
-                        $"Please check {nameof(hasInstance)} or {nameof(isDestroyed)} before accessing instance in the destructor.");
+                    LDebug.LogError<T>(
+                        $"{typeof(T)} is already destroyed. " +
+                        $"Please check {nameof(hasInstance)} or {nameof(isDestroyed)} before accessing instance in the destructor.", Color.cyan);
                     return null;
                 }
 
@@ -66,7 +66,7 @@ namespace LFramework
         {
             if (hasInstance)
             {
-                LDebug.LogWarning($"You are trying to Instantiate {typeof(T).FullName}, but it already has an Instance. Please use Instance property instead.");
+                LDebug.LogWarning<T>($"You are trying to Instantiate {typeof(T).FullName}, but it already has an instance. Please use instance property instead.", Color.cyan);
                 return;
             }
 
@@ -89,7 +89,7 @@ namespace LFramework
             }
             else if (s_instance != this)
             {
-                LDebug.Log($"MonoSingleton of {typeof(T).FullName} is already exist, this one will be destroyed");
+                LDebug.Log<T>($"{typeof(T).FullName} is already exist, this one will be destroyed", Color.cyan);
 
                 Destroy(gameObjectCached);
             }

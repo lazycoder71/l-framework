@@ -11,7 +11,7 @@ namespace LFramework
 
         private static void Log(string message)
         {
-            LDebug.Log($"[{typeof(LDataHelper)}] {message}", Color.cyan);
+            LDebug.Log(typeof(LDataHelper), message, Color.cyan);
         }
 
         private static string GetDevicePath(string filePath)
@@ -32,7 +32,7 @@ namespace LFramework
 
                 // Create folder if needed
                 {
-                    string directionRoot =  Path.GetDirectoryName(filePath);
+                    string directionRoot = Path.GetDirectoryName(filePath);
 
                     if (!Directory.Exists(directionRoot))
                         Directory.CreateDirectory(directionRoot);
@@ -52,7 +52,7 @@ namespace LFramework
             {
                 if (!File.Exists(filePath))
                 {
-                    Log($"Can't load, file {filePath} does not exist!");
+                    Log($"Can't load, file {filePath} does not exist! creating new file");
                     return null;
                 }
 

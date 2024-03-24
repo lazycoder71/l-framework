@@ -19,7 +19,7 @@ namespace LFramework
                 }
             }
 
-            LDebug.Log(typeof(AnimatorExtensions), $"Get clip length failed: Clip {clipName} doesn't exist!");
+            LDebug.Log(typeof(AnimatorExtensions), $"Get clip length failed: Clip {clipName} doesn't exist!", Color.cyan);
             return 0f;
         }
     }

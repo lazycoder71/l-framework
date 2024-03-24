@@ -30,22 +30,12 @@ namespace LFramework
             MonoCallback.instance.eventApplicationQuit += MonoCallback_ApplicationOnQuit;
         }
 
-        protected virtual void OnSaved()
-        {
-
-        }
-
-        protected virtual void OnDeleted()
-        {
-
-        }
-
-        void MonoCallback_ApplicationOnQuit()
+        private void MonoCallback_ApplicationOnQuit()
         {
             Save();
         }
 
-        void MonoCallback_ApplicationOnPause(bool paused)
+        private void MonoCallback_ApplicationOnPause(bool paused)
         {
             if (paused)
                 Save();
@@ -53,15 +43,11 @@ namespace LFramework
 
         public static void Save()
         {
-            instance.OnSaved();
-
             LDataHelper.SaveToDevice(instance, typeof(T).ToString());
         }
 
         public static void Delete()
         {
-            instance.OnDeleted();
-
             s_instance = null;
 
             LDataHelper.DeleteFromDevice(typeof(T).ToString());
