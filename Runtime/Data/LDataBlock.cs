@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace LFramework
 {
@@ -28,6 +29,8 @@ namespace LFramework
         {
             MonoCallback.instance.eventApplicationPause += MonoCallback_ApplicationOnPause;
             MonoCallback.instance.eventApplicationQuit += MonoCallback_ApplicationOnQuit;
+
+            LDataBlockHelper.eventDelete += LDataBlockHelper_EventDelete;
         }
 
         private void MonoCallback_ApplicationOnQuit()
@@ -41,6 +44,11 @@ namespace LFramework
                 Save();
         }
 
+        private void LDataBlockHelper_EventDelete()
+        {
+            s_instance = null;
+        }
+
         public static void Save()
         {
             LDataHelper.SaveToDevice(instance, typeof(T).ToString());
@@ -50,7 +58,22 @@ namespace LFramework
         {
             s_instance = null;
 
-            LDataHelper.DeleteFromDevice(typeof(T).ToString());
+            LDataHelper.DeleteInDevice(typeof(T).ToString());
+        }
+    }
+
+    public class LDataBlockHelper
+    {
+        public static event Action eventDelete;
+
+#if UNITY_EDITOR
+        [UnityEditor.MenuItem("LFramework/Data/Clear Device")]
+#endif
+        public static void DeleteAll()
+        {
+            eventDelete?.Invoke();
+
+            LDataHelper.DeleteAllInDevice();
         }
     }
 }

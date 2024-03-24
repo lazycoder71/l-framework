@@ -106,23 +106,18 @@ namespace LFramework
             return Load<T>(GetResourcesPath(filePath));
         }
 
-        public static void DeleteFromDevice(string filePath)
+        public static void DeleteInDevice(string filePath)
         {
             Delete(GetDevicePath(filePath));
         }
 
-        public static void DeleteFromResources(string filePath)
+        public static void DeleteInResources(string filePath)
         {
             Delete(GetResourcesPath(filePath));
         }
-
-#if UNITY_EDITOR
-        [UnityEditor.MenuItem("LFramework/Clear Data")]
-#endif
-        public static void DeleteAll()
+        
+        public static void DeleteAllInDevice()
         {
-            PlayerPrefs.DeleteAll();
-
             string path = Path.Combine(Application.persistentDataPath, s_deviceFolderName);
 
             var info = new DirectoryInfo(path);
