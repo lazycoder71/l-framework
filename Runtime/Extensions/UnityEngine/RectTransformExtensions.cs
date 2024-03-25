@@ -39,22 +39,31 @@ namespace LFramework
             rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x + x, rectTransform.anchoredPosition.y + y);
         }
 
-        public static void AnchorToCorners(this RectTransform transform)
+        public static void AnchorToCorners(this RectTransform rectTransform)
         {
-            if (transform.parent == null)
+            if (rectTransform.parent == null)
                 return;
 
-            var parent = transform.parent.GetComponent<RectTransform>();
+            RectTransform rectParent = rectTransform.parent.GetComponent<RectTransform>();
 
-            Vector2 newAnchorsMin = new Vector2(transform.anchorMin.x + transform.offsetMin.x / parent.rect.width,
-                              transform.anchorMin.y + transform.offsetMin.y / parent.rect.height);
+            Vector2 newAnchorsMin = new Vector2(rectTransform.anchorMin.x + rectTransform.offsetMin.x / rectParent.rect.width,
+                              rectTransform.anchorMin.y + rectTransform.offsetMin.y / rectParent.rect.height);
 
-            Vector2 newAnchorsMax = new Vector2(transform.anchorMax.x + transform.offsetMax.x / parent.rect.width,
-                              transform.anchorMax.y + transform.offsetMax.y / parent.rect.height);
+            Vector2 newAnchorsMax = new Vector2(rectTransform.anchorMax.x + rectTransform.offsetMax.x / rectParent.rect.width,
+                              rectTransform.anchorMax.y + rectTransform.offsetMax.y / rectParent.rect.height);
 
-            transform.anchorMin = newAnchorsMin;
-            transform.anchorMax = newAnchorsMax;
-            transform.offsetMin = transform.offsetMax = Vector2.zero;
+            rectTransform.anchorMin = newAnchorsMin;
+            rectTransform.anchorMax = newAnchorsMax;
+            rectTransform.offsetMin = rectTransform.offsetMax = Vector2.zero;
+        }
+
+        public static float GetPixelPerUnit(this RectTransform rectTransform)
+        {
+            Vector3[] corners = new Vector3[4];
+
+            rectTransform.GetWorldCorners(corners);
+
+            return rectTransform.rect.width / (corners[2].x - corners[0].x);
         }
     }
 }
