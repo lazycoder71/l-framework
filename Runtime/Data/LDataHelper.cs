@@ -68,6 +68,20 @@ namespace LFramework
             }
         }
 
+        public static T Load<T>(TextAsset textAsset) where T : class
+        {
+            try
+            {
+                return SerializationUtility.DeserializeValue<T>(textAsset.bytes, DataFormat.Binary);
+            }
+            catch (Exception e)
+            {
+                Log($"Load failed: {e}");
+
+                return null;
+            }
+        }
+
         private static void Delete(string filePath)
         {
             try
