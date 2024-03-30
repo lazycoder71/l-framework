@@ -19,9 +19,9 @@ namespace LFramework
             return Path.Combine(Application.persistentDataPath, s_deviceFolderName, filePath);
         }
 
-        private static string GetResourcesPath(string filePath)
+        private static string GetProjectPath(string filePath)
         {
-            return Path.Combine(Application.dataPath, "Resources", filePath);
+            return Path.Combine(Application.dataPath, filePath);
         }
 
         private static void Save<T>(T data, string filePath) where T : class
@@ -68,20 +68,6 @@ namespace LFramework
             }
         }
 
-        public static T Load<T>(TextAsset textAsset) where T : class
-        {
-            try
-            {
-                return SerializationUtility.DeserializeValue<T>(textAsset.bytes, DataFormat.Binary);
-            }
-            catch (Exception e)
-            {
-                Log($"Load failed: {e}");
-
-                return null;
-            }
-        }
-
         private static void Delete(string filePath)
         {
             try
@@ -100,14 +86,28 @@ namespace LFramework
             }
         }
 
+        public static T Load<T>(TextAsset textAsset) where T : class
+        {
+            try
+            {
+                return SerializationUtility.DeserializeValue<T>(textAsset.bytes, DataFormat.Binary);
+            }
+            catch (Exception e)
+            {
+                Log($"Load failed: {e}");
+
+                return null;
+            }
+        }
+
         public static void SaveToDevice<T>(T data, string filePath) where T : class
         {
             Save(data, GetDevicePath(filePath));
         }
 
-        public static void SaveToResources<T>(T data, string filePath) where T : class
+        public static void SaveToProject<T>(T data, string filePath) where T : class
         {
-            Save(data, GetResourcesPath(filePath));
+            Save(data, GetProjectPath(filePath));
         }
 
         public static T LoadFromDevice<T>(string filePath) where T : class
@@ -115,9 +115,9 @@ namespace LFramework
             return Load<T>(GetDevicePath(filePath));
         }
 
-        public static T LoadFromResources<T>(string filePath) where T : class
+        public static T LoadFromProject<T>(string filePath) where T : class
         {
-            return Load<T>(GetResourcesPath(filePath));
+            return Load<T>(GetProjectPath(filePath));
         }
 
         public static void DeleteInDevice(string filePath)
@@ -125,11 +125,11 @@ namespace LFramework
             Delete(GetDevicePath(filePath));
         }
 
-        public static void DeleteInResources(string filePath)
+        public static void DeleteInProject(string filePath)
         {
-            Delete(GetResourcesPath(filePath));
+            Delete(GetProjectPath(filePath));
         }
-        
+
         public static void DeleteAllInDevice()
         {
             string path = Path.Combine(Application.persistentDataPath, s_deviceFolderName);
