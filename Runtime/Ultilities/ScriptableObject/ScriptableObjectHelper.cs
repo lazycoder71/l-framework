@@ -1,8 +1,11 @@
-﻿using UnityEngine;
-using UnityEditor;
+﻿#if UNITY_EDITOR
+
+using UnityEngine;
 using System.Collections.Generic;
 
-namespace LFramework.Editor
+using UnityEditor;
+
+namespace LFramework
 {
     public static class ScriptableObjectHelper
     {
@@ -84,3 +87,5 @@ namespace LFramework.Editor
         }
     }
 }
+
+#endif

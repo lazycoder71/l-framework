@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Pool;
 
 namespace LFramework
 {
@@ -7,7 +8,7 @@ namespace LFramework
         public static LValue<float> volumeMusic = new LValue<float>(1.0f);
         public static LValue<float> volumeSound = new LValue<float>(1.0f);
 
-        ComponentPool<AudioScript> _pool;
+        ObjectPool<AudioScript> _pool;
 
         #region MonoBehaviour
 
@@ -49,11 +50,17 @@ namespace LFramework
 
         void InitPool()
         {
-            GameObject objAudio = new GameObject(typeof(AudioScript).ToString(), typeof(AudioSource), typeof(AudioScript));
-
-            _pool = new ComponentPool<AudioScript>(objAudio);
-
-            objAudio.SetActive(false);
+            _pool = new ObjectPool<AudioScript>(() =>
+            {
+                return new GameObject(typeof(AudioScript).ToString(), typeof(AudioSource)).AddComponent<AudioScript>();
+            }, (audio) =>
+            {
+                audio.gameObjectCached.SetActive(true);
+            }, (audio) =>
+            {
+                audio.gameObjectCached.SetActive(false);
+            }
+            );
         }
     }
 }

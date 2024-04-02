@@ -24,7 +24,7 @@ namespace LFramework
                         if (!System.IO.Directory.Exists(configPath))
                             System.IO.Directory.CreateDirectory(configPath);
 
-                        s_instance = Editor.ScriptableObjectHelper.CreateAsset<T>(configPath, typeof(T).ToString());
+                        s_instance = ScriptableObjectHelper.CreateAsset<T>(configPath, typeof(T).ToString());
                     }
 #endif
                 }
