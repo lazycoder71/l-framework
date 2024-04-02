@@ -65,5 +65,14 @@ namespace LFramework
 
             return rectTransform.rect.width / (corners[2].x - corners[0].x);
         }
+
+        public static float GetUnitPerPixel(this RectTransform rectTransform)
+        {
+            Vector3[] corners = new Vector3[4];
+
+            rectTransform.GetWorldCorners(corners);
+
+            return (corners[2].x - corners[0].x) / rectTransform.rect.width;
+        }
     }
 }

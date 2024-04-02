@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace LFramework
 {
-    class GlobalCoroutine : MonoSingleton<GlobalCoroutine>
+    class CoroutineGlobal : MonoSingleton<CoroutineGlobal>
     {
         public void StartInstruction(YieldInstruction instruction, Action action)
         {

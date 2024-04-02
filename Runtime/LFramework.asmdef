@@ -5,7 +5,8 @@
         "Unity.TextMeshPro",
         "DOTween.Modules",
         "OdinSerializer",
-        "LFramework.Editor"
+        "LFramework.Editor",
+        "Vertx.Debugging.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

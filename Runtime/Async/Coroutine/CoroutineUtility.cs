@@ -30,7 +30,7 @@ namespace LFramework
         /// <returns>Started Coroutine.</returns>
         public static Coroutine Start(IEnumerator routine)
         {
-            return GlobalCoroutine.instance.StartCoroutine(routine);
+            return CoroutineGlobal.instance.StartCoroutine(routine);
         }
 
         /// <summary>
@@ -40,8 +40,8 @@ namespace LFramework
         /// <param name="routine">The <see cref="IEnumerator"/> routine you would like to stop.</param>
         public static void Stop(IEnumerator routine)
         {
-            if (!GlobalCoroutine.isDestroyed)
-                GlobalCoroutine.instance.StopCoroutine(routine);
+            if (!CoroutineGlobal.isDestroyed)
+                CoroutineGlobal.instance.StopCoroutine(routine);
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace LFramework
         /// <param name="action">The callback action.</param>
         public static void WaitForEndOfFrame(Action action)
         {
-            GlobalCoroutine.instance.StartInstruction(new WaitForEndOfFrame(), action);
+            CoroutineGlobal.instance.StartInstruction(new WaitForEndOfFrame(), action);
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace LFramework
         /// </summary>
         public static void WaitForFixedUpdate(Action action)
         {
-            GlobalCoroutine.instance.StartInstruction(new WaitForFixedUpdate(), action);
+            CoroutineGlobal.instance.StartInstruction(new WaitForFixedUpdate(), action);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace LFramework
         /// </summary>
         public static void WaitForSeconds(float seconds, Action action)
         {
-            GlobalCoroutine.instance.StartInstruction(new WaitForSeconds(seconds), action);
+            CoroutineGlobal.instance.StartInstruction(new WaitForSeconds(seconds), action);
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace LFramework
         /// <param name="action">The callback action.</param>
         public static void WaitForSecondsRealtime(float seconds, Action action)
         {
-            GlobalCoroutine.instance.StartInstruction(new WaitForSecondsRealtime(seconds), action);
+            CoroutineGlobal.instance.StartInstruction(new WaitForSecondsRealtime(seconds), action);
         }
 
         /// <summary>
