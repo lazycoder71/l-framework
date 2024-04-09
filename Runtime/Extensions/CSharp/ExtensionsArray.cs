@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace LFramework
 {
-    public static class ArrayExtensions
+    public static class ExtensionsArray
     {
         public static void Shuffle<T>(this T[] arr)
         {

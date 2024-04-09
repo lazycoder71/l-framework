@@ -2,7 +2,7 @@
 
 namespace LFramework
 {
-    public static class SpriteExtensions
+    public static class ExtensionsSprite
     {
         public static float GetWidth(this Sprite sprite)
         {

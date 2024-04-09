@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace LFramework
 {
-    public static class ColorExtensions
+    public static class ExtensionsColor
     {
         public static float Magnitude(this Color color)
         {

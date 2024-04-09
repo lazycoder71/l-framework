@@ -2,7 +2,7 @@
 
 namespace LFramework
 {
-    public static class Vector2Extensions
+    public static class ExtensionsVector2
     {
         public static Vector2 MultipliedBy(this in Vector2 a, Vector2 b)
         {

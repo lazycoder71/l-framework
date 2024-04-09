@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace LFramework
 {
-    public static class Vector2IntExtensions 
+    public static class ExtensionsVector2Int 
     {
         public static int RandomWithin(this Vector2Int v)
         {

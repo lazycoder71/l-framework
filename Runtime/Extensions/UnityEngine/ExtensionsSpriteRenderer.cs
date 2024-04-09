@@ -2,7 +2,7 @@
 
 namespace LFramework
 {
-    public static class SpriteRendererExtensions
+    public static class ExtensionsSpriteRenderer
     {
         public static void SetAlpha(this SpriteRenderer spriteRenderer, float alpha)
         {

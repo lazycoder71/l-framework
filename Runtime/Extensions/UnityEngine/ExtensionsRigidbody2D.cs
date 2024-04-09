@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace LFramework
 {
-    public static class Rigidbody2DExtensions
+    public static class ExtensionsRigidbody2D
     {
         public static void AddExplosionForce(this Rigidbody2D rb, float explosionForce, Vector2 explosionPosition, float explosionRadius, float upwardsModifier = 0.0F, ForceMode2D mode = ForceMode2D.Force)
         {

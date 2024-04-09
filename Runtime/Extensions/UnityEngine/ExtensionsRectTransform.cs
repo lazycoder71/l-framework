@@ -2,7 +2,7 @@
 
 namespace LFramework
 {
-    public static class RectTransformExtensions
+    public static class ExtensionsRectTransform
     {
         public static void SetWidth(this RectTransform rectTransform, float width)
         {

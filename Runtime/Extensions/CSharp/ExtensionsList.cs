@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace LFramework
 {
-    public static class ListExtensions
+    public static class ExtensionsList
     {
         public static void Resize<T>(this List<T> list, int newSize, T defaultValue = default(T))
         {

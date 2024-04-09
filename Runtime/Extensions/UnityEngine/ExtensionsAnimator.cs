@@ -2,7 +2,7 @@
 
 namespace LFramework
 {
-    public static class AnimatorExtensions
+    public static class ExtensionsAnimator
     {
         public static float GetLength(this Animator animator, string clipName)
         {
@@ -19,7 +19,7 @@ namespace LFramework
                 }
             }
 
-            LDebug.Log(typeof(AnimatorExtensions), $"Get clip length failed: Clip {clipName} doesn't exist!", Color.cyan);
+            LDebug.Log(typeof(ExtensionsAnimator), $"Get clip length failed: Clip {clipName} doesn't exist!", Color.cyan);
             return 0f;
         }
     }

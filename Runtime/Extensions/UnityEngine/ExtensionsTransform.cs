@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace LFramework
 {
-    public static class TransformExtensions
+    public static class ExtensionsTransform
     {
         #region Position
 

@@ -2,7 +2,7 @@
 
 namespace LFramework
 {
-    public static class CameraExtensions
+    public static class ExtensionsCamera
     {
         public static void SetHeight(this Camera camera, float height)
         {
