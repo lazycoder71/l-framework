@@ -38,6 +38,8 @@ namespace LFramework
         public int[] spawnCountOutput { get { return _spawnCountOutput; } }
         public LCollectStep[] steps { get { return _steps; } }
 
+#if UNITY_EDITOR
+
         [Button("Pure Random", Icon = SdfIconType.Dice3Fill), HorizontalGroup("SpawnSample/Random")]
         private void RandomSpawnSamplePosition()
         {
@@ -100,6 +102,8 @@ namespace LFramework
         {
             Sirenix.Utilities.Editor.SirenixEditorGUI.EndBox();
         }
+
+#endif
 
         public int GetSpawnCount(int inputCount)
         {
