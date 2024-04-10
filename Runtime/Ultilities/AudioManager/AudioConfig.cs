@@ -42,5 +42,10 @@ namespace LFramework
         public bool is3D { get { return _is3D; } }
         public Vector2 distance { get { return _distance; } }
         public float volumeScale { get { return _volumeScale; } }
+
+        public void Construct(AudioClip clip)
+        {
+            _clip = clip;
+        }
     }
 }

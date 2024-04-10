@@ -1,7 +1,9 @@
 {
     "name": "LFramework.Editor",
     "rootNamespace": "LFramework.Editor",
-    "references": [],
+    "references": [
+        "LFramework"
+    ],
     "includePlatforms": [
         "Editor"
     ],

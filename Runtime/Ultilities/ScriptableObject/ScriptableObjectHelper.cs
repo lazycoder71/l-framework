@@ -13,6 +13,12 @@ namespace LFramework
         {
             string filePath = string.Format("{0}/{1}.asset", path, fileName);
 
+            if (AssetDatabase.LoadAssetAtPath<T>(filePath))
+            {
+                LDebug.Log(typeof(ScriptableObjectHelper), $"File {filePath} is already exist", Color.cyan);
+                return null;
+            }
+
             T asset = ScriptableObject.CreateInstance<T>();
 
             AssetDatabase.CreateAsset(asset, filePath);

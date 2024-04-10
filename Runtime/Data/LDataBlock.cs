@@ -66,10 +66,7 @@ namespace LFramework
     {
         public static event Action eventDelete;
 
-#if UNITY_EDITOR
-        [UnityEditor.MenuItem("LFramework/Data/Clear Device")]
-#endif
-        public static void DeleteAll()
+        public static void ClearDeviceData()
         {
             eventDelete?.Invoke();
 
