@@ -4,13 +4,6 @@ using UnityEngine;
 namespace LFramework
 {
     [System.Serializable]
-    public enum AudioType
-    {
-        Sound,
-        Music,
-    }
-
-    [System.Serializable]
     public class AudioConfig : ScriptableObject
     {
         [BoxGroup("Config")]
