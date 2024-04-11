@@ -1,10 +1,11 @@
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace LFramework
 {
     public class LFactory : ScriptableObjectSingleton<LFactory>
     {
-        [Header("Scene Loader")]
+        [Title("Scene Loader")]
         [SerializeField] float _sceneLoaderFadeInDuration = 0.2f;
         [SerializeField] float _sceneLoaderLoadDuration = 0.1f;
         [SerializeField] float _sceneLoaderFadeOutDuration = 0.2f;

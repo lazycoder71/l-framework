@@ -171,7 +171,7 @@ namespace LFramework
             {
                 if (LFactory.sceneTransitionPrefab == null)
                 {
-                    LDebug.LogWarning<SceneLoader>($"Unassigned prefab!",Color.cyan);
+                    LDebug.LogWarning<SceneLoader>($"Unassigned prefab!", Color.cyan);
                     return;
                 }
 
@@ -186,14 +186,20 @@ namespace LFramework
         {
             LazyInit();
 
-            _instance.Load(sceneIndex);
+            if (_instance != null)
+                _instance.Load(sceneIndex);
+            else
+                SceneManager.LoadScene(sceneIndex);
         }
 
         public static void Reload()
         {
             LazyInit();
 
-            _instance.Reload();
+            if (_instance != null)
+                _instance.Reload();
+            else
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }
