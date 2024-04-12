@@ -18,13 +18,20 @@ namespace LFramework
         {
             foreach (PoolPrefab pool in _poolLookup.Values)
             {
+                if (pool.config != null && pool.config.dontDestroyOnLoad)
+                    continue;
+
                 pool.Clear();
             }
         }
 
-        public static GameObject Get(GameObject prefab)
+        public static void Construct(params PoolPrefabConfig[] configs)
         {
-            return GetPool(prefab).Get();
+            for (int i = 0; i < configs.Length; i++)
+            {
+                if (!_poolLookup.ContainsKey(configs[i].prefab))
+                    _poolLookup.Add(configs[i].prefab, new PoolPrefab(configs[i]));
+            }
         }
 
         public static GameObject Get(PoolPrefabConfig config)
@@ -32,9 +39,9 @@ namespace LFramework
             return GetPool(config).Get();
         }
 
-        public static void Release(GameObject prefab, GameObject instance)
+        public static GameObject Get(GameObject prefab)
         {
-            GetPool(prefab).Release(instance);
+            return GetPool(prefab).Get();
         }
 
         public static void Release(PoolPrefabConfig config, GameObject instance)
@@ -42,12 +49,9 @@ namespace LFramework
             GetPool(config).Release(instance);
         }
 
-        public static PoolPrefab GetPool(GameObject prefab)
+        public static void Release(GameObject prefab, GameObject instance)
         {
-            if (!_poolLookup.ContainsKey(prefab))
-                _poolLookup.Add(prefab, new PoolPrefab(prefab));
-
-            return _poolLookup[prefab];
+            GetPool(prefab).Release(instance);
         }
 
         public static PoolPrefab GetPool(PoolPrefabConfig config)
@@ -56,6 +60,14 @@ namespace LFramework
                 _poolLookup.Add(config.prefab, new PoolPrefab(config));
 
             return _poolLookup[config.prefab];
+        }
+
+        public static PoolPrefab GetPool(GameObject prefab)
+        {
+            if (!_poolLookup.ContainsKey(prefab))
+                _poolLookup.Add(prefab, new PoolPrefab(prefab));
+
+            return _poolLookup[prefab];
         }
     }
 }

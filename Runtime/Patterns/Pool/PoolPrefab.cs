@@ -6,7 +6,20 @@ namespace LFramework
 {
     public class PoolPrefab : ObjectPool<GameObject>
     {
-        public PoolPrefab(GameObject prefab) : base(() => { return Object.Instantiate(prefab); }, (obj) => { obj.SetActive(true); }, (obj) => { obj.SetActive(false); })
+        PoolPrefabConfig _config;
+
+        public PoolPrefabConfig config { get { return _config; } }
+
+        public PoolPrefab(GameObject prefab) : base(
+            () => { return Object.Instantiate(prefab); },
+            (obj) => { obj.SetActive(true); },
+            (obj) => { obj.SetActive(false); },
+            (obj) => { LDebug.Log<PoolPrefab>($"Destroy {obj.name}"); },
+#if UNITY_EDITOR
+            true) // Keep heavy check on editor
+#else
+            false)
+#endif
         {
         }
 
@@ -22,8 +35,12 @@ namespace LFramework
             },
             (obj) => { obj.SetActive(true); },
             (obj) => { obj.SetActive(false); },
-            null,
-            true,
+            (obj) => { LDebug.Log<PoolPrefab>($"Destroy {obj.name}"); },
+#if UNITY_EDITOR
+            true, // Keep heavy check on editor
+#else
+            false,
+#endif
             config.spawnCapacity, config.spawnCapacityMax
             )
         {
@@ -34,6 +51,8 @@ namespace LFramework
 
             for (int i = 0; i < objSpawn.Count; i++)
                 Release(objSpawn[i]);
+
+            _config = config;
         }
     }
 }

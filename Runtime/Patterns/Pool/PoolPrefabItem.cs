@@ -1,23 +1,24 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace LFramework
 {
-    public class PoolPrefabItem : MonoBehaviour
+    public class PoolPrefabItem : MonoCached
     {
         [Title("Config")]
-        [SerializeField, AssetsOnly] PoolPrefabConfig _config;
+        [SerializeField] PoolPrefabConfig _config;
 
-        [SerializeField] bool _releasePoolOnDisable = true;
-
-        private void OnEnable()
+        private void Start()
         {
-
+            if (_config.dontDestroyOnLoad)
+                MonoCallback.instance.eventActiveSceneChanged += MonoCallback_EventActiveSceneChanged;
         }
 
-        private void OnDisable()
+        private void MonoCallback_EventActiveSceneChanged(Scene arg1, Scene arg2)
         {
-            
+            if (gameObjectCached.activeInHierarchy)
+                PoolPrefabGlobal.Release(_config, gameObjectCached);
         }
     }
 }

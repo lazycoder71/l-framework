@@ -15,7 +15,7 @@ namespace LFramework
         [SerializeField] int _spawnCapacityMax = 1000;
 
         public GameObject prefab { get { return _prefab; } }
-        public bool dontDestroyOnLoad { get { return dontDestroyOnLoad; } }
+        public bool dontDestroyOnLoad { get { return _dontDestroyOnLoad; } }
 
         public int spawnAtStart { get { return _spawnAtStart; } }
         public int spawnCapacity { get { return _spawnCapacity; } }
