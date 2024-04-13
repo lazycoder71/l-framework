@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using UnityEngine;
 
 namespace LFramework
@@ -9,6 +10,8 @@ namespace LFramework
         LCollectDestination _destination;
 
         Sequence _sequence;
+
+        public event Action eventComplete;
 
         private void OnDestroy()
         {
@@ -66,6 +69,8 @@ namespace LFramework
 
         private void Destruct()
         {
+            eventComplete?.Invoke();
+
             Destroy(gameObjectCached);
         }
 
