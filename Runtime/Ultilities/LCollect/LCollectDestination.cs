@@ -14,6 +14,7 @@ namespace LFramework
 
         public event Action<int> eventReturnBegin;
         public event Action<float> eventReturn;
+        public event Action eventReturnEnd;
 
         int _returnExpect;
         int _returnCount;
@@ -43,7 +44,6 @@ namespace LFramework
         {
             _returnCount++;
 
-
             if (_returnCount == _returnExpect)
             {
                 _returnCount = 0;
@@ -55,6 +55,11 @@ namespace LFramework
             {
                 eventReturn?.Invoke((float)_returnCount / _returnExpect);
             }
+        }
+
+        public void ReturnEnd()
+        {
+            eventReturnEnd?.Invoke();
         }
     }
 }

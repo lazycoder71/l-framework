@@ -69,6 +69,8 @@ namespace LFramework
 
         private void Destruct()
         {
+            _destination.ReturnEnd();
+
             eventComplete?.Invoke();
 
             Destroy(gameObjectCached);
