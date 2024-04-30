@@ -10,6 +10,11 @@
         /// <summary>
         /// Returns a singleton class instance.
         /// </summary>
-        public static T instance => s_instance ?? (s_instance = new T());
+        public static T instance { get { return s_instance ?? (s_instance = new T()); } }
+
+        public static void SetInstance(T instance)
+        {
+            s_instance = instance;
+        }
     }
 }
