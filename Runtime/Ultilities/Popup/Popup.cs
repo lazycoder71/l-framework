@@ -9,20 +9,20 @@ namespace LFramework
     public sealed class Popup : MonoCached
     {
         [Title("Config")]
-        [SerializeField] float _openDuration = 0.2f;
-        [SerializeField] float _closeDuration = 0.2f;
+        [SerializeField, Min(0.01f)] float _openDuration = 0.2f;
+        [SerializeField, Min(0.01f)] float _closeDuration = 0.2f;
         [SerializeField] bool _isLocked = false;
         [SerializeField] bool _deactiveOnClosed = false;
 
         [Space]
 
-        [FoldoutGroup("Animation")]
-        [ListDrawerSettings(ListElementLabelName = "displayName", AddCopiesLastElement = true, ElementColor = "orange")]
+        [FoldoutGroup("Animation", Expanded = false)]
+        [ListDrawerSettings(ListElementLabelName = "displayName", AddCopiesLastElement = true)]
         [SerializeReference] PopupAnimation[] _animations;
 
         [Space]
 
-        [FoldoutGroup("Event")]
+        [FoldoutGroup("Event", Expanded = false)]
         [SerializeField] UnityEvent _onOpenStart;
         [FoldoutGroup("Event")]
         [SerializeField] UnityEvent _onOpenEnd;
@@ -32,6 +32,7 @@ namespace LFramework
         [SerializeField] UnityEvent _onCloseEnd;
 
         bool _isOpening = false;
+        bool _isEnabled = false;
 
         Sequence _sequence;
 
@@ -40,7 +41,9 @@ namespace LFramework
         public float openDuration { get { return _openDuration; } }
         public float closeDuration { get { return _closeDuration; } }
         public bool isLocked { get { return _isLocked; } set { _isLocked = value; } }
+        public bool deactiveOnClosed { get { return _deactiveOnClosed; } }
         public CanvasGroup canvasGroup { get { return _canvasGroup; } }
+        public Sequence sequence { get { return _sequence; } }
 
         public UnityEvent onOpenStart { get { return _onOpenStart; } }
         public UnityEvent onOpenEnd { get { return _onOpenEnd; } }
@@ -63,16 +66,22 @@ namespace LFramework
 
         private void Update()
         {
-            if (!_isLocked)
+            if (!_isLocked && _isEnabled)
                 InputCheck();
         }
 
         private void OnEnable()
         {
-            _isOpening = true;
-
+            // Add this popup into stack
             PopupManager.PushToStack(this);
 
+            _isOpening = true;
+
+            _isEnabled = true;
+
+            _onOpenStart?.Invoke();
+
+            // Construct sequence and play it
             ConstructSequence();
 
             _sequence.Restart();
@@ -84,7 +93,7 @@ namespace LFramework
             // Pop this popup out of stack
             PopupManager.PopFromStack(this);
 
-            // Trigger closed event
+            // Trigger close end event
             _onCloseEnd?.Invoke();
         }
 
@@ -107,9 +116,7 @@ namespace LFramework
 
         public void SetEnabled(bool enabled)
         {
-            this.enabled = enabled;
-
-            _canvasGroup.interactable = enabled;
+            _isEnabled = enabled;
         }
 
         #endregion
@@ -131,25 +138,23 @@ namespace LFramework
             }
             else
             {
-                _sequence.AppendCallback(null);
+                _sequence.AppendInterval(_openDuration);
             }
 
-            _sequence.SetAutoKill(false);
             _sequence.OnStepComplete(Sequence_OnStepComplete);
+            _sequence.SetAutoKill(false);
         }
 
         private void Sequence_OnStepComplete()
         {
             if (_isOpening)
             {
-                SetEnabled(true);
-
                 _onOpenEnd?.Invoke();
+
+                _canvasGroup.interactable = true;
             }
             else
             {
-                _onCloseEnd?.Invoke();
-
                 if (_deactiveOnClosed)
                     gameObjectCached.SetActive(false);
                 else
@@ -166,8 +171,8 @@ namespace LFramework
             // Set is opening flag
             _isOpening = false;
 
-            // Disable popup at this moment
-            SetEnabled(false);
+            // Disable canvas at this moment
+            _canvasGroup.interactable = false;
 
             // On close callback
             _onCloseStart?.Invoke();
@@ -188,6 +193,14 @@ namespace LFramework
             if (Input.GetKeyDown(KeyCode.Escape))
                 Close();
 #endif
+        }
+
+        [Button]
+        private void SetupRectTransform()
+        {
+            RectTransform rect = GetComponent<RectTransform>();
+
+            rect.StretchByParent();
         }
 
         #endregion

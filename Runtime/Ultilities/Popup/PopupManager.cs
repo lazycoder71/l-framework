@@ -47,7 +47,7 @@ namespace LFramework
             }
             else if (_mainStack.Last() != popup)
             {
-                LDebug.LogWarning(typeof(PopupManager), $"This popup {popup} is not on top of the stack! try to remove it from stack anyway");
+                LDebug.LogWarning(typeof(PopupManager), $"This popup {popup} is not on top of the stack! try to remove it from stack anyway", Color.cyan);
 
                 _mainStack.Remove(popup);
 
@@ -62,6 +62,19 @@ namespace LFramework
                 _mainStack.Last().SetEnabled(true);
 
             eventPopupClosed?.Invoke(popup);
+        }
+
+        public static Popup Create(GameObject prefab)
+        {
+            Popup popup = prefab.Create(root, false).GetComponent<Popup>();
+            popup.transformCached.SetAsLastSibling();
+
+            return popup;
+        }
+
+        public static void SetRoot(Transform root)
+        {
+            _root = root;
         }
     }
 }

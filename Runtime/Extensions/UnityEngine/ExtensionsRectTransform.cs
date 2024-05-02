@@ -39,22 +39,13 @@ namespace LFramework
             rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x + x, rectTransform.anchoredPosition.y + y);
         }
 
-        public static void AnchorToCorners(this RectTransform rectTransform)
+        public static void StretchByParent(this RectTransform rectTransform)
         {
-            if (rectTransform.parent == null)
-                return;
-
-            RectTransform rectParent = rectTransform.parent.GetComponent<RectTransform>();
-
-            Vector2 newAnchorsMin = new Vector2(rectTransform.anchorMin.x + rectTransform.offsetMin.x / rectParent.rect.width,
-                              rectTransform.anchorMin.y + rectTransform.offsetMin.y / rectParent.rect.height);
-
-            Vector2 newAnchorsMax = new Vector2(rectTransform.anchorMax.x + rectTransform.offsetMax.x / rectParent.rect.width,
-                              rectTransform.anchorMax.y + rectTransform.offsetMax.y / rectParent.rect.height);
-
-            rectTransform.anchorMin = newAnchorsMin;
-            rectTransform.anchorMax = newAnchorsMax;
-            rectTransform.offsetMin = rectTransform.offsetMax = Vector2.zero;
+            rectTransform.anchoredPosition3D = Vector3.zero;
+            rectTransform.anchorMin = Vector2.zero;
+            rectTransform.anchorMax = Vector2.one;
+            rectTransform.offsetMin = Vector2.zero;
+            rectTransform.offsetMax = Vector2.zero;
         }
 
         public static float GetPixelPerUnit(this RectTransform rectTransform)

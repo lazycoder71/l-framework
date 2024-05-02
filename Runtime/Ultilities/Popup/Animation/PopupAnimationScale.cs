@@ -8,7 +8,7 @@ namespace LFramework
         [SerializeField] Transform _target;
         [SerializeField] float _scaleStart = 0.3f;
         [SerializeField] float _scaleEnd = 1.0f;
-        [SerializeField] Ease _ease;
+        [SerializeField] Ease _ease = Ease.OutBack;
 
         public override string displayName { get { return "Scale"; } }
 

@@ -18,7 +18,7 @@ namespace LFramework
             float animDuration = popup.openDuration * (_durationRange.y - _durationRange.x);
             float animDelay = popup.openDuration * _durationRange.x;
 
-            Tween tween = GetTween(popup, animDuration);
+            Tween tween = GetTween(popup, Mathf.Max(animDuration, 0.01f));
 
             if (animDelay > 0.0f)
                 sequence.Insert(animDelay, tween);

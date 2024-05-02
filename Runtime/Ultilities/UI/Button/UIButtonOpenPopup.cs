@@ -9,7 +9,7 @@ namespace LFramework
         [Title("Config")]
         [SerializeField] GameObject _popup;
 
-        public event Action<UIPopupBehaviour> eventSpawnPopup;
+        public event Action<Popup> eventSpawnPopup;
 
         public override void Button_OnClick()
         {
@@ -18,14 +18,14 @@ namespace LFramework
             SpawnPopup();
         }
 
-        protected virtual void HandleSpawnPopup(UIPopupBehaviour popupBehaviour)
+        protected virtual void HandleSpawnPopup(Popup popupBehaviour)
         {
 
         }
 
-        public UIPopupBehaviour SpawnPopup()
+        public Popup SpawnPopup()
         {
-            UIPopupBehaviour popup = UIPopupHelper.Create(_popup);
+            Popup popup = PopupManager.Create(_popup);
 
             eventSpawnPopup?.Invoke(popup);
 

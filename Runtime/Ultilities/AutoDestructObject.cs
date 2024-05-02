@@ -16,25 +16,20 @@ namespace LFramework
 
         #region MonoBehaviour
 
-        void OnEnable()
+        private void OnEnable()
         {
             _tween?.Kill();
             _tween = DOVirtual.DelayedCall(_delay, Destruct);
         }
 
-        void OnDisable()
-        {
-            _tween?.Kill();
-        }
-
-        void OnDestroy()
+        private void OnDisable()
         {
             _tween?.Kill();
         }
 
         #endregion
 
-        void Destruct()
+        private void Destruct()
         {
             if (_deactiveOnly)
                 gameObjectCached.SetActive(false);

@@ -1,15 +1,16 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using DG.Tweening;
+using Sirenix.OdinInspector;
 
 namespace LFramework
 {
     public class UIGraphicScale : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerUpHandler, IPointerExitHandler, IPointerClickHandler
     {
-        [Header("Reference")]
+        [Title("Reference")]
         [SerializeField] Transform _tfTarget;
 
-        [Header("Config")]
+        [Title("Config")]
         [SerializeField] Vector2 _scaleValue = new Vector2(1f, 0.9f);
         [Min(0.1f)]
         [SerializeField] float _scaleSpeed = 1f;
