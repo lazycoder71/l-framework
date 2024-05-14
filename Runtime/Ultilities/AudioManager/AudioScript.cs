@@ -6,6 +6,7 @@ namespace LFramework
     public class AudioScript : MonoCached
     {
         AudioConfig _config;
+
         AudioSource _audioSource;
 
         Tween _tween;
@@ -15,31 +16,35 @@ namespace LFramework
             get
             {
                 if (_audioSource == null)
-                    _audioSource = gameObject.GetComponent<AudioSource>();
+                    _audioSource = gameObjectCached.GetComponent<AudioSource>();
+
                 return _audioSource;
             }
         }
 
         #region MonoBehaviour
 
-        void Awake()
+        private void Awake()
         {
-            audioSource.rolloffMode = AudioRolloffMode.Linear;
+            _audioSource = GetComponent<AudioSource>();
+        }
 
+        private void OnDestroy()
+        {
+            _tween?.Kill();
+        }
+
+        private void Start()
+        {
             transformCached.SetParent(AudioManager.instance.transformCached);
 
             AudioManager.volumeSound.eventValueChanged += VolumeSound_EventValueChanged;
             AudioManager.volumeMusic.eventValueChanged += VolumeMusic_EventValueChanged;
         }
 
-        void OnDestroy()
-        {
-            _tween?.Kill();
-        }
-
         #endregion
 
-        #region Public
+        #region Function -> Public
 
         public void Play(AudioConfig config, bool loop = false)
         {
@@ -49,34 +54,6 @@ namespace LFramework
 
             if (!loop)
                 _tween = DOVirtual.DelayedCall(config.clip.length, Stop, false);
-        }
-
-        public void PlayFadeIn(AudioConfig config, float fadeDuration, bool loop = false)
-        {
-            Construct(config, loop);
-
-            fadeDuration = Mathf.Min(fadeDuration, config.clip.length);
-
-            _tween?.Kill();
-            _tween = audioSource.DOFade(GetVolume(), fadeDuration)
-               .ChangeStartValue(0f)
-               .SetUpdate(true)
-               .OnComplete(() =>
-               {
-                   _tween?.Kill();
-
-                   if (!loop)
-                       _tween = DOVirtual.DelayedCall(config.clip.length - fadeDuration, Stop);
-               });
-        }
-
-        public void FadeOut(float duration = 0.5f)
-        {
-            _tween?.Kill();
-            _tween = audioSource.DOFade(0f, duration)
-                .ChangeStartValue(GetVolume())
-                .SetUpdate(true)
-                .OnComplete(Stop);
         }
 
         public void Stop()
@@ -93,22 +70,24 @@ namespace LFramework
 
         #endregion
 
-        float GetVolume()
+        #region Function -> Private
+
+        private float GetVolume()
         {
             return _config.volumeScale * (_config.type == AudioType.Music ? AudioManager.volumeMusic.value : AudioManager.volumeSound.value);
         }
 
-        void VolumeSound_EventValueChanged(float volume)
+        private void VolumeSound_EventValueChanged(float volume)
         {
             UpdateVolume();
         }
 
-        void VolumeMusic_EventValueChanged(float volume)
+        private void VolumeMusic_EventValueChanged(float volume)
         {
             UpdateVolume();
         }
 
-        void Construct(AudioConfig config, bool loop = false)
+        private void Construct(AudioConfig config, bool loop = false)
         {
             _config = config;
 
@@ -123,7 +102,7 @@ namespace LFramework
             audioSource.Play();
         }
 
-        void UpdateVolume()
+        private void UpdateVolume()
         {
             if (_config == null)
                 return;
@@ -133,5 +112,7 @@ namespace LFramework
             audioSource.mute = volumeFinal <= 0;
             audioSource.volume = volumeFinal;
         }
+
+        #endregion
     }
 }

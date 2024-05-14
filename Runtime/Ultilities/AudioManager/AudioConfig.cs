@@ -6,27 +6,14 @@ namespace LFramework
     [System.Serializable]
     public class AudioConfig : ScriptableObject
     {
-        [BoxGroup("Config")]
-        [HorizontalGroup("Config/Clip")]
-        [LabelWidth(50f)]
         [SerializeField] AudioClip _clip;
-
-        [BoxGroup("Config")]
-        [HorizontalGroup("Config/Clip")]
-        [LabelWidth(50f)]
         [SerializeField] AudioType _type;
-
-        [BoxGroup("Config")]
-        [HorizontalGroup("Config/Type", LabelWidth = 75f)]
         [SerializeField] bool _is3D;
 
-        [BoxGroup("Config")]
-        [HorizontalGroup("Config/Type")]
-        [ShowIf("@_is3D == true")]
+        [ShowIf("@_is3D")]
         [MinMaxSlider(0f, 200f, ShowFields = true)]
         [SerializeField] Vector2 _distance = new Vector2(1f, 10f);
 
-        [BoxGroup("Config")]
         [Range(0f, 1f)]
         [SerializeField] float _volumeScale = 1f;
 

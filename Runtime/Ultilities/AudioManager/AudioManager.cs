@@ -21,24 +21,17 @@ namespace LFramework
 
         #endregion
 
-        #region Public
+        #region Function -> Public
 
-        public static AudioScript Play(AudioConfig config, Vector3 pos, bool loop = false)
+        public static AudioScript Play(AudioConfig config, bool loop = false)
         {
             if (config.clip == null)
                 return null;
 
             AudioScript audio = instance._pool.Get();
-            audio.enabled = true;
             audio.Play(config, loop);
-            audio.transformCached.position = pos;
 
             return audio;
-        }
-
-        public static AudioScript Play(AudioConfig config, bool loop = false)
-        {
-            return Play(config, Vector3.zero, loop);
         }
 
         public static void ReturnPool(AudioScript audioScript)
@@ -48,7 +41,9 @@ namespace LFramework
 
         #endregion
 
-        void InitPool()
+        #region Function -> Private
+
+        private void InitPool()
         {
             _pool = new ObjectPool<AudioScript>(() =>
             {
@@ -62,5 +57,7 @@ namespace LFramework
             }
             );
         }
+
+        #endregion
     }
 }
