@@ -30,6 +30,8 @@ namespace LFramework.Editor
                     continue;
 
                 config.Construct(clip);
+
+                ScriptableObjectHelper.SaveAsset(config);
             }
         }
     }

@@ -48,7 +48,7 @@ namespace LFramework
             _tween?.Kill();
 
             if (!loop)
-                _tween = DOVirtual.DelayedCall(config.clip.length, Stop);
+                _tween = DOVirtual.DelayedCall(config.clip.length, Stop, false);
         }
 
         public void PlayFadeIn(AudioConfig config, float fadeDuration, bool loop = false)

@@ -14,7 +14,7 @@ namespace LFramework
             () => { return Object.Instantiate(prefab); },
             (obj) => { obj.SetActive(true); },
             (obj) => { obj.SetActive(false); },
-            (obj) => { LDebug.Log<PoolPrefab>($"Destroy {obj.name}"); },
+            (obj) => { },
 #if UNITY_EDITOR
             true) // Keep heavy check on editor
 #else

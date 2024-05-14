@@ -22,6 +22,7 @@ namespace LFramework
         public enum ActionOnDisable
         {
             Kill = 1 << 1,
+            Pause = 1 << 2,
         }
 
         [Title("Steps")]
@@ -109,6 +110,9 @@ namespace LFramework
 
         private void OnDisable()
         {
+            if(_actionOnDisable.HasFlag(ActionOnDisable.Pause))
+                _sequence?.Pause();
+            
             if (_actionOnDisable.HasFlag(ActionOnDisable.Kill))
                 _sequence?.Kill();
         }
