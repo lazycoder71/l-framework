@@ -48,6 +48,8 @@ namespace LFramework
         [SerializeField, HideInInspector]
         protected bool _isIndependentUpdate = false;
 
+        [SerializeField] float _delay;
+
         Sequence _sequence;
 
         RectTransform _rectTransform;
@@ -110,9 +112,9 @@ namespace LFramework
 
         private void OnDisable()
         {
-            if(_actionOnDisable.HasFlag(ActionOnDisable.Pause))
+            if (_actionOnDisable.HasFlag(ActionOnDisable.Pause))
                 _sequence?.Pause();
-            
+
             if (_actionOnDisable.HasFlag(ActionOnDisable.Kill))
                 _sequence?.Kill();
         }
@@ -133,6 +135,8 @@ namespace LFramework
             _sequence.SetAutoKill(_isAutoKill);
 
             _sequence.SetLoops(_loopCount, _loopType);
+
+            _sequence.SetDelay(_delay);
 
             _sequence.SetUpdate(_updateType, _isIndependentUpdate);
         }

@@ -7,58 +7,56 @@ namespace LFramework
     public class LCollect : MonoCached
     {
         LCollectConfig _config;
+
         LCollectDestination _destination;
 
-        Sequence _sequence;
+        Tween _tween;
 
-        public event Action eventComplete;
+        Action _onComplete;
 
         private void OnDestroy()
         {
-            _sequence?.Kill();
+            _tween?.Kill();
         }
 
-        public void Construct(LCollectConfig config, int valueCount)
+        public void Construct(LCollectConfig config, LCollectDestination destination, int count, Action onComplete)
         {
             _config = config;
-            _destination = LCollectDestinationHelper.Get(_config);
+            _destination = destination;
+            _onComplete = onComplete;
 
-            if (_destination == null)
-            {
-                LDebug.Log<LCollect>("Can't find destination");
-                Destruct();
-                return;
-            }
-
-            int spawnCount = config.GetSpawnCount(valueCount);
-
-            _destination.ReturnBegin(valueCount, spawnCount);
+            // Get spawn count base on input count
+            int spawnCount = config.GetSpawnCount(count);
 
             float delayBetween = spawnCount > 1 ? config.spawnDuration / (spawnCount - 1) : 0.0f;
 
-            _sequence?.Kill();
-            _sequence = DOTween.Sequence();
+            // Construct spawn sequence
+            Sequence sequence = DOTween.Sequence();
 
             for (int i = 0; i < spawnCount; i++)
             {
                 Vector3 spawnPosition = config.spawnPositions.GetLoop(i);
 
-                _sequence.AppendCallback(() => { Spawn(spawnPosition); });
-                _sequence.AppendInterval(delayBetween);
+                sequence.AppendCallback(() => { Spawn(spawnPosition); });
+                sequence.AppendInterval(delayBetween);
             }
 
-            _sequence.Play();
-            _sequence.OnComplete(StartCheckEmptyLoop);
+            sequence.Play();
+            sequence.OnComplete(StartCheckEmptyLoop);
+
+            _tween?.Kill();
+            _tween = sequence;
+
+            // Notify destination about the return begin
+            _destination.ReturnBegin(count, spawnCount);
         }
 
         private void StartCheckEmptyLoop()
         {
-            _sequence?.Kill();
-            _sequence = DOTween.Sequence();
-
-            _sequence.Append(DOVirtual.DelayedCall(1.0f, null, false))
-                     .SetLoops(-1, LoopType.Restart)
-                     .OnUpdate(CheckEmpty);
+            _tween?.Kill();
+            _tween = DOVirtual.DelayedCall(1.0f, null, false)
+                              .SetLoops(-1, LoopType.Restart)
+                              .OnUpdate(CheckEmpty);
         }
 
         private void CheckEmpty()
@@ -71,7 +69,7 @@ namespace LFramework
         {
             _destination.ReturnEnd();
 
-            eventComplete?.Invoke();
+            _onComplete?.Invoke();
 
             Destroy(gameObjectCached);
         }

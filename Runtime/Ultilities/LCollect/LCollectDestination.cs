@@ -28,7 +28,7 @@ namespace LFramework
             LCollectDestinationHelper.Push(this);
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
             LCollectDestinationHelper.Pop(this);
         }

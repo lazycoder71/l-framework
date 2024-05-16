@@ -5,19 +5,32 @@ namespace LFramework
 {
     public static class LCollectHelper
     {
-        public static void Spawn(LCollectConfig config, int valueCount, Transform parent, Vector3 spawnPosition, Action onComplete)
+        public static void Spawn(LCollectConfig config, int count, Vector3 spawnPosition, Action onComplete = null)
         {
-            GameObject objCollect = new GameObject(config.name);
-            objCollect.AddComponent<RectTransform>();
+            // Find destination
+            LCollectDestination destination = LCollectDestinationHelper.Get(config);
 
+            // Check destination exist
+            if (destination == null)
+            {
+                LDebug.Log(typeof(LCollectHelper), $"Can't find destination for {config.name}");
+
+                onComplete?.Invoke();
+
+                return;
+            }
+
+            // Spawn collect object
+            GameObject objCollect = new GameObject(config.name, typeof(RectTransform));
+
+            // Setup collect object
             LCollect collect = objCollect.AddComponent<LCollect>();
 
-            collect.transformCached.SetParent(parent, false);
+            collect.transformCached.SetParent(destination.transformCached.parent, false);
+            collect.transformCached.SetAsLastSibling();
             collect.transformCached.position = spawnPosition;
 
-            collect.Construct(config, valueCount);
-
-            collect.eventComplete += onComplete;
+            collect.Construct(config, destination, count, onComplete);
         }
     }
 }

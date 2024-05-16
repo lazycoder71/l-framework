@@ -12,13 +12,13 @@ namespace LFramework
         [SerializeField] GameObject _spawnPrefab;
         [SerializeField] float _spawnDuration = 0.5f;
 
-        [Title("Spawn Sample (in pixel unit)")]
-
+        [FoldoutGroup("SpawnSample", GroupName = "Spawn Sample (in pixel unit)", Expanded = false)]
         [SerializeField] List<Vector3> _spawnSamplePositions;
 
+        [FoldoutGroup("SpawnSample")]
         [SerializeField] int _spawnSampleCount = 10;
 
-        [VerticalGroup("SpawnSample")]
+        [FoldoutGroup("SpawnSample")]
         [SerializeField] float _spawnSampleRadius = 100.0f;
 
         [Title("Spawn Count")]
