@@ -7,6 +7,7 @@ namespace LFramework
     public class PopupAnimationBackground : PopupAnimation
     {
         [SerializeField] bool _closeOnClick = true;
+        [SerializeField] Sprite _sprite;
         [SerializeField] Color _color = new Color(0f, 0f, 0f, 0.5f);
 
         public override string displayName { get { return "Background"; } }
@@ -35,6 +36,7 @@ namespace LFramework
             // Return background fade tween
             Image image = _objBG.GetComponent<Image>();
             image.color = _color;
+            image.sprite = _sprite;
 
             return image.DOFade(_color.a, duration)
                         .ChangeStartValue(new Color(_color.r, _color.g, _color.b, 0f))
