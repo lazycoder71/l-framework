@@ -1,25 +1,26 @@
 ﻿using DG.Tweening;
+using Sirenix.OdinInspector;
 using System;
 using UnityEngine;
 
 namespace LFramework
 {
-    public class AutoDestructObject : MonoCached
+    public class GameObjectAutoDestruct : MonoCached
     {
-        [Header("Config")]
+        [Title("Config")]
         [SerializeField] float _delay = 0f;
         [SerializeField] bool _deactiveOnly = false;
 
         Tween _tween;
 
-        public event Action eventDestruct;
+        public event Action<GameObject> eventDestruct;
 
         #region MonoBehaviour
 
         private void OnEnable()
         {
             _tween?.Kill();
-            _tween = DOVirtual.DelayedCall(_delay, Destruct);
+            _tween = DOVirtual.DelayedCall(_delay, Destruct, false);
         }
 
         private void OnDisable()
@@ -36,7 +37,7 @@ namespace LFramework
             else
                 Destroy(gameObjectCached);
 
-            eventDestruct?.Invoke();
+            eventDestruct?.Invoke(gameObjectCached);
         }
     }
 }
