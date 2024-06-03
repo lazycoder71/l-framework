@@ -25,6 +25,8 @@ namespace LFramework
 
         private void OnDisable()
         {
+            eventDestruct?.Invoke(gameObjectCached);
+			
             _tween?.Kill();
         }
 
@@ -36,8 +38,6 @@ namespace LFramework
                 gameObjectCached.SetActive(false);
             else
                 Destroy(gameObjectCached);
-
-            eventDestruct?.Invoke(gameObjectCached);
         }
     }
 }
