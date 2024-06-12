@@ -138,10 +138,11 @@ namespace LFramework
             }
             else
             {
-                _sequence.AppendInterval(_openDuration);
+                _sequence.AppendInterval(Mathf.Max(_openDuration, 0.05f));
             }
 
             _sequence.OnStepComplete(Sequence_OnStepComplete);
+            _sequence.SetUpdate(true);
             _sequence.SetAutoKill(false);
         }
 
