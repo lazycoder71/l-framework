@@ -14,29 +14,12 @@ namespace LFramework
         {
             Transform owner = _isSelf ? animationSequence.transformCached : _owner;
 
-            Tween tween;
+            float duration = _isSpeedBased ? Vector3.Angle(_value, owner.localEulerAngles) / _duration : _duration;
+            Vector3 start = _changeStartValue ? _valueStart : owner.localEulerAngles;
+            Vector3 end = _relative ? owner.localEulerAngles + _value : _value;
 
-            Vector3 start;
-            Vector3 end;
-
-            if (_isUseTarget)
-            {
-                float duration = _isSpeedBased ? Vector3.Angle(_target.localEulerAngles, owner.localEulerAngles) / _duration : _duration;
-                start = owner.localEulerAngles;
-                end = _target.localEulerAngles;
-
-                tween = owner.DOLocalRotate(end, duration, _rotateMode)
-                             .ChangeStartValue(start);
-            }
-            else
-            {
-                float duration = _isSpeedBased ? Vector3.Angle(_value, owner.localEulerAngles) / _duration : _duration;
-                start = owner.localEulerAngles;
-                end = _relative ? owner.localEulerAngles + _value : _value;
-
-                tween = owner.DOLocalRotate(end, duration, _rotateMode)
-                             .ChangeStartValue(start);
-            }
+            Tween tween = owner.DOLocalRotate(end, duration, _rotateMode)
+                               .ChangeStartValue(start);
 
             owner.localEulerAngles = end;
 

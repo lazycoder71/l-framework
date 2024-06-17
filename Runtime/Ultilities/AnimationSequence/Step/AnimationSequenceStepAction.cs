@@ -51,15 +51,12 @@ namespace LFramework
         private LoopType _loopType = LoopType.Restart;
 
         [SerializeField]
-        [HorizontalGroup("Target"), ShowIf("@_isUseTarget==true"), GUIColor("@_target == null ? new Color(1.0f, 0.2f, 0.2f) : Color.white")]
-        [InlineButton("@_isUseTarget = false", Label = "Target")]
-        protected T _target;
+        [VerticalGroup("Value")]
+        protected bool _relative = false;
 
-        [SerializeField, HideInInspector]
-        protected bool _isUseTarget = false;
-
-        [SerializeField, ShowIf("@_isUseTarget == false")]
-        protected bool _relative;
+        [SerializeField]
+        [VerticalGroup("Value")]
+        protected bool _changeStartValue = false;
 
         public override string displayName { get { return "ERROR!!!"; } }
 

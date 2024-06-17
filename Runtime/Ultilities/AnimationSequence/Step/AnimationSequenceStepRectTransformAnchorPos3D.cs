@@ -5,38 +5,18 @@ namespace LFramework
 {
     public class AnimationSequenceStepRectTransformAnchorPos3D : AnimationSequenceStepRectTransform
     {
-        [SerializeField]
-        private bool _snapping = false;
-
         public override string displayName { get { return $"{(_isSelf ? "RectTransform (This)" : _owner)}: DOAnchorPos3D"; } }
 
         protected override Tween GetTween(AnimationSequence animationSequence)
         {
             RectTransform owner = _isSelf ? animationSequence.rectTransform : _owner;
 
-            Tween tween;
+            float duration = _isSpeedBased ? Vector2.Distance(_value, owner.anchoredPosition3D) / _duration : _duration;
+            Vector3 start = _changeStartValue ? _valueStart : owner.anchoredPosition3D;
+            Vector3 end = _relative ? owner.anchoredPosition3D + _value : _value;
 
-            Vector3 start;
-            Vector3 end;
-
-            if (_isUseTarget)
-            {
-                float duration = _isSpeedBased ? Vector3.Distance(_target.anchoredPosition3D, owner.anchoredPosition3D) / _duration : _duration;
-                start = owner.anchoredPosition3D;
-                end = _target.anchoredPosition3D;
-
-                tween = owner.DOAnchorPos3D(end, duration, _snapping)
-                             .ChangeStartValue(start);
-            }
-            else
-            {
-                float duration = _isSpeedBased ? Vector2.Distance(_value, owner.anchoredPosition3D) / _duration : _duration;
-                start = owner.anchoredPosition3D;
-                end = _relative ? owner.anchoredPosition3D + _value : _value;
-
-                tween = owner.DOAnchorPos3D(end, duration, _snapping)
-                             .ChangeStartValue(start);
-            }
+            Tween tween = owner.DOAnchorPos3D(end, duration, _snapping)
+                               .ChangeStartValue(start);
 
             owner.anchoredPosition3D = end;
 

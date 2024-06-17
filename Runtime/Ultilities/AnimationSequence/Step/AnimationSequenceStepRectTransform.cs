@@ -6,8 +6,13 @@ namespace LFramework
     public class AnimationSequenceStepRectTransform : AnimationSequenceStepAction<RectTransform>
     {
         [SerializeField]
-        [HorizontalGroup("Target"), ShowIf("@_isUseTarget == false")]
-        [InlineButton("@_isUseTarget = true", Label = "Value")]
         protected Vector3 _value;
+
+        [SerializeField]
+        [ShowIf("@_changeStartValue")]
+        protected Vector3 _valueStart;
+
+        [SerializeField] 
+        protected bool _snapping = false;
     }
 }

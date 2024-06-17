@@ -8,9 +8,11 @@ namespace LFramework
     public class AnimationSequenceStepGraphicColor : AnimationSequenceStepAction<Graphic>
     {
         [SerializeField]
-        [HorizontalGroup("Target"), ShowIf("@_isUseTarget == false")]
-        [InlineButton("@_isUseTarget = true", Label = "Value")]
-        protected Color _value;
+        private Color _value = Color.white;
+
+        [SerializeField]
+        [ShowIf("@_changeStartValue")]
+        private Color _valueStart = Color.white;
 
         public override string displayName { get { return $"{(_isSelf ? "Graphic (This)" : _owner)}: DOColor"; } }
 
@@ -18,29 +20,12 @@ namespace LFramework
         {
             Graphic owner = _isSelf ? animationSequence.graphic : _owner;
 
-            Tween tween;
+            float duration = _isSpeedBased ? Mathf.Abs(_value.Magnitude() - owner.color.Magnitude()) / _duration : _duration;
+            Color start = _changeStartValue ? _valueStart : owner.color;
+            Color end = _relative ? owner.color + _value : _value;
 
-            Color start;
-            Color end;
-
-            if (_isUseTarget)
-            {
-                float duration = _isSpeedBased ? Mathf.Abs(_target.color.Magnitude() - owner.color.Magnitude()) / _duration : _duration;
-                start = owner.color;
-                end = _target.color;
-
-                tween = owner.DOColor(end, duration)
-                             .ChangeStartValue(start);
-            }
-            else
-            {
-                float duration = _isSpeedBased ? Mathf.Abs(_value.Magnitude() - owner.color.Magnitude()) / _duration : _duration;
-                start = owner.color;
-                end = _relative ? owner.color + _value : _value;
-
-                tween = owner.DOColor(end, duration)
-                             .ChangeStartValue(start);
-            }
+            Tween tween = owner.DOColor(end, duration)
+                               .ChangeStartValue(start);
 
             owner.color = end;
 
