@@ -12,7 +12,8 @@ namespace LFramework
         [ShowIf("@_changeStartValue")]
         protected Vector3 _valueStart;
 
-        [SerializeField] 
+        [SerializeField]
+        [VerticalGroup("Value")]
         protected bool _snapping = false;
     }
 }

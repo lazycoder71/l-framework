@@ -18,7 +18,7 @@ namespace LFramework
 
         [FoldoutGroup("Animation", Expanded = false)]
         [ListDrawerSettings(ListElementLabelName = "displayName", AddCopiesLastElement = true)]
-        [SerializeReference] PopupAnimation[] _animations;
+        [SerializeReference] PopupAnimation[] _animations = new PopupAnimation[0];
 
         [Space]
 

@@ -27,7 +27,7 @@ namespace LFramework
 
         [Title("Steps")]
         [ListDrawerSettings(ShowIndexLabels = false, OnBeginListElementGUI = "BeginDrawListElement", OnEndListElementGUI = "EndDrawListElement")]
-        [SerializeReference] List<AnimationSequenceStep> _steps = new List<AnimationSequenceStep>();
+        [SerializeReference] AnimationSequenceStep[] _steps = new AnimationSequenceStep[0];
 
         [Title("Settings")]
         [SerializeField] bool _isAutoKill = true;
@@ -127,7 +127,7 @@ namespace LFramework
             _sequence?.Kill();
             _sequence = DOTween.Sequence();
 
-            for (int i = 0; i < _steps.Count; i++)
+            for (int i = 0; i < _steps.Length; i++)
             {
                 _steps[i].AddToSequence(this);
             }
