@@ -14,12 +14,12 @@ namespace LFramework
             {
                 if (s_instance == null)
                 {
-                    s_instance = Resources.Load<T>(string.Format("{0}/{1}", s_rootFolderName, typeof(T)));
+                    s_instance = Resources.Load<T>($"{s_rootFolderName}/{typeof(T)}");
 
 #if UNITY_EDITOR
                     if (s_instance == null)
                     {
-                        string configPath = string.Format("Assets/Resources/{0}/", s_rootFolderName);
+                        string configPath = $"Assets/LFramework/Resources/{s_rootFolderName}/";
 
                         if (!System.IO.Directory.Exists(configPath))
                             System.IO.Directory.CreateDirectory(configPath);

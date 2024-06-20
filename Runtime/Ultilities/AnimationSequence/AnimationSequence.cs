@@ -1,7 +1,6 @@
 ﻿using DG.Tweening;
 using Sirenix.OdinInspector;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +8,17 @@ namespace LFramework
 {
     public class AnimationSequence : MonoCached
     {
+        [Serializable, Flags]
+        public enum Callback
+        {
+            OnStart = 1 << 1,
+            OnPlay = 1 << 2,
+            OnUpdate = 1 << 3,
+            OnStep = 1 << 4,
+            OnComplete = 1 << 5,
+            OnRewind = 1 << 6,
+        }
+
         [Serializable, Flags]
         public enum ActionOnEnable
         {
@@ -33,20 +43,22 @@ namespace LFramework
         [SerializeField] bool _isAutoKill = true;
 
         [SerializeField] ActionOnEnable _actionOnEnable;
+
         [SerializeField] ActionOnDisable _actionOnDisable;
 
         [MinValue(-1), HorizontalGroup("Loop")]
         [SerializeField] int _loopCount;
+
         [ShowIf("@_loopCount != 0"), HorizontalGroup("Loop"), LabelWidth(75.0f)]
         [SerializeField] LoopType _loopType;
 
-        [SerializeField, HorizontalGroup("Update")]
+        [HorizontalGroup("Update")]
         [InlineButton("@_isIndependentUpdate = true", Label = "Timescale Based", ShowIf = ("@_isIndependentUpdate == false"))]
         [InlineButton("@_isIndependentUpdate = false", Label = "Independent Update", ShowIf = ("@_isIndependentUpdate == true"))]
-        protected UpdateType _updateType = UpdateType.Normal;
+        [SerializeField] protected UpdateType _updateType = UpdateType.Normal;
 
-        [SerializeField, HideInInspector]
-        protected bool _isIndependentUpdate = false;
+        [HideInInspector]
+        [SerializeField] protected bool _isIndependentUpdate = false;
 
         [SerializeField] float _delay;
 
@@ -167,6 +179,7 @@ namespace LFramework
         }
 
 #if UNITY_EDITOR
+
         [ButtonGroup]
         [Button(Name = "", Icon = SdfIconType.SkipStartFill)]
         private void PlayBackward()
