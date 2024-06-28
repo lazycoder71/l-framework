@@ -5,7 +5,9 @@
         "Unity.TextMeshPro",
         "DOTween.Modules",
         "OdinSerializer",
-        "Vertx.Debugging.Runtime"
+        "Vertx.Debugging.Runtime",
+        "Unity.Addressables",
+        "Unity.ResourceManager"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

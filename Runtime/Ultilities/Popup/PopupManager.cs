@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace LFramework
 {
@@ -70,6 +72,16 @@ namespace LFramework
             popup.transformCached.SetAsLastSibling();
 
             return popup;
+        }
+
+        public static AsyncOperationHandle<GameObject> Create(AssetReference assetReference)
+        {
+            AsyncOperationHandle<GameObject> async = assetReference.InstantiateAsync(root, false);
+            async.Completed += (async) => { 
+                GameObject instance = async.Result;
+                instance.GetComponent<Popup>().onCloseEnd.AddListener(() => { assetReference.ReleaseInstance(instance); }); };
+
+            return async;
         }
 
         public static void SetRoot(Transform root)
