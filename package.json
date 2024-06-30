@@ -8,7 +8,6 @@
         "pattern",
         "utility",
         "unity",
-        "bounce"
     ],
     "bugs": {
         "url": "https://github.com/lazycoder71/l-framework/issues",
@@ -20,7 +19,6 @@
     },
     "license": "MIT",
     "dependencies": {
-        "com.unity.textmeshpro": "3.0.8"
     },
     "author": {
         "name": "Lam Nguyen",
