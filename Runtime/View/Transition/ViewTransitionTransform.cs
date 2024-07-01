@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -5,10 +6,12 @@ namespace LFramework.View
 {
     public abstract class ViewTransitionTransform : ViewTransition
     {
-        [SerializeField] protected bool _keepDestination = true;
+        [SerializeField] protected Ease _ease = Ease.Linear;
 
-        [HideIf("@_keepDestination")]
-        [SerializeField] protected Vector3 _value;
+        [SerializeField] protected bool _keepEnd = true;
+
+        [HideIf("@_keepEnd")]
+        [SerializeField] protected Vector3 _valueEnd;
 
         [SerializeField] protected bool _keepStart = false;
 

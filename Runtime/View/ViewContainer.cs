@@ -23,11 +23,15 @@ namespace LFramework.View
 
             _isTransiting = true;
 
-            GameObject objView = await viewAsset.InstantiateAsync(transformCached, false).Task.AsUniTask();
+            GameObject objView = (await viewAsset.InstantiateAsync(transformCached, false).Task.AsUniTask());
 
             _isTransiting = false;
 
-            return objView.GetComponent<View>();
+            // Release instance when view is closed
+            View view = objView.GetComponent<View>();
+            view.onCloseEnd.AddListener(() => { viewAsset.ReleaseInstance(objView); });
+
+            return view;
         }
     }
 }

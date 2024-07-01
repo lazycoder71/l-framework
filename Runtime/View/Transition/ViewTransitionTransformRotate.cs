@@ -11,10 +11,10 @@ namespace LFramework.View
 
         public override Tween GetTween(ViewTransitionEntity entity, float duration)
         {
-            Vector3 value = _keepDestination ? entity.rectTransform.anchoredPosition3D : _value;
-            Vector3 valueStart = _keepStart ? entity.rectTransform.anchoredPosition3D : _valueStart;
+            Vector3 value = _keepEnd ? entity.transformCached.localEulerAngles : _valueEnd;
+            Vector3 valueStart = _keepStart ? entity.transformCached.localEulerAngles : _valueStart;
 
-            return entity.transformCached.DORotate(value, duration, _rotateMode)
+            return entity.transformCached.DOLocalRotate(value, duration, _rotateMode)
                                          .ChangeStartValue(valueStart)
                                          .SetEase(_ease);
         }

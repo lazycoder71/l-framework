@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace LFramework
 {
-    public class AnimationSequenceStepRectTransform : AnimationSequenceStepAction<RectTransform>
+    public abstract class AnimationSequenceStepRectTransform : AnimationSequenceStepAction<RectTransform>
     {
         [SerializeField]
         protected Vector3 _value;

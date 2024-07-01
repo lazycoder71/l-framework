@@ -2,6 +2,7 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.Events;
 using Sirenix.OdinInspector;
+using Cysharp.Threading.Tasks;
 
 namespace LFramework.View
 {
@@ -15,13 +16,12 @@ namespace LFramework.View
         [MinValue(0f)]
         [SerializeField] private float _closeDuration = 0.3f;
 
-        [Space]
-
         [FoldoutGroup("Extra", Expanded = false)]
         [ListDrawerSettings(ListElementLabelName = "displayName", AddCopiesLastElement = true)]
         [SerializeReference] ViewExtra[] _extras = new ViewExtra[0];
 
-        [Space]
+        [FoldoutGroup("Transition", Expanded = false)]
+        [SerializeField] private ViewTransitionEntity[] _transitionEntities;
 
         [FoldoutGroup("Event", Expanded = false)]
         [SerializeField] private UnityEvent _onOpenStart;
@@ -40,9 +40,6 @@ namespace LFramework.View
 
         public Sequence sequence { get { return _sequence; } }
 
-        public float openDuration { get { return _openDuration; } }
-        public float closeDuration { get { return _closeDuration; } }
-
         public UnityEvent onOpenStart { get { return _onOpenStart; } }
         public UnityEvent onOpenEnd { get { return _onOpenEnd; } }
         public UnityEvent onCloseStart { get { return _onCloseStart; } }
@@ -52,26 +49,36 @@ namespace LFramework.View
 
         #region MonoBehaviour
 
-        void Awake()
+        private void Awake()
         {
             _canvasGroup = GetComponent<CanvasGroup>();
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             // Kill tweens
             _sequence?.Kill();
         }
 
-        private void OnEnable()
+        private async void OnEnable()
         {
             _onOpenStart?.Invoke();
 
-            // Construct sequence and play it
+            // Construct sequence at first
             ConstructSequence();
 
-            _sequence.Restart();
-            _sequence.Play();
+            _sequence.timeScale = _openDuration > 0.0f ? 1.0f / _openDuration : 1.0f;
+
+            _canvasGroup.interactable = false;
+            _isTransiting = true;
+
+            if (_openDuration > 0.0f)
+                await _sequence.Play().AsyncWaitForCompletion();
+            else
+                _sequence.Complete();
+
+            _canvasGroup.interactable = true;
+            _isTransiting = false;
         }
 
         private void OnDisable()
@@ -82,16 +89,14 @@ namespace LFramework.View
 
         #endregion
 
-        #region Function -> Public
-
-        public void Close()
-        {
-            ProcessClose();
-        }
-
-        #endregion
-
         #region Function -> Private
+
+        [FoldoutGroup("Transition")]
+        [Button]
+        private void GetTransitionEntities()
+        {
+            _transitionEntities = GetComponentsInChildren<ViewTransitionEntity>(true);
+        }
 
         private void ConstructSequence()
         {
@@ -107,38 +112,55 @@ namespace LFramework.View
                     _extras[i].Apply(this);
             }
 
+            if(_transitionEntities != null)
+            {
+                for (int i = 0; i < _transitionEntities.Length; i++)
+                {
+                    _transitionEntities[i].Apply(this);
+                }
+            }
+
             _sequence.SetUpdate(true);
             _sequence.SetAutoKill(false);
         }
 
-        private void ProcessClose()
+        private async void ProcessClose()
         {
             // Can't close when it is transiting
             if (_isTransiting)
                 return;
 
-            // Set is transiting flag
             _isTransiting = true;
-
-            // Disable canvas at this moment
             _canvasGroup.interactable = false;
 
             // On close callback
             _onCloseStart?.Invoke();
 
+            _sequence.timeScale = _closeDuration > 0.0f ? 1.0f / _closeDuration : 1.0f;
+
             if (_closeDuration > 0.0f)
             {
-                // Set sequence time scale to match close duration
-                _sequence.timeScale = _openDuration / _closeDuration;
-
-                // Play sequence backward when close
-                _sequence.Complete();
                 _sequence.PlayBackwards();
+                await _sequence.AsyncWaitForRewind();
             }
             else
             {
-
+                _sequence.Rewind();
             }
+
+            // Set is transiting flag
+            _isTransiting = false;
+
+            Destroy(gameObjectCached);
+        }
+
+        #endregion
+
+        #region Function -> Public
+
+        public void Close()
+        {
+            ProcessClose();
         }
 
         #endregion

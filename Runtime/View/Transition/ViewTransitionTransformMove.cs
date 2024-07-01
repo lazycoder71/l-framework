@@ -9,7 +9,7 @@ namespace LFramework.View
 
         public override Tween GetTween(ViewTransitionEntity entity, float duration)
         {
-            Vector3 value = _keepDestination ? entity.rectTransform.anchoredPosition3D : _value;
+            Vector3 value = _keepEnd ? entity.rectTransform.anchoredPosition3D : _valueEnd;
             Vector3 valueStart = _keepStart ? entity.rectTransform.anchoredPosition3D : _valueStart;
 
             return entity.rectTransform.DOAnchorPos3D(value, duration)
