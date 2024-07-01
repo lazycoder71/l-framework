@@ -13,21 +13,33 @@ namespace LFramework.View
         [CustomValueDrawer("GUIDrawInsertTime")]
         [SerializeField] private float _insertTime = 0f;
 
-        [SerializeField] protected Ease _ease;
+        [ListDrawerSettings(AddCopiesLastElement = true, ListElementLabelName = "displayName")]
+        [SerializeReference] private ViewTransition[] _transitions = new ViewTransition[0];
+
+        RectTransform _rectTransform;
+
+        public RectTransform rectTransform
+        {
+            get
+            {
+                if (_rectTransform == null)
+                    _rectTransform = GetComponent<RectTransform>();
+
+                return _rectTransform;
+            }
+        }
 
         public void Apply(View view)
         {
-            Tween tween = GetTween(view, _duration);
+            for (int i = 0; i < _transitions.Length; i++)
+            {
+                Tween tween = _transitions[i].GetTween(this, _duration);
 
-            if (_insertTime > 0.0f)
-                view.sequence.Insert(_insertTime, tween);
-            else
-                view.sequence.Append(GetTween(view, _duration));
-        }
-
-        protected virtual Tween GetTween(View view, float duration)
-        {
-            return null;
+                if (_insertTime > 0f)
+                    view.sequence.Insert(_insertTime, tween);
+                else
+                    view.sequence.Join(tween);
+            }
         }
 
 #if UNITY_EDITOR
