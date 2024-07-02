@@ -2,7 +2,6 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.Events;
 using Sirenix.OdinInspector;
-using Cysharp.Threading.Tasks;
 
 namespace LFramework.View
 {
@@ -16,9 +15,11 @@ namespace LFramework.View
         [MinValue(0f)]
         [SerializeField] private float _closeDuration = 0.3f;
 
+        [SerializeField] private ViewType _type = ViewType.Page;
+
         [FoldoutGroup("Extra", Expanded = false)]
         [ListDrawerSettings(ListElementLabelName = "displayName", AddCopiesLastElement = true)]
-        [SerializeReference] ViewExtra[] _extras = new ViewExtra[0];
+        [SerializeReference] private ViewExtra[] _extras = new ViewExtra[0];
 
         [FoldoutGroup("Transition", Expanded = false)]
         [SerializeField] private ViewTransitionEntity[] _transitionEntities;
@@ -37,6 +38,8 @@ namespace LFramework.View
         private CanvasGroup _canvasGroup;
 
         private bool _isTransiting = false;
+
+        public ViewType type { get { return _type; } }
 
         public Sequence sequence { get { return _sequence; } }
 
@@ -106,18 +109,17 @@ namespace LFramework.View
             _sequence?.Kill();
             _sequence = DOTween.Sequence();
 
-            if (_extras != null)
+            if (_extras.IsNullOrEmpty() && _transitionEntities.IsNullOrEmpty())
+            {
+                _sequence.AppendInterval(1.0f);
+            }
+            else
             {
                 for (int i = 0; i < _extras.Length; i++)
                     _extras[i].Apply(this);
-            }
 
-            if(_transitionEntities != null)
-            {
                 for (int i = 0; i < _transitionEntities.Length; i++)
-                {
                     _transitionEntities[i].Apply(this);
-                }
             }
 
             _sequence.SetUpdate(true);
