@@ -11,27 +11,58 @@ namespace LFramework.View
 
         private bool _isTransiting = false;
 
+        private View _topView { get { return _views.Count <= 0 ? null : _views.Peek(); } }
+
         public async UniTask<View> PushAsync(AssetReference viewAsset)
         {
-            // Can't push a view when it is transiting
+            // Can't push another view when it is transiting
             if (_isTransiting)
+            {
+                LDebug.Log<ViewContainer>($"Views are transiting, can't push new view {viewAsset}");
                 return null;
+            }
 
-            // Disable interactable last view
-            if (_views.Count > 0)
-                _views.Peek().interactable = false;
+            // Get top view
+            View topView = _topView;
+
+            // Disable interactable top view
+            if (topView != null)
+                topView.interactable = false;
 
             _isTransiting = true;
 
-            GameObject objView = (await viewAsset.InstantiateAsync(transformCached, false).Task.AsUniTask());
+            // Spawn view
+            View view = (await viewAsset.InstantiateAsync(transformCached, false).Task.AsUniTask()).GetComponent<View>();
+
+            await view.Open();
 
             _isTransiting = false;
 
-            // Release instance when view is closed
-            View view = objView.GetComponent<View>();
-            view.onCloseEnd.AddListener(() => { viewAsset.ReleaseInstance(objView); });
+            if (topView != null && view.type == ViewType.Page)
+                topView.Hide();
 
             return view;
+        }
+
+        public async UniTaskVoid PopAsync(View view)
+        {
+            View popedView = _views.Pop();
+
+            View topView = _topView;
+
+            if (topView == null)
+                return;
+
+            topView.interactable = true;
+
+            if (popedView.type == ViewType.Page)
+            {
+                await UniTask.WaitUntil(() => topView.isTransiting == false);
+
+                topView.Show();
+            }
+
+            topView.Show();
         }
     }
 }

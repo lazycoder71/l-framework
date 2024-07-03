@@ -2,6 +2,7 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.Events;
 using Sirenix.OdinInspector;
+using Cysharp.Threading.Tasks;
 
 namespace LFramework.View
 {
@@ -32,12 +33,22 @@ namespace LFramework.View
         [SerializeField] private UnityEvent _onCloseStart;
         [FoldoutGroup("Event")]
         [SerializeField] private UnityEvent _onCloseEnd;
+        [FoldoutGroup("Event")]
+        [SerializeField] private UnityEvent _onShowStart;
+        [FoldoutGroup("Event")]
+        [SerializeField] private UnityEvent _onShowEnd;
+        [FoldoutGroup("Event")]
+        [SerializeField] private UnityEvent _onHideStart;
+        [FoldoutGroup("Event")]
+        [SerializeField] private UnityEvent _onHideEnd;
 
         private Sequence _sequence;
 
         private CanvasGroup _canvasGroup;
 
         private bool _isTransiting = false;
+
+        public bool isTransiting { get { return _isTransiting; } }
 
         public ViewType type { get { return _type; } }
 
@@ -47,6 +58,10 @@ namespace LFramework.View
         public UnityEvent onOpenEnd { get { return _onOpenEnd; } }
         public UnityEvent onCloseStart { get { return _onCloseStart; } }
         public UnityEvent onCloseEnd { get { return _onCloseEnd; } }
+        public UnityEvent onShowStart { get { return _onShowStart; } }
+        public UnityEvent onShowEnd { get { return _onShowEnd; } }
+        public UnityEvent onHideStart { get { return _onHideStart; } }
+        public UnityEvent onHideEnd { get { return _onHideEnd; } }
 
         public bool interactable { get { return _canvasGroup.interactable; } set { _canvasGroup.interactable = value; } }
 
@@ -61,33 +76,6 @@ namespace LFramework.View
         {
             // Kill tweens
             _sequence?.Kill();
-        }
-
-        private async void OnEnable()
-        {
-            _onOpenStart?.Invoke();
-
-            // Construct sequence at first
-            ConstructSequence();
-
-            _sequence.timeScale = _openDuration > 0.0f ? 1.0f / _openDuration : 1.0f;
-
-            _canvasGroup.interactable = false;
-            _isTransiting = true;
-
-            if (_openDuration > 0.0f)
-                await _sequence.Play().AsyncWaitForCompletion();
-            else
-                _sequence.Complete();
-
-            _canvasGroup.interactable = true;
-            _isTransiting = false;
-        }
-
-        private void OnDisable()
-        {
-            // Trigger close end event
-            _onCloseEnd?.Invoke();
         }
 
         #endregion
@@ -126,43 +114,112 @@ namespace LFramework.View
             _sequence.SetAutoKill(false);
         }
 
-        private async void ProcessClose()
+        private async UniTask ProcessOpen(bool isShow)
+        {
+            // Can't open when it is transiting
+            if (_isTransiting)
+                return;
+
+            // Active object
+            gameObjectCached.SetActive(true);
+
+            // Open start callback
+            if (isShow)
+                _onShowStart?.Invoke();
+            else
+                _onOpenStart?.Invoke();
+
+            ConstructSequence();
+
+            _canvasGroup.interactable = false;
+            _isTransiting = true;
+
+            if (_openDuration > 0.0f)
+            {
+                _sequence.timeScale = _openDuration > 0.0f ? 1.0f / _openDuration : 1.0f;
+
+                await _sequence.Play().AsyncWaitForCompletion().AsUniTask();
+            }
+            else
+            {
+                _sequence.Complete();
+            }
+
+            // Open end callback
+            if (isShow)
+                _onShowEnd?.Invoke();
+            else
+                _onOpenEnd?.Invoke();
+
+            _canvasGroup.interactable = true;
+            _isTransiting = false;
+        }
+
+        private async UniTask ProcessClose(bool isHiding)
         {
             // Can't close when it is transiting
             if (_isTransiting)
                 return;
 
+            // Close start callback
+            if (isHiding)
+                _onHideStart?.Invoke();
+            else
+                _onCloseStart?.Invoke();
+
+            ConstructSequence();
+
             _isTransiting = true;
             _canvasGroup.interactable = false;
 
-            // On close callback
-            _onCloseStart?.Invoke();
-
-            _sequence.timeScale = _closeDuration > 0.0f ? 1.0f / _closeDuration : 1.0f;
-
             if (_closeDuration > 0.0f)
             {
+                _sequence.timeScale = _closeDuration > 0.0f ? 1.0f / _closeDuration : 1.0f;
                 _sequence.PlayBackwards();
-                await _sequence.AsyncWaitForRewind();
+
+                await _sequence.AsyncWaitForRewind().AsUniTask();
             }
             else
             {
                 _sequence.Rewind();
             }
 
-            // Set is transiting flag
-            _isTransiting = false;
+            if (isHiding)
+            {
+                _onHideEnd?.Invoke();
 
-            Destroy(gameObjectCached);
+                gameObjectCached.SetActive(false);
+            }
+            else
+            {
+                _onCloseEnd?.Invoke();
+
+                Destroy(gameObjectCached);
+            }
         }
 
         #endregion
 
         #region Function -> Public
 
+        public async UniTask Open()
+        {
+            await ProcessOpen(true);
+        }
+
         public void Close()
         {
-            ProcessClose();
+            ProcessClose(false);
+        }
+
+        public void Show()
+        {
+            ProcessOpen(true);
+        }
+
+        public void Hide()
+        {
+            ProcessClose(true);
         }
 
         #endregion
