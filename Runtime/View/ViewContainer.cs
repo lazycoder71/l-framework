@@ -1,6 +1,5 @@
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.AddressableAssets;
 
 namespace LFramework.View
@@ -11,8 +10,6 @@ namespace LFramework.View
 
         private bool _isTransiting = false;
 
-        private View _topView { get { return _views.Count <= 0 ? null : _views.Peek(); } }
-
         public async UniTask<View> PushAsync(AssetReference viewAsset)
         {
             // Can't push another view when it is transiting
@@ -22,47 +19,55 @@ namespace LFramework.View
                 return null;
             }
 
-            // Get top view
-            View topView = _topView;
+            // Get previous view (current top view)
+            View previousView = GetTopView();
 
             // Disable interactable top view
-            if (topView != null)
-                topView.interactable = false;
+            if (previousView != null)
+                previousView.interactable = false;
 
+            // Set transiting flag
             _isTransiting = true;
 
-            // Spawn view
+            // Wait new view to be loaded
             View view = (await viewAsset.InstantiateAsync(transformCached, false).Task.AsUniTask()).GetComponent<View>();
 
-            await view.Open();
+            view.onCloseStart.AddListener(() => { PopAsync().Forget(); });
+            view.onCloseEnd.AddListener(() => { viewAsset.ReleaseInstance(view.gameObjectCached); });
 
+            // If new view created is page, hide previous view
+            if (view.type == ViewType.Page && previousView != null)
+                previousView.Hide();
+
+            // Open new view
+            view.Open();
+
+            // Push new view into stack
+            _views.Push(view);
+
+            // Unset transiting flag
             _isTransiting = false;
-
-            if (topView != null && view.type == ViewType.Page)
-                topView.Hide();
 
             return view;
         }
 
-        public async UniTaskVoid PopAsync(View view)
+        public async UniTask PopAsync()
         {
             View popedView = _views.Pop();
 
-            View topView = _topView;
+            View topView = GetTopView();
 
-            if (topView == null)
-                return;
-
-            topView.interactable = true;
-
-            if (popedView.type == ViewType.Page)
+            if (popedView.type == ViewType.Page && topView != null)
             {
                 await UniTask.WaitUntil(() => topView.isTransiting == false);
 
                 topView.Show();
             }
+        }
 
-            topView.Show();
+        private View GetTopView()
+        {
+            return _views.Count <= 0 ? null : _views.Peek();
         }
     }
 }

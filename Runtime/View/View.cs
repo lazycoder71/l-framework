@@ -138,6 +138,8 @@ namespace LFramework.View
             {
                 _sequence.timeScale = _openDuration > 0.0f ? 1.0f / _openDuration : 1.0f;
 
+                _sequence.Restart();
+
                 await _sequence.Play().AsyncWaitForCompletion().AsUniTask();
             }
             else
@@ -184,6 +186,8 @@ namespace LFramework.View
                 _sequence.Rewind();
             }
 
+            _isTransiting = false;
+
             if (isHiding)
             {
                 _onHideEnd?.Invoke();
@@ -193,8 +197,6 @@ namespace LFramework.View
             else
             {
                 _onCloseEnd?.Invoke();
-
-                Destroy(gameObjectCached);
             }
         }
 
@@ -202,24 +204,24 @@ namespace LFramework.View
 
         #region Function -> Public
 
-        public async UniTask Open()
+        public void Open()
         {
-            await ProcessOpen(true);
+            ProcessOpen(true).Forget();
         }
 
         public void Close()
         {
-            ProcessClose(false);
+            ProcessClose(false).Forget();
         }
 
         public void Show()
         {
-            ProcessOpen(true);
+            ProcessOpen(true).Forget();
         }
 
         public void Hide()
         {
-            ProcessClose(true);
+            ProcessClose(true).Forget();
         }
 
         #endregion
