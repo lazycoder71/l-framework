@@ -57,11 +57,20 @@ namespace LFramework.View
 
             View topView = GetTopView();
 
-            if (popedView.type == ViewType.Page && topView != null)
+            if (topView != null)
             {
-                await UniTask.WaitUntil(() => topView.isTransiting == false);
+                switch (popedView.type)
+                {
+                    case ViewType.Page:
+                        // In case top view is transiting (Hiding but not complete yet)
+                        await UniTask.WaitUntil(() => topView.isTransiting == false);
 
-                topView.Show();
+                        topView.Show();
+                        break;
+                    case ViewType.Popup:
+                        topView.interactable = true;
+                        break;
+                }
             }
         }
 
