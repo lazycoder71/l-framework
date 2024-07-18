@@ -1,4 +1,4 @@
-namespace LFramework.View
+namespace LFramework
 {
     [System.Serializable]
     public enum ViewType

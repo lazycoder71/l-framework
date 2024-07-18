@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace LFramework
 {
-    public class AnimationSequenceStepAction<T> : AnimationSequenceStep where T : class
+    public abstract class AnimationSequenceStepAction<T> : AnimationSequenceStep where T : class
     {
         [SerializeField]
         [HorizontalGroup("AddType")]
@@ -26,7 +26,8 @@ namespace LFramework
         [SerializeField, HideInInspector]
         protected bool _isSpeedBased = false;
 
-        [SerializeField, SuffixLabel("@_isSpeedBased?\"Unit/Second\":\"Second(s)\"", Overlay = true)]
+        [SerializeField]
+        [Min(0.01f), SuffixLabel("@_isSpeedBased?\"Unit/Second\":\"Second(s)\"", Overlay = true)]
         [InlineButton("@_isSpeedBased = true", Label = "Duration", ShowIf = ("@_isSpeedBased == false"))]
         [InlineButton("@_isSpeedBased = false", Label = "Speed Based", ShowIf = ("@_isSpeedBased == true"))]
         protected float _duration = 1.0f;
@@ -52,13 +53,11 @@ namespace LFramework
 
         [SerializeField]
         [VerticalGroup("Value")]
-        protected bool _relative = false;
+        protected bool _relative = true;
 
         [SerializeField]
         [VerticalGroup("Value")]
         protected bool _changeStartValue = false;
-
-        public override string displayName { get { return "ERROR!!!"; } }
 
         public override void AddToSequence(AnimationSequence animationSequence)
         {

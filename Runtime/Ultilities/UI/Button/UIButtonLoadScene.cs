@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using Sirenix.OdinInspector;
+using UnityEngine;
 
 namespace LFramework
 {
     public class UIButtonLoadScene : UIButtonBase
     {
-        [Header("Config")]
-        [SerializeField] int _sceneIndex;
+        [Title("Config")]
+        [SerializeField] private int _sceneIndex;
 
         public override void Button_OnClick()
         {

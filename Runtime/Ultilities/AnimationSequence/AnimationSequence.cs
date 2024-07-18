@@ -36,7 +36,7 @@ namespace LFramework
         }
 
         [Title("Steps")]
-        [ListDrawerSettings(ShowIndexLabels = false, OnBeginListElementGUI = "BeginDrawListElement", OnEndListElementGUI = "EndDrawListElement")]
+        [ListDrawerSettings(ShowIndexLabels = false, OnBeginListElementGUI = "BeginDrawListElement", OnEndListElementGUI = "EndDrawListElement", AddCopiesLastElement = true)]
         [SerializeReference] AnimationSequenceStep[] _steps = new AnimationSequenceStep[0];
 
         [Title("Settings")]

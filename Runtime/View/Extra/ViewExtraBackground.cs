@@ -2,7 +2,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace LFramework.View
+namespace LFramework
 {
     public class ViewExtraBackground : ViewExtra
     {

@@ -4,7 +4,7 @@ namespace LFramework
 {
     public class UIButtonBase : MonoCached
     {
-        Button _button;
+        private Button _button;
 
         public Button button
         {

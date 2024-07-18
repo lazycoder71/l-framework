@@ -1,7 +1,7 @@
 using DG.Tweening;
 using System;
 
-namespace LFramework.View
+namespace LFramework
 {
     [Serializable]
     public class ViewExtra

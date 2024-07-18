@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-namespace LFramework.View
+namespace LFramework
 {
     public class ViewTransitionTransformMove : ViewTransitionTransform
     {

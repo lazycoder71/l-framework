@@ -2,7 +2,7 @@ using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using UnityEngine.AddressableAssets;
 
-namespace LFramework.View
+namespace LFramework
 {
     public class ViewContainer : MonoSingleton<ViewContainer>
     {

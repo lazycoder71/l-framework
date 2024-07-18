@@ -1,7 +1,7 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine.AddressableAssets;
 
-namespace LFramework.View
+namespace LFramework
 {
     public static class ViewHelper
     {

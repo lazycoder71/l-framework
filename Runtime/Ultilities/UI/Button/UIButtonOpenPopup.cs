@@ -7,7 +7,7 @@ namespace LFramework
     public class UIButtonOpenPopup : UIButtonBase
     {
         [Title("Config")]
-        [SerializeField] GameObject _popup;
+        [SerializeField] private GameObject _popup;
 
         public event Action<Popup> eventSpawnPopup;
 

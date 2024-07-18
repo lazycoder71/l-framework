@@ -4,7 +4,7 @@ using UnityEngine.Events;
 using Sirenix.OdinInspector;
 using Cysharp.Threading.Tasks;
 
-namespace LFramework.View
+namespace LFramework
 {
     [RequireComponent(typeof(CanvasGroup))]
     public sealed class View : MonoCached
