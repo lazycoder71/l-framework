@@ -40,17 +40,17 @@ namespace LFramework
         [SerializeReference] AnimationSequenceStep[] _steps = new AnimationSequenceStep[0];
 
         [Title("Settings")]
-        [SerializeField] bool _isAutoKill = true;
+        [SerializeField] private bool _isAutoKill = true;
 
-        [SerializeField] ActionOnEnable _actionOnEnable;
+        [SerializeField] private ActionOnEnable _actionOnEnable;
 
-        [SerializeField] ActionOnDisable _actionOnDisable;
+        [SerializeField] private ActionOnDisable _actionOnDisable;
 
         [MinValue(-1), HorizontalGroup("Loop")]
-        [SerializeField] int _loopCount;
+        [SerializeField] private int _loopCount;
 
         [ShowIf("@_loopCount != 0"), HorizontalGroup("Loop"), LabelWidth(75.0f)]
-        [SerializeField] LoopType _loopType;
+        [SerializeField] private LoopType _loopType;
 
         [HorizontalGroup("Update")]
         [InlineButton("@_isIndependentUpdate = true", Label = "Timescale Based", ShowIf = ("@_isIndependentUpdate == false"))]
@@ -60,13 +60,13 @@ namespace LFramework
         [HideInInspector]
         [SerializeField] protected bool _isIndependentUpdate = false;
 
-        [SerializeField] float _delay;
+        [SerializeField] private float _delay;
 
-        Sequence _sequence;
+        private Sequence _sequence;
 
-        RectTransform _rectTransform;
+        private RectTransform _rectTransform;
 
-        Graphic _graphic;
+        private Graphic _graphic;
 
         public RectTransform rectTransform
         {
