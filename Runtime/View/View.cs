@@ -204,24 +204,24 @@ namespace LFramework
 
         #region Function -> Public
 
-        public void Open()
+        public UniTask Open()
         {
-            ProcessOpen(true).Forget();
+            return ProcessOpen(true);
         }
 
-        public void Close()
+        public UniTask Close()
         {
-            ProcessClose(false).Forget();
+            return ProcessClose(false);
         }
 
-        public void Show()
+        public UniTask Show()
         {
-            ProcessOpen(true).Forget();
+            return ProcessOpen(true);
         }
 
-        public void Hide()
+        public UniTask Hide()
         {
-            ProcessClose(true).Forget();
+            return ProcessClose(true);
         }
 
         #endregion

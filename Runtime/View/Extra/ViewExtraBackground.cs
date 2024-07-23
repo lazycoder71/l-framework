@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -51,7 +52,7 @@ namespace LFramework
             {
                 Button button = _objBG.AddComponent<Button>();
                 button.transition = Selectable.Transition.None;
-                button.onClick.AddListener(view.Close);
+                button.onClick.AddListener(() => { view.Close().Forget(); });
             }
         }
     }

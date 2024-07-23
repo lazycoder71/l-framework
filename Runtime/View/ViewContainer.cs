@@ -24,7 +24,7 @@ namespace LFramework
         private async void SceneManager_ActiveSceneChanged(Scene arg0, Scene arg1)
         {
             while (_views.Count > 0)
-                await PopAsync();
+                await GetTopView().Close();
         }
 
         public async UniTask<View> PushAsync(AssetReference viewAsset)
