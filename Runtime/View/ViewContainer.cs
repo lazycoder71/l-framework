@@ -32,7 +32,7 @@ namespace LFramework
             // Can't push another view when it is transiting
             if (_isTransiting)
             {
-                LDebug.Log<ViewContainer>($"Views are transiting, can't push new view {viewAsset}");
+                LDebug.Log<ViewContainer>($"Another View is transiting, can't push any new view {viewAsset}");
                 return null;
             }
 
@@ -47,17 +47,19 @@ namespace LFramework
             _isTransiting = true;
 
             // Wait new view to be loaded
-            View view = (await viewAsset.InstantiateAsync(transformCached, false).Task.AsUniTask()).GetComponent<View>();
+            var handle =  Addressables.InstantiateAsync(viewAsset, transformCached, false);
+            await handle;
+            View view = handle.Result.GetComponent<View>();
 
             view.onCloseStart.AddListener(() => { PopAsync().Forget(); });
             view.onCloseEnd.AddListener(() => { viewAsset.ReleaseInstance(view.gameObjectCached); });
 
             // If new view created is page, hide previous view
             if (view.type == ViewType.Page && previousView != null)
-                previousView.Hide();
+                previousView.Hide().Forget();
 
             // Open new view
-            view.Open();
+            view.Open().Forget();
 
             // Push new view into stack
             _views.Push(view);
@@ -82,7 +84,7 @@ namespace LFramework
                         // In case top view is transiting (Hiding but not complete yet)
                         await UniTask.WaitUntil(() => topView.isTransiting == false);
 
-                        topView.Show();
+                        topView.Show().Forget();
                         break;
                     case ViewType.Popup:
                         topView.interactable = true;
