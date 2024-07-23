@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using UnityEngine.AddressableAssets;
+using UnityEngine.SceneManagement;
 
 namespace LFramework
 {
@@ -9,6 +10,22 @@ namespace LFramework
         private Stack<View> _views = new Stack<View>();
 
         private bool _isTransiting = false;
+
+        private void OnEnable()
+        {
+            SceneManager.activeSceneChanged += SceneManager_ActiveSceneChanged;
+        }
+
+        private void OnDisable()
+        {
+            SceneManager.activeSceneChanged -= SceneManager_ActiveSceneChanged;
+        }
+
+        private async void SceneManager_ActiveSceneChanged(Scene arg0, Scene arg1)
+        {
+            while (_views.Count > 0)
+                await PopAsync();
+        }
 
         public async UniTask<View> PushAsync(AssetReference viewAsset)
         {
