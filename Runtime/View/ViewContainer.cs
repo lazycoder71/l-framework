@@ -7,7 +7,7 @@ namespace LFramework
 {
     public class ViewContainer : MonoSingleton<ViewContainer>
     {
-        private Stack<View> _views = new Stack<View>();
+        private List<View> _views = new List<View>();
 
         private bool _isTransiting = false;
 
@@ -21,10 +21,32 @@ namespace LFramework
             SceneManager.activeSceneChanged -= SceneManager_ActiveSceneChanged;
         }
 
-        private async void SceneManager_ActiveSceneChanged(Scene arg0, Scene arg1)
+        private void SceneManager_ActiveSceneChanged(Scene arg0, Scene arg1)
         {
-            while (_views.Count > 0)
-                await GetTopView().Close();
+            // Clear all view when scene changed
+            for (int i = _views.Count - 1; i >= 0; i--)
+            {
+                _views[i].Close();
+                _views.RemoveAt(i);
+            }
+        }
+
+        private View GetTopView()
+        {
+            return _views.Count <= 0 ? null : _views.Last();
+        }
+
+        private void Pop()
+        {
+            _views.Pop();
+        }
+
+        private void HandleTopView()
+        {
+            View topView = GetTopView();
+
+            if (topView != null)
+                topView.Show();
         }
 
         public async UniTask<View> PushAsync(AssetReference viewAsset)
@@ -47,55 +69,28 @@ namespace LFramework
             _isTransiting = true;
 
             // Wait new view to be loaded
-            var handle =  Addressables.InstantiateAsync(viewAsset, transformCached, false);
+            var handle = Addressables.InstantiateAsync(viewAsset, transformCached, false);
             await handle;
             View view = handle.Result.GetComponent<View>();
 
-            view.onCloseStart.AddListener(() => { PopAsync().Forget(); });
-            view.onCloseEnd.AddListener(() => { viewAsset.ReleaseInstance(view.gameObjectCached); });
-
-            // If new view created is page, hide previous view
-            if (view.type == ViewType.Page && previousView != null)
-                previousView.Hide().Forget();
+            // Handle view callback
+            view.onCloseStart.AddListener(Pop);
+            view.onCloseEnd.AddListener(() =>
+            {
+                viewAsset.ReleaseInstance(view.gameObjectCached);
+                HandleTopView();
+            });
 
             // Open new view
-            view.Open().Forget();
+            view.Open();
 
             // Push new view into stack
-            _views.Push(view);
+            _views.Add(view);
 
             // Unset transiting flag
             _isTransiting = false;
 
             return view;
-        }
-
-        public async UniTask PopAsync()
-        {
-            View popedView = _views.Pop();
-
-            View topView = GetTopView();
-
-            if (topView != null)
-            {
-                switch (popedView.type)
-                {
-                    case ViewType.Page:
-                        // In case top view is transiting (Hiding but not complete yet)
-                        await UniTask.WaitUntil(() => topView.isTransiting == false);
-
-                        topView.Show().Forget();
-                        break;
-                    case ViewType.Popup:
-                        topView.interactable = true;
-                        break;
-                }
-            }
-        }
-
-        private View GetTopView()
-        {
-            return _views.Count <= 0 ? null : _views.Peek();
         }
     }
 }

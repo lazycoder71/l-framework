@@ -4,7 +4,7 @@ using System;
 namespace LFramework
 {
     [Serializable]
-    public class ViewExtra
+    public abstract class ViewExtra
     {
         public virtual string displayName { get; }
 

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 namespace LFramework
 {
+    [System.Serializable]
     public class ViewExtraBackground : ViewExtra
     {
         [SerializeField] bool _closeOnClick = true;
@@ -52,7 +53,7 @@ namespace LFramework
             {
                 Button button = _objBG.AddComponent<Button>();
                 button.transition = Selectable.Transition.None;
-                button.onClick.AddListener(() => { view.Close().Forget(); });
+                button.onClick.AddListener(() => { view.CloseAsync().Forget(); });
             }
         }
     }

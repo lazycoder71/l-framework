@@ -106,5 +106,15 @@ namespace LFramework
             else
                 return index % list.Count;
         }
+
+        public static T Pop<T>(this List<T> list) where T : class
+        {
+            if (list.Count <= 0)
+                return null;
+
+            T result = list.Last();
+            list.RemoveAt(list.Count - 1);
+            return result;
+        }
     }
 }

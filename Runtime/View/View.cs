@@ -16,10 +16,8 @@ namespace LFramework
         [MinValue(0f)]
         [SerializeField] private float _closeDuration = 0.3f;
 
-        [SerializeField] private ViewType _type = ViewType.Page;
-
         [FoldoutGroup("Extra", Expanded = false)]
-        [ListDrawerSettings(ListElementLabelName = "displayName", AddCopiesLastElement = true)]
+        [ListDrawerSettings(ListElementLabelName = "displayName")]
         [SerializeReference] private ViewExtra[] _extras = new ViewExtra[0];
 
         [FoldoutGroup("Transition", Expanded = false)]
@@ -49,8 +47,6 @@ namespace LFramework
         private bool _isTransiting = false;
 
         public bool isTransiting { get { return _isTransiting; } }
-
-        public ViewType type { get { return _type; } }
 
         public Sequence sequence { get { return _sequence; } }
 
@@ -120,8 +116,11 @@ namespace LFramework
             if (_isTransiting)
                 return;
 
-            // Active object
-            gameObjectCached.SetActive(true);
+            _isTransiting = true;
+
+            gameObjectCached.SetActive(false);
+
+            ConstructSequence();
 
             // Open start callback
             if (isShow)
@@ -129,10 +128,10 @@ namespace LFramework
             else
                 _onOpenStart?.Invoke();
 
-            ConstructSequence();
+            // Active object
+            gameObjectCached.SetActive(true);
 
             _canvasGroup.interactable = false;
-            _isTransiting = true;
 
             if (_openDuration > 0.0f)
             {
@@ -163,13 +162,13 @@ namespace LFramework
             if (_isTransiting)
                 return;
 
+            ConstructSequence();
+
             // Close start callback
             if (isHiding)
                 _onHideStart?.Invoke();
             else
                 _onCloseStart?.Invoke();
-
-            ConstructSequence();
 
             _isTransiting = true;
             _canvasGroup.interactable = false;
@@ -186,8 +185,6 @@ namespace LFramework
                 _sequence.Rewind();
             }
 
-            _isTransiting = false;
-
             if (isHiding)
             {
                 _onHideEnd?.Invoke();
@@ -198,28 +195,45 @@ namespace LFramework
             {
                 _onCloseEnd?.Invoke();
             }
+
+            _isTransiting = false;
         }
 
         #endregion
 
         #region Function -> Public
 
-        public UniTask Open()
+        public UniTask OpenAsync()
         {
-            return ProcessOpen(true);
+            return ProcessOpen(false);
         }
 
-        public UniTask Close()
+        public void Open()
+        {
+            ProcessOpen(false).Forget();
+        }
+
+        public UniTask CloseAsync()
         {
             return ProcessClose(false);
         }
 
-        public UniTask Show()
+        public void Close()
+        {
+            ProcessClose(false).Forget();
+        }
+
+        public UniTask ShowAsync()
         {
             return ProcessOpen(true);
         }
 
-        public UniTask Hide()
+        public void Show()
+        {
+            ProcessOpen(true).Forget();
+        }
+
+        public UniTask HideAsync()
         {
             return ProcessClose(true);
         }
