@@ -81,6 +81,8 @@ namespace LFramework
             if (_sceneAsync.isDone)
             {
                 _stateMachine.CurrentState = State.FadeOut;
+
+                Resources.UnloadUnusedAssets();
             }
         }
 
