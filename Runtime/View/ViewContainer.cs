@@ -27,7 +27,6 @@ namespace LFramework
             for (int i = _views.Count - 1; i >= 0; i--)
             {
                 _views[i].Close();
-                _views.RemoveAt(i);
             }
         }
 
