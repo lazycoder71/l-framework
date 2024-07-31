@@ -20,6 +20,10 @@ namespace LFramework
         [ListDrawerSettings(ListElementLabelName = "displayName")]
         [SerializeReference] private ViewExtra[] _extras = new ViewExtra[0];
 
+        [FoldoutGroup("Extra")]
+        [SerializeField] private bool _hideOnBlock = false;
+        [SerializeField] private bool _showOnReveal = false;
+
         [FoldoutGroup("Transition", Expanded = false)]
         [SerializeField] private ViewTransitionEntity[] _transitionEntities;
 
@@ -60,6 +64,9 @@ namespace LFramework
         public UnityEvent onHideEnd { get { return _onHideEnd; } }
 
         public bool interactable { get { return _canvasGroup.interactable; } set { _canvasGroup.interactable = value; } }
+
+        public bool hideOnBlock { get { return _hideOnBlock; } }
+        public bool showOnReveal { get { return _showOnReveal; } }
 
         #region MonoBehaviour
 
@@ -236,6 +243,11 @@ namespace LFramework
         public UniTask HideAsync()
         {
             return ProcessClose(true);
+        }
+
+        public void Hide()
+        {
+            ProcessClose(true).Forget();
         }
 
         #endregion

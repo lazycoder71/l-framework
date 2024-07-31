@@ -25,9 +25,7 @@ namespace LFramework
         {
             // Clear all view when scene changed
             for (int i = _views.Count - 1; i >= 0; i--)
-            {
                 _views[i].Close();
-            }
         }
 
         private View GetTopView()
@@ -35,17 +33,25 @@ namespace LFramework
             return _views.Count <= 0 ? null : _views.Last();
         }
 
-        private void Pop()
+        private void PopTopView()
         {
             _views.Pop();
         }
 
-        private void HandleTopView()
+        private void RevealTopView()
         {
             View topView = GetTopView();
 
-            if (topView != null)
+            if (topView != null && topView.showOnReveal)
                 topView.Show();
+        }
+
+        private void BlockTopView()
+        {
+            View topView = GetTopView();
+
+            if (topView != null && topView.hideOnBlock)
+                topView.Hide();
         }
 
         public async UniTask<View> PushAsync(AssetReference viewAsset)
@@ -72,12 +78,14 @@ namespace LFramework
             await handle;
             View view = handle.Result.GetComponent<View>();
 
+            BlockTopView();
+
             // Handle view callback
-            view.onCloseStart.AddListener(Pop);
+            view.onCloseStart.AddListener(PopTopView);
             view.onCloseEnd.AddListener(() =>
             {
                 viewAsset.ReleaseInstance(view.gameObjectCached);
-                HandleTopView();
+                RevealTopView();
             });
 
             // Open new view
