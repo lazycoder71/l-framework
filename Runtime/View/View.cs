@@ -22,6 +22,7 @@ namespace LFramework
 
         [FoldoutGroup("Extra")]
         [SerializeField] private bool _hideOnBlock = false;
+        [FoldoutGroup("Extra")]
         [SerializeField] private bool _showOnReveal = false;
 
         [FoldoutGroup("Transition", Expanded = false)]
