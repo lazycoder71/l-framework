@@ -144,8 +144,9 @@ namespace LFramework
                 _sequence.timeScale = _openDuration > 0.0f ? 1.0f / _openDuration : 1.0f;
 
                 _sequence.Restart();
+                _sequence.Play();
 
-                await _sequence.Play().AsyncWaitForCompletion().AsUniTask().AttachExternalCancellation(_cancelToken.Token);
+                await UniTask.WaitForSeconds(_openDuration, cancellationToken: _cancelToken.Token);
             }
             else
             {
@@ -180,9 +181,11 @@ namespace LFramework
             if (_closeDuration > 0.0f)
             {
                 _sequence.timeScale = _closeDuration > 0.0f ? 1.0f / _closeDuration : 1.0f;
+
+                _sequence.Complete();
                 _sequence.PlayBackwards();
 
-                await _sequence.AsyncWaitForRewind().AsUniTask().AttachExternalCancellation(_cancelToken.Token);
+                await UniTask.WaitForSeconds(_closeDuration, cancellationToken: _cancelToken.Token);
             }
             else
             {
