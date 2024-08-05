@@ -42,16 +42,14 @@ namespace LFramework
         {
             View topView = GetTopView();
 
-            if (topView != null && topView.showOnReveal)
-                topView.Show();
+            topView?.Reveal();
         }
 
         private void BlockTopView()
         {
             View topView = GetTopView();
 
-            if (topView != null && topView.hideOnBlock)
-                topView.Hide();
+            topView?.Block();
         }
 
         public async UniTask<View> PushAsync(AssetReference viewAsset)
@@ -62,13 +60,6 @@ namespace LFramework
                 LDebug.Log<ViewContainer>($"Another View is transiting, can't push any new view {viewAsset}");
                 return null;
             }
-
-            // Get previous view (current top view)
-            View previousView = GetTopView();
-
-            // Disable interactable top view
-            if (previousView != null)
-                previousView.interactable = false;
 
             // Set transiting flag
             _isTransiting = true;

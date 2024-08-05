@@ -3,6 +3,7 @@ using DG.Tweening;
 using UnityEngine.Events;
 using Sirenix.OdinInspector;
 using Cysharp.Threading.Tasks;
+using System.Threading;
 
 namespace LFramework
 {
@@ -45,13 +46,11 @@ namespace LFramework
         [FoldoutGroup("Event")]
         [SerializeField] private UnityEvent _onHideEnd;
 
+        private CancellationTokenSource _cancelToken;
+
         private Sequence _sequence;
 
         private CanvasGroup _canvasGroup;
-
-        private bool _isTransiting = false;
-
-        public bool isTransiting { get { return _isTransiting; } }
 
         public Sequence sequence { get { return _sequence; } }
 
@@ -78,6 +77,9 @@ namespace LFramework
 
         private void OnDestroy()
         {
+            // Cancel token
+            _cancelToken?.Cancel();
+
             // Kill tweens
             _sequence?.Kill();
         }
@@ -120,13 +122,9 @@ namespace LFramework
 
         private async UniTask ProcessOpen(bool isShow)
         {
-            // Can't open when it is transiting
-            if (_isTransiting)
-                return;
-
-            _isTransiting = true;
-
-            gameObjectCached.SetActive(false);
+            // Handle cancel token
+            _cancelToken?.Cancel();
+            _cancelToken = new CancellationTokenSource();
 
             ConstructSequence();
 
@@ -136,7 +134,7 @@ namespace LFramework
             else
                 _onOpenStart?.Invoke();
 
-            // Active object
+            // Active object when open (in case it hidden before)
             gameObjectCached.SetActive(true);
 
             _canvasGroup.interactable = false;
@@ -147,7 +145,7 @@ namespace LFramework
 
                 _sequence.Restart();
 
-                await _sequence.Play().AsyncWaitForCompletion().AsUniTask();
+                await _sequence.Play().AsyncWaitForCompletion().AsUniTask().AttachExternalCancellation(_cancelToken.Token);
             }
             else
             {
@@ -161,14 +159,13 @@ namespace LFramework
                 _onOpenEnd?.Invoke();
 
             _canvasGroup.interactable = true;
-            _isTransiting = false;
         }
 
         private async UniTask ProcessClose(bool isHiding)
         {
-            // Can't close when it is transiting
-            if (_isTransiting)
-                return;
+            // Handle cancel token
+            _cancelToken?.Cancel();
+            _cancelToken = new CancellationTokenSource();
 
             ConstructSequence();
 
@@ -178,7 +175,6 @@ namespace LFramework
             else
                 _onCloseStart?.Invoke();
 
-            _isTransiting = true;
             _canvasGroup.interactable = false;
 
             if (_closeDuration > 0.0f)
@@ -186,7 +182,7 @@ namespace LFramework
                 _sequence.timeScale = _closeDuration > 0.0f ? 1.0f / _closeDuration : 1.0f;
                 _sequence.PlayBackwards();
 
-                await _sequence.AsyncWaitForRewind().AsUniTask();
+                await _sequence.AsyncWaitForRewind().AsUniTask().AttachExternalCancellation(_cancelToken.Token);
             }
             else
             {
@@ -203,27 +199,15 @@ namespace LFramework
             {
                 _onCloseEnd?.Invoke();
             }
-
-            _isTransiting = false;
         }
 
         #endregion
 
         #region Function -> Public
 
-        public UniTask OpenAsync()
-        {
-            return ProcessOpen(false);
-        }
-
         public void Open()
         {
             ProcessOpen(false).Forget();
-        }
-
-        public UniTask CloseAsync()
-        {
-            return ProcessClose(false);
         }
 
         public void Close()
@@ -231,24 +215,20 @@ namespace LFramework
             ProcessClose(false).Forget();
         }
 
-        public UniTask ShowAsync()
+        public void Reveal()
         {
-            return ProcessOpen(true);
+            _canvasGroup.interactable = true;
+
+            if (_showOnReveal)
+                ProcessOpen(true).Forget();
         }
 
-        public void Show()
+        public void Block()
         {
-            ProcessOpen(true).Forget();
-        }
+            _canvasGroup.interactable = false;
 
-        public UniTask HideAsync()
-        {
-            return ProcessClose(true);
-        }
-
-        public void Hide()
-        {
-            ProcessClose(true).Forget();
+            if (_hideOnBlock)
+                ProcessClose(true).Forget();
         }
 
         #endregion

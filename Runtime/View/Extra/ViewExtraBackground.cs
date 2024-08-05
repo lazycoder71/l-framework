@@ -53,7 +53,7 @@ namespace LFramework
             {
                 Button button = _objBG.AddComponent<Button>();
                 button.transition = Selectable.Transition.None;
-                button.onClick.AddListener(() => { view.CloseAsync().Forget(); });
+                button.onClick.AddListener(() => { view.Close(); button.interactable = false; });
             }
         }
     }
