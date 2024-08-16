@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
@@ -10,74 +11,99 @@ namespace LFramework
     /// </summary>
     public static class LDebug
     {
+        private static readonly float s_headerColorStepStart = 0.05f;
+        private static readonly float s_headerColorStep = 0.05f;
+        private static int s_headerColorCount = 0;
+        private static Dictionary<string, Color> s_headerColorDict = new Dictionary<string, Color>();
+
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void Log(object message, Color? color = null)
         {
-            Debug.Log(GetLog(message, color.GetValueOrDefault(Color.white)));
+            Debug.Log(GetLog(message, color));
         }
 
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void Log(object header, object message, Color? headerColor = null)
         {
-            Debug.Log(GetLog(header, message, headerColor.GetValueOrDefault(Color.white)));
+            Debug.Log(GetLog(header, message, headerColor));
         }
 
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void Log<T>(object message, Color? headerColor = null)
         {
-            Debug.Log(GetLog(typeof(T), message, headerColor.GetValueOrDefault(Color.white)));
+            Debug.Log(GetLog(typeof(T), message, headerColor));
         }
 
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void LogWarning(object message, Color? color = null)
         {
-            Debug.LogWarning(GetLog(message, color.GetValueOrDefault(Color.white)));
+            Debug.LogWarning(GetLog(message, color));
         }
 
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void LogWarning(object header, object message, Color? headerColor = null)
         {
-            Debug.LogWarning(GetLog(header, message, headerColor.GetValueOrDefault(Color.white)));
+            Debug.LogWarning(GetLog(header, message, headerColor));
         }
 
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void LogWarning<T>(object message, Color? headerColor = null)
         {
-            Debug.LogWarning(GetLog(typeof(T), message, headerColor.GetValueOrDefault(Color.white)));
+            Debug.LogWarning(GetLog(typeof(T), message, headerColor));
         }
 
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void LogError(object message, Color? color = null)
         {
-            Debug.LogError(GetLog(message, color.GetValueOrDefault(Color.white)));
+            Debug.LogError(GetLog(message, color));
         }
 
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void LogError(object header, object message, Color? headerColor = null)
         {
-            Debug.LogError(GetLog(header, message, headerColor.GetValueOrDefault(Color.white)));
+            Debug.LogError(GetLog(header, message, headerColor));
         }
 
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void LogError<T>(object message, Color? headerColor = null)
         {
-            Debug.LogError(GetLog(typeof(T), message, headerColor.GetValueOrDefault(Color.white)));
+            Debug.LogError(GetLog(typeof(T), message, headerColor));
         }
 
-        private static object GetLog(object message, Color color)
+        private static object GetLog(object message, Color? color)
         {
-            if (color == Color.white)
+            if (color.HasValue)
+                return $"<color=#{ColorUtility.ToHtmlStringRGB(color.Value)}>{message}</color>";
+            else
                 return message;
-            else
-                return $"<color=#{ColorUtility.ToHtmlStringRGB(color)}>{message}</color>";
         }
 
-        private static object GetLog(object header, object message, Color color)
+        private static object GetLog(object header, object message, Color? headerColor)
         {
-            if (color == Color.white)
-                return $"[{header}] {message}";
+            Color color;
+
+            if (headerColor.HasValue)
+            {
+                color = headerColor.Value;
+            }
             else
-                return $"[<color=#{ColorUtility.ToHtmlStringRGB(color)}>{header}</color>] {message}";
+            {
+                if (s_headerColorDict.ContainsKey(header.ToString()))
+                {
+                    color = s_headerColorDict[header.ToString()];
+                }
+                else
+                {
+                    // Lerp rainbow color
+                    color = Color.HSVToRGB(Mathf.PingPong(s_headerColorStepStart + s_headerColorCount * s_headerColorStep, 1), 1, 1);
+
+                    s_headerColorDict.Add(header.ToString(), color);
+
+                    s_headerColorCount++;
+                }
+            }
+
+            return $"[<color=#{ColorUtility.ToHtmlStringRGB(color)}>{header}</color>] {message}";
         }
     }
 }
