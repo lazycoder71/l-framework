@@ -146,7 +146,7 @@ namespace LFramework
                 _sequence.Restart();
                 _sequence.Play();
 
-                await UniTask.WaitForSeconds(_openDuration, cancellationToken: _cancelToken.Token);
+                await UniTask.WaitForSeconds(_openDuration, true, cancellationToken: _cancelToken.Token);
             }
             else
             {
@@ -185,7 +185,7 @@ namespace LFramework
                 _sequence.Complete();
                 _sequence.PlayBackwards();
 
-                await UniTask.WaitForSeconds(_closeDuration, cancellationToken: _cancelToken.Token);
+                await UniTask.WaitForSeconds(_closeDuration, true, cancellationToken: _cancelToken.Token);
             }
             else
             {
