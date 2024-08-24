@@ -49,7 +49,7 @@ namespace LFramework
             }
             else if (_mainStack.Last() != popup)
             {
-                LDebug.LogWarning(typeof(PopupManager), $"This popup {popup} is not on top of the stack! try to remove it from stack anyway", Color.cyan);
+                LDebug.LogWarning(typeof(PopupManager), $"This popup {popup} is not on top of the stack! try to remove it from stack anyway");
 
                 _mainStack.Remove(popup);
 
@@ -77,9 +77,11 @@ namespace LFramework
         public static AsyncOperationHandle<GameObject> Create(AssetReference assetReference)
         {
             AsyncOperationHandle<GameObject> async = assetReference.InstantiateAsync(root, false);
-            async.Completed += (async) => { 
+            async.Completed += (async) =>
+            {
                 GameObject instance = async.Result;
-                instance.GetComponent<Popup>().onCloseEnd.AddListener(() => { assetReference.ReleaseInstance(instance); }); };
+                instance.GetComponent<Popup>().onCloseEnd.AddListener(() => { assetReference.ReleaseInstance(instance); });
+            };
 
             return async;
         }

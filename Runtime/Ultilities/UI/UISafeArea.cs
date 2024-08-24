@@ -113,7 +113,7 @@ namespace LFramework
 
             if (_logging)
             {
-                LDebug.Log<UISafeArea>($"New safe area applied to {name}: x={r.x}, y={r.y}, w={r.width}, h={r.height} on full extents w={Screen.width}, h={Screen.height}", Color.cyan);
+                LDebug.Log<UISafeArea>($"New safe area applied to {name}: x={r.x}, y={r.y}, w={r.width}, h={r.height} on full extents w={Screen.width}, h={Screen.height}");
             }
         }
     }

@@ -11,7 +11,7 @@ namespace LFramework
 
         private static void Log(string message)
         {
-            LDebug.Log(typeof(LDataHelper), message, Color.cyan);
+            LDebug.Log(typeof(LDataHelper), message);
         }
 
         private static string GetDevicePath(string filePath)

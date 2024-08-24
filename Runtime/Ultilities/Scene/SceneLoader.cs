@@ -1,207 +1,139 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using DG.Tweening;
+using Sirenix.OdinInspector;
+using UnityEngine.Events;
+using Cysharp.Threading.Tasks;
 
 namespace LFramework
 {
-    public class SceneLoader : MonoCached
+    public class SceneLoader : MonoSingleton<SceneLoader>
     {
-        static readonly string s_fadeIn = "FadeIn";
-        static readonly string s_fadeOut = "FadeOut";
+        private static readonly float s_loadSceneProgressMax = 0.7f;
 
-        enum State
+        [Title("Event")]
+        [SerializeField] private UnityEvent _onFadeInStart;
+        [SerializeField] private UnityEvent _onFadeInEnd;
+        [SerializeField] private UnityEvent _onFadeOutStart;
+        [SerializeField] private UnityEvent _onFadeOutEnd;
+
+        [SerializeField] private UnityEvent<float> _onLoadProgress;
+
+        [Title("Config")]
+        [SerializeField] private float _fadeInDuration;
+        [SerializeField] private float _fadeOutDuration;
+        [SerializeField] private float _loadMinDuration;
+
+        private bool _isTransiting = false;
+
+        public float fadeInDuration { get { return _fadeInDuration; } }
+        public float fadeOutDuration { get { return _fadeOutDuration; } }
+
+        private async UniTaskVoid LoadAsync(int sceneBuildIndex)
         {
-            // Wait for load scene command
-            Idle,
-            // Playing fade in animation
-            FadeIn,
-            // End of fade in animation, load new scene
-            Loading,
-            // Playing fade out animation
-            FadeOut,
+            // Progress event at 0
+            _onLoadProgress?.Invoke(0f);
+
+            // Fade in start
+            _onFadeInStart?.Invoke();
+
+            // Wait for fade in duration
+            await UniTask.WaitForSeconds(_fadeInDuration, true);
+
+            // Fade in end
+            _onFadeInEnd?.Invoke();
+
+            // Start load scene async, but does not allow activation
+            var handle = SceneManager.LoadSceneAsync(sceneBuildIndex);
+            handle.allowSceneActivation = false;
+
+            // Wait for scene load complete or min duration passed
+            await WaitForSceneLoadedOrMinDuration(handle);
+
+            // Fade out start
+            _onFadeOutStart?.Invoke();
+
+            // Wait for fade out duration
+            await UniTask.WaitForSeconds(_fadeOutDuration, true);
+
+            _onFadeOutEnd?.Invoke();
+
+            _isTransiting = false;
         }
 
-        // Speed to fade in and fade out
-        float _fadeInAnimSpeed = 0;
-        float _fadeOutAnimSpeed = 0;
-
-        // Index of scene will be loaded
-        int _sceneIndex = 0;
-        // Scene async
-        AsyncOperation _sceneAsync;
-        // Animator component
-        Animator _animator;
-        // State machine
-        StateMachine<State> _stateMachine;
-        // Tween
-        Tween _tween;
-
-        #region MonoBehaviour
-
-        void Start()
+        private async UniTask WaitForSceneLoadedOrMinDuration(AsyncOperation handle)
         {
-            gameObjectCached.SetActive(false);
-        }
+            var progress = Progress.CreateOnlyValueChanged<float>(x => _onLoadProgress?.Invoke(x * s_loadSceneProgressMax));
 
-        void OnDestroy()
-        {
-            _tween?.Kill();
-        }
+            float timeStartLoading = Time.unscaledTime;
 
-        void Update()
-        {
-            _stateMachine.Update();
-        }
+            handle.allowSceneActivation = true;
 
-        #endregion
+            await handle.ToUniTask(progress);
 
-        #region States
+            await Resources.UnloadUnusedAssets();
 
-        void State_OnFadeInStart()
-        {
-            // Load scene async
-            _sceneAsync = SceneManager.LoadSceneAsync(_sceneIndex);
-            _sceneAsync.allowSceneActivation = false;
+            float timeRemain = _loadMinDuration - (Time.unscaledTime - timeStartLoading);
 
-            //Play fade in animation
-            _animator.Play(s_fadeIn);
-            _animator.speed = _fadeInAnimSpeed;
+            float time = 0f;
 
-            //Wait until animation is end
-            _tween?.Kill();
-            _tween = DOVirtual.DelayedCall(LFactory.sceneTransitionFadeInDuration + LFactory.sceneTransitionLoadDuration, () =>
+            while (time < timeRemain)
             {
-                _stateMachine.CurrentState = State.Loading;
-                _sceneAsync.allowSceneActivation = true;
-            }, true);
-        }
+                time += Time.unscaledDeltaTime;
 
-        void State_OnLoadingUpdate()
-        {
-            if (_sceneAsync.isDone)
-            {
-                _stateMachine.CurrentState = State.FadeOut;
+                await UniTask.Yield();
 
-                Resources.UnloadUnusedAssets();
+                _onLoadProgress?.Invoke((time / timeRemain) * (1f - s_loadSceneProgressMax) + s_loadSceneProgressMax);
             }
+
+            _onLoadProgress?.Invoke(1f);
         }
-
-        void State_OnFadeOutStart()
-        {
-            //Play fade out animation
-            _animator.Play(s_fadeOut);
-            _animator.speed = _fadeOutAnimSpeed;
-
-            //Wait until animation is end
-            _tween?.Kill();
-            _tween = DOVirtual.DelayedCall(LFactory.sceneTransitionFadeOutDuration, () =>
-            {
-                _stateMachine.CurrentState = State.Idle;
-                gameObjectCached.SetActive(false);
-            }, true);
-        }
-
-        #endregion
 
         #region Public
 
-        public void Load(int sceneIndex)
+        public void Load(int sceneBuildIndex)
         {
-            if (_stateMachine.CurrentState != State.Idle)
+            if (_isTransiting)
             {
-                LDebug.Log<SceneLoader>("A scene is loading, can't execute load scene command!", Color.cyan);
+                LDebug.Log<SceneLoader>("A scene is transiting, can't execute load scene command!");
                 return;
             }
 
             gameObjectCached.SetActive(true);
 
-            _sceneIndex = sceneIndex;
-            _stateMachine.CurrentState = State.FadeIn;
-        }
+            _isTransiting = true;
 
-        public void Reload()
-        {
-            Load(SceneManager.GetActiveScene().buildIndex);
-        }
-
-        public void Construct()
-        {
-            // Get component reference
-            _animator = GetComponentInChildren<Animator>();
-
-            // Calculate fade in/out speed
-            CalculateAnimSpeed();
-
-            // Construct state machine
-            _stateMachine = new StateMachine<State>();
-            _stateMachine.AddState(State.FadeIn, State_OnFadeInStart);
-            _stateMachine.AddState(State.Loading, null, State_OnLoadingUpdate);
-            _stateMachine.AddState(State.FadeOut, State_OnFadeOutStart);
-            _stateMachine.AddState(State.Idle);
-
-            _stateMachine.CurrentState = State.Idle;
+            LoadAsync(sceneBuildIndex).Forget();
         }
 
         #endregion
-
-        void CalculateAnimSpeed()
-        {
-            AnimationClip[] clips = _animator.runtimeAnimatorController.animationClips;
-
-            foreach (AnimationClip clip in clips)
-            {
-                if (clip.name == s_fadeIn)
-                {
-                    _fadeInAnimSpeed = clip.length / LFactory.sceneTransitionFadeInDuration;
-                }
-                else if (clip.name == s_fadeOut)
-                {
-                    _fadeOutAnimSpeed = clip.length / LFactory.sceneTransitionFadeOutDuration;
-                }
-            }
-        }
     }
 
     public static class SceneLoaderHelper
     {
-        static SceneLoader _instance;
+        private static bool _isInitialized = false;
 
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-        static void LazyInit()
+        private static void LazyInit()
         {
-            if (_instance == null)
-            {
-                if (LFactory.sceneTransitionPrefab == null)
-                {
-                    LDebug.LogWarning<SceneLoader>($"Unassigned prefab!", Color.cyan);
-                    return;
-                }
+            if (_isInitialized)
+                return;
 
-                _instance = LFactory.sceneTransitionPrefab.Create().GetComponent<SceneLoader>();
-                _instance.Construct();
+            LFactory.sceneLoaderPrefab.Create();
 
-                GameObject.DontDestroyOnLoad(_instance.gameObjectCached);
-            }
+            _isInitialized = true;
         }
 
-        public static void Load(int sceneIndex)
+        public static void Load(int sceneBuildIndex)
         {
             LazyInit();
 
-            if (_instance != null)
-                _instance.Load(sceneIndex);
-            else
-                SceneManager.LoadScene(sceneIndex);
+            SceneLoader.instance.Load(sceneBuildIndex);
         }
 
         public static void Reload()
         {
             LazyInit();
 
-            if (_instance != null)
-                _instance.Reload();
-            else
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            SceneLoader.instance.Load(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }
