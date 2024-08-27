@@ -107,7 +107,9 @@ namespace LFramework
 
         private void OnEnable()
         {
-            InitSequence();
+            // If no action flagged on enable, we shouldn't init sequence
+            if(_actionOnEnable != 0)
+                InitSequence();
 
             if (_actionOnEnable.HasFlag(ActionOnEnable.Complete))
                 _sequence?.Complete();
