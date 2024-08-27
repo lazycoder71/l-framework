@@ -28,7 +28,7 @@ namespace LFramework
                 {
                     LDebug.LogError<T>(
                         $"{typeof(T)} is already destroyed. " +
-                        $"Please check {nameof(hasInstance)} or {nameof(isDestroyed)} before accessing instance in the destructor.", Color.cyan);
+                        $"Please check {nameof(hasInstance)} or {nameof(isDestroyed)} before accessing instance in the destructor.");
                     return null;
                 }
 
@@ -66,7 +66,7 @@ namespace LFramework
         {
             if (hasInstance)
             {
-                LDebug.LogWarning<T>($"You are trying to Instantiate {typeof(T).FullName}, but it already has an instance. Please use instance property instead.", Color.cyan);
+                LDebug.LogWarning<T>($"You are trying to Instantiate {typeof(T).FullName}, but it already has an instance. Please use instance property instead.");
                 return;
             }
 
@@ -89,7 +89,7 @@ namespace LFramework
             }
             else if (s_instance != this)
             {
-                LDebug.Log<T>($"{typeof(T).FullName} is already exist, this one will be destroyed", Color.cyan);
+                LDebug.Log<T>($"{typeof(T).FullName} is already exist, this one will be destroyed");
 
                 Destroy(gameObjectCached);
             }

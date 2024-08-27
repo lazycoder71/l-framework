@@ -15,7 +15,7 @@ namespace LFramework
 
             if (AssetDatabase.LoadAssetAtPath<T>(filePath))
             {
-                LDebug.Log(typeof(ScriptableObjectHelper), $"File {filePath} is already exist", Color.cyan);
+                LDebug.Log(typeof(ScriptableObjectHelper), $"File {filePath} is already exist");
                 return null;
             }
 
