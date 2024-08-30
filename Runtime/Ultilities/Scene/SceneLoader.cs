@@ -90,6 +90,19 @@ namespace LFramework
 
         #region Public
 
+        public void Load(string sceneName)
+        {
+            Scene scene = SceneManager.GetSceneByName(sceneName);
+
+            if (scene == null)
+            {
+                LDebug.Log(typeof(SceneLoaderHelper), $"Can't find scene with name {sceneName}");
+                return;
+            }
+
+            Load(scene.buildIndex);
+        }
+
         public void Load(int sceneBuildIndex)
         {
             if (_isTransiting)
@@ -127,6 +140,13 @@ namespace LFramework
             LazyInit();
 
             SceneLoader.instance.Load(sceneBuildIndex);
+        }
+
+        public static void Load(string sceneName)
+        {
+            LazyInit();
+
+            SceneLoader.instance.Load(sceneName);
         }
 
         public static void Reload()
