@@ -28,8 +28,18 @@ namespace LFramework
         public float fadeInDuration { get { return _fadeInDuration; } }
         public float fadeOutDuration { get { return _fadeOutDuration; } }
 
-        private async UniTaskVoid LoadAsync(int sceneBuildIndex)
+        private async UniTaskVoid LoadAsync(AsyncOperation asyncOperation)
         {
+            if (_isTransiting)
+            {
+                LDebug.Log<SceneLoader>("A scene is transiting, can't execute load scene command!");
+                return;
+            }
+
+            gameObjectCached.SetActive(true);
+
+            _isTransiting = true;
+
             // Progress event at 0
             _onLoadProgress?.Invoke(0f);
 
@@ -42,12 +52,8 @@ namespace LFramework
             // Fade in end
             _onFadeInEnd?.Invoke();
 
-            // Start load scene async, but does not allow activation
-            var handle = SceneManager.LoadSceneAsync(sceneBuildIndex);
-            handle.allowSceneActivation = false;
-
             // Wait for scene load complete or min duration passed
-            await WaitForSceneLoadedOrMinDuration(handle);
+            await WaitForSceneLoadedOrMinDuration(asyncOperation);
 
             // Fade out start
             _onFadeOutStart?.Invoke();
@@ -92,30 +98,12 @@ namespace LFramework
 
         public void Load(string sceneName)
         {
-            Scene scene = SceneManager.GetSceneByName(sceneName);
-
-            if (scene == null)
-            {
-                LDebug.Log(typeof(SceneLoaderHelper), $"Can't find scene with name {sceneName}");
-                return;
-            }
-
-            Load(scene.buildIndex);
+            LoadAsync(SceneManager.LoadSceneAsync(sceneName)).Forget();
         }
 
         public void Load(int sceneBuildIndex)
         {
-            if (_isTransiting)
-            {
-                LDebug.Log<SceneLoader>("A scene is transiting, can't execute load scene command!");
-                return;
-            }
-
-            gameObjectCached.SetActive(true);
-
-            _isTransiting = true;
-
-            LoadAsync(sceneBuildIndex).Forget();
+            LoadAsync(SceneManager.LoadSceneAsync(sceneBuildIndex)).Forget();
         }
 
         #endregion
