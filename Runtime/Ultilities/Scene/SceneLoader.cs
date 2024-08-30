@@ -30,12 +30,6 @@ namespace LFramework
 
         private async UniTaskVoid LoadAsync(AsyncOperation asyncOperation)
         {
-            if (_isTransiting)
-            {
-                LDebug.Log<SceneLoader>("A scene is transiting, can't execute load scene command!");
-                return;
-            }
-
             gameObjectCached.SetActive(true);
 
             _isTransiting = true;
@@ -98,12 +92,30 @@ namespace LFramework
 
         public void Load(string sceneName)
         {
-            LoadAsync(SceneManager.LoadSceneAsync(sceneName)).Forget();
+            if (_isTransiting)
+            {
+                LDebug.Log<SceneLoader>("A scene is transiting, can't execute load scene command!");
+                return;
+            }
+
+            AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName);
+            asyncOperation.allowSceneActivation = false;
+
+            LoadAsync(asyncOperation).Forget();
         }
 
         public void Load(int sceneBuildIndex)
         {
-            LoadAsync(SceneManager.LoadSceneAsync(sceneBuildIndex)).Forget();
+            if (_isTransiting)
+            {
+                LDebug.Log<SceneLoader>("A scene is transiting, can't execute load scene command!");
+                return;
+            }
+
+            AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneBuildIndex);
+            asyncOperation.allowSceneActivation = false;
+
+            LoadAsync(asyncOperation).Forget();
         }
 
         #endregion
