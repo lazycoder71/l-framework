@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
 
@@ -65,9 +66,12 @@ namespace LFramework
             _isTransiting = true;
 
             // Wait new view to be loaded
-            var handle = Addressables.InstantiateAsync(viewAsset, transformCached, false);
+            var handle = Addressables.LoadAssetAsync<GameObject>(viewAsset);
+
             await handle;
-            View view = handle.Result.GetComponent<View>();
+
+            View view = handle.Result.Create(transformCached, false).GetComponent<View>();
+            view.gameObjectCached.SetActive(false);
 
             BlockTopView();
 

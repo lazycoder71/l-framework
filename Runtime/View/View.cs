@@ -23,8 +23,6 @@ namespace LFramework
 
         [FoldoutGroup("Extra")]
         [SerializeField] private bool _hideOnBlock = false;
-        [FoldoutGroup("Extra")]
-        [SerializeField] private bool _showOnReveal = false;
 
         [FoldoutGroup("Transition", Expanded = false)]
         [SerializeField] private ViewTransitionEntity[] _transitionEntities;
@@ -66,7 +64,6 @@ namespace LFramework
         public bool interactable { get { return _canvasGroup.interactable; } set { _canvasGroup.interactable = value; } }
 
         public bool hideOnBlock { get { return _hideOnBlock; } }
-        public bool showOnReveal { get { return _showOnReveal; } }
 
         #region MonoBehaviour
 
@@ -79,6 +76,7 @@ namespace LFramework
         {
             // Cancel token
             _cancelToken?.Cancel();
+            _cancelToken?.Dispose();
 
             // Kill tweens
             _sequence?.Kill();
@@ -143,6 +141,7 @@ namespace LFramework
             {
                 _sequence.timeScale = _openDuration > 0.0f ? 1.0f / _openDuration : 1.0f;
 
+                _sequence.Complete();
                 _sequence.Restart();
                 _sequence.Play();
 
@@ -222,7 +221,7 @@ namespace LFramework
         {
             _canvasGroup.interactable = true;
 
-            if (_showOnReveal)
+            if (_hideOnBlock)
                 ProcessOpen(true).Forget();
         }
 
