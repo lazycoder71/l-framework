@@ -1,12 +1,13 @@
 using DG.Tweening;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace LFramework
 {
     public class AnimationSequenceStepTransformRotate : AnimationSequenceStepTransform
     {
-        [SerializeField]
-        private RotateMode _rotateMode = RotateMode.Fast;
+        [VerticalGroup("Value")]
+        [SerializeField] private RotateMode _rotateMode = RotateMode.Fast;
 
         public override string displayName { get { return $"{(_isSelf ? "Transform (This)" : _owner)}: DOLocalRotate"; } }
 

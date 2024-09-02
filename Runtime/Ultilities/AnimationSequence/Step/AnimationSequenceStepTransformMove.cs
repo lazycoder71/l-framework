@@ -7,7 +7,7 @@ namespace LFramework
     public class AnimationSequenceStepTransformMove : AnimationSequenceStepTransform
     {
         [VerticalGroup("Value")]
-        [SerializeField] bool _snapping = false;
+        [SerializeField] private bool _snapping = false;
 
         public override string displayName { get { return $"{(_isSelf ? "Transform (This)" : _owner)}: DOLocalMove"; } }
 
