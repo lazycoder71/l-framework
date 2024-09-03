@@ -70,6 +70,7 @@ namespace LFramework
 
             await handle;
 
+            // Spawn view object from loaded asset
             View view = handle.Result.Create(transformCached, false).GetComponent<View>();
             view.gameObjectCached.SetActive(false);
 
@@ -79,7 +80,11 @@ namespace LFramework
             view.onCloseStart.AddListener(PopTopView);
             view.onCloseEnd.AddListener(() =>
             {
-                viewAsset.ReleaseInstance(view.gameObjectCached);
+                Destroy(view.gameObjectCached);
+
+                // Release asset after use
+                handle.Release();
+
                 RevealTopView();
             });
 
