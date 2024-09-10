@@ -69,12 +69,15 @@ namespace LFramework
 
         protected override void OnDestroy()
         {
-            SceneManager.activeSceneChanged += SceneManager_ActiveSceneChanged;
+            base.OnDestroy();
+
+            SceneManager.activeSceneChanged -= SceneManager_ActiveSceneChanged;
         }
 
         protected override void OnApplicationQuit()
         {
             base.OnApplicationQuit();
+
             eventApplicationQuit?.Invoke();
         }
 
