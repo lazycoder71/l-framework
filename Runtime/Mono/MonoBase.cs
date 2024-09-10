@@ -39,6 +39,9 @@ namespace LFramework
 
         protected virtual void OnDisable()
         {
+            if (!MonoCallback.isDestroyed)
+                return;
+
             MonoCallback.instance.eventUpdate -= Tick;
             MonoCallback.instance.eventLateUpdate -= LateTick;
             MonoCallback.instance.eventFixedUpdate -= FixedTick;
