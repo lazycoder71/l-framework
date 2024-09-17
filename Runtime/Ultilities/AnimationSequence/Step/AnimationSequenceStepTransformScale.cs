@@ -18,8 +18,6 @@ namespace LFramework
             Tween tween = owner.DOScale(end, duration)
                                .ChangeStartValue(start);
 
-            owner.localScale = end;
-
             return tween;
         }
 

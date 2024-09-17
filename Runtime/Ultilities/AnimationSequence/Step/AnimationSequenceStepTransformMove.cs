@@ -22,10 +22,6 @@ namespace LFramework
             Tween tween = owner.DOLocalMove(end, duration, _snapping)
                                .ChangeStartValue(start);
 
-            tween.SetTarget(owner);
-
-            owner.localPosition = end;
-
             return tween;
         }
 

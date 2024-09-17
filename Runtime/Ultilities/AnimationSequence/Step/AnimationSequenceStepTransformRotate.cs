@@ -22,8 +22,6 @@ namespace LFramework
             Tween tween = owner.DOLocalRotate(end, duration, _rotateMode)
                                .ChangeStartValue(start);
 
-            owner.localEulerAngles = end;
-
             return tween;
         }
 
