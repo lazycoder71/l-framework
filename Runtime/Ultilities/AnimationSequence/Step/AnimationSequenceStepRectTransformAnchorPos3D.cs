@@ -18,8 +18,6 @@ namespace LFramework
             Tween tween = owner.DOAnchorPos3D(end, duration, _snapping)
                                .ChangeStartValue(start);
 
-            owner.anchoredPosition3D = end;
-
             return tween;
         }
 
