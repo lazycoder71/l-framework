@@ -6,11 +6,10 @@ namespace LFramework
 {
     public class AnimationSequenceStepSpriteRenderer : AnimationSequenceStepAction<SpriteRenderer>
     {
-        [SerializeField] private Color _value = Color.white;
-
-        [SerializeField]
         [ShowIf("@_changeStartValue")]
-        private Color _valueStart = Color.white;
+        [SerializeField] private Color _valueStart = Color.white;
+
+        [SerializeField] private Color _value = Color.white;
 
         public override string displayName { get { return $"{(_isSelf ? "SpriteRenderer (This)" : _owner)}: DOColor"; } }
 
@@ -24,8 +23,6 @@ namespace LFramework
 
             Tween tween = owner.DOColor(end, duration)
                                .ChangeStartValue(start);
-
-            owner.color = end;
 
             return tween;
         }

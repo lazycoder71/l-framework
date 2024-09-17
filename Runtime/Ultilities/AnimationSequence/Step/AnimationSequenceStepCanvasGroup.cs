@@ -6,13 +6,11 @@ namespace LFramework
 {
     public class AnimationSequenceStepCanvasGroup : AnimationSequenceStepAction<CanvasGroup>
     {
-        [SerializeField]
-        [Range(0f, 1f)]
-        private float _alpha = 1.0f;
-
-        [SerializeField]
         [Range(0f, 1f), ShowIf("@_changeStartValue")]
-        private float _alphaStart = 0.0f;
+        [SerializeField] private float _alphaStart = 0.0f;
+
+        [Range(0f, 1f)]
+        [SerializeField] private float _alpha = 1.0f;
 
         public override string displayName { get { return $"{(_isSelf ? "CanvasGroup (This)" : _owner)}: DOFade"; } }
 
@@ -26,8 +24,6 @@ namespace LFramework
 
             Tween tween = owner.DOFade(end, duration)
                                .ChangeStartValue(start);
-
-            owner.alpha = end;
 
             return tween;
         }

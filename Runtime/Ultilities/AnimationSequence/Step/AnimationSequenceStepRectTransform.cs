@@ -5,15 +5,12 @@ namespace LFramework
 {
     public abstract class AnimationSequenceStepRectTransform : AnimationSequenceStepAction<RectTransform>
     {
-        [SerializeField]
-        protected Vector3 _value;
-
-        [SerializeField]
         [ShowIf("@_changeStartValue")]
-        protected Vector3 _valueStart;
+        [SerializeField] protected Vector3 _valueStart;
 
-        [SerializeField]
+        [SerializeField] protected Vector3 _value;
+
         [VerticalGroup("Value")]
-        protected bool _snapping = false;
+        [SerializeField] protected bool _snapping = false;
     }
 }

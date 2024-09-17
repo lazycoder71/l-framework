@@ -6,59 +6,50 @@ namespace LFramework
 {
     public abstract class AnimationSequenceStepAction<T> : AnimationSequenceStep where T : class
     {
-        [SerializeField]
         [HorizontalGroup("AddType")]
-        private AddType _addType = AddType.Append;
+        [SerializeField] private AddType _addType = AddType.Append;
 
-        [SerializeField]
         [HorizontalGroup("AddType"), LabelWidth(75), SuffixLabel("Second(s)", true)]
         [ShowIf("@_addType == AnimationSequenceStep.AddType.Insert"), MinValue(0)]
-        private float _insertTime = 0.0f;
+        [SerializeField] private float _insertTime = 0.0f;
 
-        [SerializeField, HideInInspector]
-        protected bool _isSelf = true;
+        [HideInInspector]
+        [SerializeField] protected bool _isSelf = true;
 
-        [SerializeField]
         [HorizontalGroup("Owner"), ShowIf("@_isSelf == false"), LabelWidth(75)]
         [GUIColor("@_owner == null ? new Color(1.0f, 0.2f, 0.2f) : Color.white")]
-        protected T _owner;
+        [SerializeField] protected T _owner;
 
-        [SerializeField, HideInInspector]
-        protected bool _isSpeedBased = false;
+        [HideInInspector]
+        [SerializeField] protected bool _isSpeedBased = false;
 
-        [SerializeField]
         [Min(0.01f), SuffixLabel("@_isSpeedBased?\"Unit/Second\":\"Second(s)\"", Overlay = true)]
         [InlineButton("@_isSpeedBased = true", Label = "Duration", ShowIf = ("@_isSpeedBased == false"))]
         [InlineButton("@_isSpeedBased = false", Label = "Speed Based", ShowIf = ("@_isSpeedBased == true"))]
-        protected float _duration = 1.0f;
+        [SerializeField] protected float _duration = 1.0f;
 
-        [SerializeField]
-        protected Ease _ease = Ease.Linear;
+        [SerializeField] protected Ease _ease = Ease.Linear;
 
-        [SerializeField, HorizontalGroup("Update")]
+        [HorizontalGroup("Update")]
         [InlineButton("@_isIndependentUpdate = true", Label = "Timescale Based", ShowIf = ("@_isIndependentUpdate == false"))]
         [InlineButton("@_isIndependentUpdate = false", Label = "Independent Update", ShowIf = ("@_isIndependentUpdate == true"))]
-        protected UpdateType _updateType = UpdateType.Normal;
+        [SerializeField] protected UpdateType _updateType = UpdateType.Normal;
 
-        [SerializeField, HideInInspector]
-        protected bool _isIndependentUpdate = false;
+        [HideInInspector]
+        [SerializeField] protected bool _isIndependentUpdate = false;
 
-        [SerializeField]
         [MinValue(0), HorizontalGroup("Loop")]
-        private int _loopTime = 0;
+        [SerializeField] private int _loopTime = 0;
 
-        [SerializeField]
         [ShowIf("@_loopTime != 0"), HorizontalGroup("Loop"), LabelWidth(75)]
-        private LoopType _loopType = LoopType.Restart;
+        [SerializeField] private LoopType _loopType = LoopType.Restart;
 
-        [SerializeField]
         [VerticalGroup("Value")]
-        protected bool _relative = true;
+        [SerializeField] protected bool _relative = true;
 
-        [SerializeField]
         [VerticalGroup("Value")]
-        protected bool _changeStartValue = false;
-
+        [SerializeField] protected bool _changeStartValue = false;
+        
         public override void AddToSequence(AnimationSequence animationSequence)
         {
             if (!Application.isPlaying)

@@ -7,13 +7,11 @@ namespace LFramework
 {
     public class AnimationSequenceStepGraphicColor : AnimationSequenceStepAction<Graphic>
     {
-        [SerializeField]
-        private Color _value = Color.white;
-
-        [SerializeField]
         [ShowIf("@_changeStartValue")]
-        private Color _valueStart = Color.white;
+        [SerializeField] private Color _valueStart = Color.white;
 
+        [SerializeField] private Color _value = Color.white;
+        
         public override string displayName { get { return $"{(_isSelf ? "Graphic (This)" : _owner)}: DOColor"; } }
 
         protected override Tween GetTween(AnimationSequence animationSequence)
@@ -26,8 +24,6 @@ namespace LFramework
 
             Tween tween = owner.DOColor(end, duration)
                                .ChangeStartValue(start);
-
-            owner.color = end;
 
             return tween;
         }
