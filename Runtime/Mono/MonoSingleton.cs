@@ -7,13 +7,13 @@ namespace LFramework
     /// Can be used with classes extended from a MonoBehaviour.
     /// Once instance is found or created, game object will be marked as DontDestroyOnLoad.
     /// </summary>
-    public abstract class MonoSingleton<T> : MonoCached where T : MonoBehaviour
+    public abstract class MonoSingleton<T> : MonoBase where T : MonoBehaviour
     {
         protected virtual bool _dontDestroyOnLoad { get { return true; } }
 
-        static T s_instance;
-        static bool s_applicationIsQuitting = false;
-        static bool s_isDestroyed = false;
+        private static T s_instance;
+        private static bool s_applicationIsQuitting = false;
+        private static bool s_isDestroyed = false;
 
         /// <summary>
         /// Returns a singleton class instance
@@ -85,13 +85,13 @@ namespace LFramework
                 s_instance = this as T;
 
                 if (_dontDestroyOnLoad)
-                    DontDestroyOnLoad(gameObjectCached);
+                    DontDestroyOnLoad(GameObjectCached);
             }
             else if (s_instance != this)
             {
                 LDebug.Log<T>($"{typeof(T).FullName} is already exist, this one will be destroyed");
 
-                Destroy(gameObjectCached);
+                Destroy(GameObjectCached);
             }
         }
 

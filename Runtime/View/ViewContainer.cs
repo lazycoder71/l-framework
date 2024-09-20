@@ -12,13 +12,17 @@ namespace LFramework
 
         private bool _isTransiting = false;
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
+
             SceneManager.activeSceneChanged += SceneManager_ActiveSceneChanged;
         }
 
-        private void OnDisable()
+        protected override void OnDisable()
         {
+            base.OnDisable();
+
             SceneManager.activeSceneChanged -= SceneManager_ActiveSceneChanged;
         }
 
@@ -71,7 +75,7 @@ namespace LFramework
             await handle;
 
             // Spawn view object from loaded asset
-            View view = handle.Result.Create(transformCached, false).GetComponent<View>();
+            View view = handle.Result.Create(TransformCached, false).GetComponent<View>();
             view.gameObjectCached.SetActive(false);
 
             BlockTopView();

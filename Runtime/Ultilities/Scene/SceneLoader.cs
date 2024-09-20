@@ -30,7 +30,7 @@ namespace LFramework
 
         private async UniTaskVoid LoadAsync(AsyncOperation asyncOperation)
         {
-            gameObjectCached.SetActive(true);
+            GameObjectCached.SetActive(true);
 
             _isTransiting = true;
 

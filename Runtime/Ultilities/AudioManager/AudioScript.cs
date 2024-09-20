@@ -36,7 +36,7 @@ namespace LFramework
 
         private void Start()
         {
-            transformCached.SetParent(AudioManager.instance.transformCached);
+            transformCached.SetParent(AudioManager.instance.TransformCached);
 
             AudioManager.volumeSound.eventValueChanged += VolumeSound_EventValueChanged;
             AudioManager.volumeMusic.eventValueChanged += VolumeMusic_EventValueChanged;

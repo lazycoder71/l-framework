@@ -8,7 +8,7 @@ namespace LFramework
 
         private Transform _transform;
 
-        public Transform transformCached
+        public Transform TransformCached
         {
             get
             {
@@ -19,7 +19,7 @@ namespace LFramework
             }
         }
 
-        public GameObject gameObjectCached
+        public GameObject GameObjectCached
         {
             get
             {
