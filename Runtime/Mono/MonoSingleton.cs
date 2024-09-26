@@ -20,7 +20,7 @@ namespace LFramework
         /// If current instance is not assigned it will try to find an object of the instance type,
         /// in case instance already exists on a scene. If not, new instance will be created
         /// </summary>
-        public static T instance
+        public static T Instance
         {
             get
             {
@@ -28,7 +28,7 @@ namespace LFramework
                 {
                     LDebug.LogError<T>(
                         $"{typeof(T)} is already destroyed. " +
-                        $"Please check {nameof(hasInstance)} or {nameof(isDestroyed)} before accessing instance in the destructor.");
+                        $"Please check {nameof(HasInstance)} or {nameof(IsDestroyed)} before accessing instance in the destructor.");
                     return null;
                 }
 
@@ -46,14 +46,14 @@ namespace LFramework
         /// <summary>
         /// Returns `true` if Singleton Instance exists.
         /// </summary>
-        public static bool hasInstance => s_instance != null;
+        public static bool HasInstance => s_instance != null;
 
         /// <summary>
         /// If this property returns `true` it means that object with explicitly destroyed.
         /// This could happen if Destroy function  was called for this object or if it was
         /// automatically destroyed during the `ApplicationQuit`.
         /// </summary>
-        public static bool isDestroyed => s_isDestroyed;
+        public static bool IsDestroyed => s_isDestroyed;
 
         /// <summary>
         /// Methods will create new object Instantiate
@@ -64,7 +64,7 @@ namespace LFramework
         /// </summary>
         private static void Instantiate()
         {
-            if (hasInstance)
+            if (HasInstance)
             {
                 LDebug.LogWarning<T>($"You are trying to Instantiate {typeof(T).FullName}, but it already has an instance. Please use instance property instead.");
                 return;

@@ -12,7 +12,7 @@ namespace LFramework
         private void Start()
         {
             if (_config.dontDestroyOnLoad)
-                MonoCallback.instance.eventActiveSceneChanged += MonoCallback_EventActiveSceneChanged;
+                MonoCallback.Instance.EventActiveSceneChanged += MonoCallback_EventActiveSceneChanged;
         }
 
         private void MonoCallback_EventActiveSceneChanged(Scene arg1, Scene arg2)

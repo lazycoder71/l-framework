@@ -32,19 +32,19 @@ namespace LFramework
 
         protected virtual void OnEnable()
         {
-            MonoCallback.instance.eventUpdate += Tick;
-            MonoCallback.instance.eventLateUpdate += LateTick;
-            MonoCallback.instance.eventFixedUpdate += FixedTick;
+            MonoCallback.Instance.EventUpdate += Tick;
+            MonoCallback.Instance.EventLateUpdate += LateTick;
+            MonoCallback.Instance.EventFixedUpdate += FixedTick;
         }
 
         protected virtual void OnDisable()
         {
-            if (MonoCallback.isDestroyed)
+            if (MonoCallback.IsDestroyed)
                 return;
 
-            MonoCallback.instance.eventUpdate -= Tick;
-            MonoCallback.instance.eventLateUpdate -= LateTick;
-            MonoCallback.instance.eventFixedUpdate -= FixedTick;
+            MonoCallback.Instance.EventUpdate -= Tick;
+            MonoCallback.Instance.EventLateUpdate -= LateTick;
+            MonoCallback.Instance.EventFixedUpdate -= FixedTick;
         }
 
         protected virtual void Tick()

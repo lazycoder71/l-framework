@@ -28,7 +28,7 @@ namespace LFramework
             if (config.clip == null)
                 return null;
 
-            AudioScript audio = instance._pool.Get();
+            AudioScript audio = Instance._pool.Get();
             audio.Play(config, loop);
 
             return audio;
@@ -36,7 +36,7 @@ namespace LFramework
 
         public static void ReturnPool(AudioScript audioScript)
         {
-            instance._pool.Release(audioScript);
+            Instance._pool.Release(audioScript);
         }
 
         #endregion

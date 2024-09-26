@@ -6,14 +6,11 @@ namespace LFramework
     {
         private Button _button;
 
-        public Button button
+        public Button Button
         {
             get
             {
                 if (_button == null)
-                    _button = GetComponent<Button>();
-                
-                if(_button == null)
                     _button = GetComponentInChildren<Button>();
 
                 return _button;
@@ -22,7 +19,7 @@ namespace LFramework
 
         protected virtual void Awake()
         {
-            button.onClick.AddListener(Button_OnClick);
+            Button.onClick.AddListener(Button_OnClick);
         }
 
         public virtual void Button_OnClick()

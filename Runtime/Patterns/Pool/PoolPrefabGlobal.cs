@@ -11,7 +11,7 @@ namespace LFramework
         [RuntimeInitializeOnLoadMethod]
         static void Init()
         {
-            MonoCallback.instance.eventActiveSceneChanged += MonoCallback_EventActiveSceneChanged;
+            MonoCallback.Instance.EventActiveSceneChanged += MonoCallback_EventActiveSceneChanged;
         }
 
         private static void MonoCallback_EventActiveSceneChanged(Scene sceneCurrent, Scene sceneNext)

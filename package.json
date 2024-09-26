@@ -1,7 +1,7 @@
 {
     "name": "l.unity.frameworks",
     "displayName": "LFramework",
-    "version": "1.0.8",
+    "version": "1.0.9",
     "unity": "2022.3",
     "description": "Collection of utility methods, design patterns, and extensions for Unity.",
     "keywords": [

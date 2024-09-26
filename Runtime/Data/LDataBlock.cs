@@ -27,8 +27,8 @@ namespace LFramework
 
         protected virtual void Init()
         {
-            MonoCallback.instance.eventApplicationPause += MonoCallback_ApplicationOnPause;
-            MonoCallback.instance.eventApplicationQuit += MonoCallback_ApplicationOnQuit;
+            MonoCallback.Instance.EventApplicationPause += MonoCallback_ApplicationOnPause;
+            MonoCallback.Instance.EventApplicationQuit += MonoCallback_ApplicationOnQuit;
 
             LDataBlockHelper.eventDelete += LDataBlockHelper_EventDelete;
         }

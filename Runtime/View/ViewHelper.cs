@@ -7,7 +7,7 @@ namespace LFramework
     {
         public static UniTask<View> PushAsync(AssetReference viewAsset)
         {
-            return ViewContainer.instance.PushAsync(viewAsset);
+            return ViewContainer.Instance.PushAsync(viewAsset);
         }
     }
 }

@@ -139,21 +139,21 @@ namespace LFramework
         {
             LazyInit();
 
-            SceneLoader.instance.Load(sceneBuildIndex);
+            SceneLoader.Instance.Load(sceneBuildIndex);
         }
 
         public static void Load(string sceneName)
         {
             LazyInit();
 
-            SceneLoader.instance.Load(sceneName);
+            SceneLoader.Instance.Load(sceneName);
         }
 
         public static void Reload()
         {
             LazyInit();
 
-            SceneLoader.instance.Load(SceneManager.GetActiveScene().buildIndex);
+            SceneLoader.Instance.Load(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }
