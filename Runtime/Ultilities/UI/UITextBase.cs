@@ -8,7 +8,7 @@ namespace LFramework
     {
         private TextMeshProUGUI _text;
 
-        public TextMeshProUGUI text
+        public TextMeshProUGUI Text
         {
             get
             {
@@ -21,7 +21,7 @@ namespace LFramework
 
         protected virtual void Awake()
         {
-            _text = text;
+            _text = Text;
         }
     }
 }

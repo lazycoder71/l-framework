@@ -55,7 +55,7 @@ namespace LFramework
 
         private static bool _initialized;
 
-        public static bool enabled = false;
+        public static bool Enabled = false;
 
         public static void Init()
         {
@@ -84,19 +84,19 @@ namespace LFramework
 #if UNITY_IOS
         public static void VibrateIOS(ImpactFeedbackStyle style)
         {
-            if (!Application.isMobilePlatform || !enabled) return;
+            if (!Application.isMobilePlatform || !Enabled) return;
             _impactOccurred(style.ToString());
         }
 
         public static void VibrateIOS(NotificationFeedbackStyle style)
         {
-            if (!Application.isMobilePlatform || !enabled) return;
+            if (!Application.isMobilePlatform || !Enabled) return;
             _notificationOccurred(style.ToString());
         }
 
         public static void VibrateIOS_SelectionChanged()
         {
-            if (!Application.isMobilePlatform || !enabled) return;
+            if (!Application.isMobilePlatform || !Enabled) return;
             _selectionChanged();
         }
 #endif
@@ -108,7 +108,7 @@ namespace LFramework
         public static void VibratePop()
         {
 #if UNITY_IOS
-            if (!Application.isMobilePlatform || !enabled) return;
+            if (!Application.isMobilePlatform || !Enabled) return;
             _VibratePop();
 #elif ANDROID
             VibrateAndroid(50);
@@ -121,7 +121,7 @@ namespace LFramework
         public static void VibratePeek()
         {
 #if UNITY_IOS
-            if (!Application.isMobilePlatform || !enabled) return;
+            if (!Application.isMobilePlatform || !Enabled) return;
             _VibratePeek();
 #elif ANDROID
             VibrateAndroid(100);
@@ -134,7 +134,7 @@ namespace LFramework
         public static void VibrateNope()
         {
 #if UNITY_IOS
-            if (!Application.isMobilePlatform || !enabled) return;
+            if (!Application.isMobilePlatform || !Enabled) return;
             _VibrateNope();
 #elif ANDROID
             long[] pattern = { 0, 50, 50, 50 };
@@ -150,7 +150,7 @@ namespace LFramework
         ///</summary>
         public static void VibrateAndroid(long milliseconds)
         {
-            if (!Application.isMobilePlatform || !enabled) return;
+            if (!Application.isMobilePlatform || !Enabled) return;
 
             if (AndroidVersion >= 26)
             {
@@ -169,7 +169,7 @@ namespace LFramework
         ///</summary>
         public static void VibrateAndroid(long[] pattern, int repeat)
         {
-            if (!Application.isMobilePlatform || !enabled) return;
+            if (!Application.isMobilePlatform || !Enabled) return;
 
             if (AndroidVersion >= 26)
             {
@@ -229,7 +229,7 @@ namespace LFramework
         {
 #if UNITY_ANDROID || UNITY_IOS
 
-            if (!Application.isMobilePlatform || !enabled) return;
+            if (!Application.isMobilePlatform || !Enabled) return;
 
             Handheld.Vibrate();
 

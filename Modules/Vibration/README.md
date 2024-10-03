@@ -1,6 +1,6 @@
 # Vibration
 
-Native **free** plugin for Unity for iOS and Android.
+Native plugin for Unity for iOS and Android.
 Use custom vibrations on mobile.
 
 Origin github repository: "https://github.com/BenoitFreslon/Vibration"
@@ -38,6 +38,10 @@ Peek vibration: strong boom (For iOS: only available on iOS with the haptic engi
 Nope vibration: series of three weak booms (For iOS: only available with the haptic engine. iPhone 6s minimum or Android)
 
 `Vibration.VibrateNope();`
+
+## Enable/Disable
+
+Set `Vibration.Enable` to true or false.
 
 ---
 ## Android Only
