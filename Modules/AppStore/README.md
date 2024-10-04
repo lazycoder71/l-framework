@@ -25,5 +25,4 @@ If you got missing class error with classes bellow on device (Android), add this
 
 ```text
 -keep class com.google.android.play.core.** { *; }
--keep class com.google.android.gms.play-** { *; }
 ```
