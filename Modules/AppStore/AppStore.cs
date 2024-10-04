@@ -26,12 +26,20 @@ namespace LFramework.AppStore
 
             if (requestFlowOperation.Error == ReviewErrorCode.NoError)
                 s_playReviewInfo = requestFlowOperation.GetResult();
+            else
+                s_playReviewInfo = null;
         }
 
         public static async UniTask LaunchAndroidReview()
         {
             if (s_playReviewInfo == null)
                 await InitAndroidReview();
+
+            if (s_playReviewInfo == null)
+            {
+                OpenStore();
+                return;
+            }
 
             var launchFlowOperation = s_reviewManager.LaunchReviewFlow(s_playReviewInfo);
 
@@ -42,11 +50,6 @@ namespace LFramework.AppStore
             if (launchFlowOperation.Error != ReviewErrorCode.NoError)
                 OpenStore();
         }
-
-#elif UNITY_IOS || UNITY_IPHONE
-
-        
-
 #endif
 
         public static void Init()
