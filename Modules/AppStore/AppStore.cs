@@ -62,13 +62,13 @@ namespace LFramework.AppStore
 #if UNITY_IOS || UNITY_IPHONE
         public static void OpenStore(string appStoreID)
         {
-            Application.OpenURL($"https://apps.apple.com/us/app/{appStoreID}");
+            Application.OpenURL($"https://apps.apple.com/us/app/id{appStoreID}");
         }
 
-        public static void Review(string appID)
+        public static void Review(string appStoreID)
         {
             if (!UnityEngine.iOS.Device.RequestStoreReview())
-                DirectlyOpen(appID);
+                DirectlyOpen(appStoreID);
         }
 #else
         public static void OpenStore()
