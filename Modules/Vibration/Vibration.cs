@@ -14,7 +14,7 @@ using System.Collections;
 using System.Runtime.InteropServices;
 #endif
 
-namespace LFramework
+namespace LFramework.Vibration
 {
     public static class Vibration
     {
@@ -229,7 +229,8 @@ namespace LFramework
         {
 #if UNITY_ANDROID || UNITY_IOS
 
-            if (!Application.isMobilePlatform || !Enabled) return;
+            if (!Application.isMobilePlatform || !Enabled)
+                return;
 
             Handheld.Vibrate();
 
