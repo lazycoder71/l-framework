@@ -9,18 +9,18 @@ namespace LFramework
         [VerticalGroup("Value")]
         [SerializeField] private RotateMode _rotateMode = RotateMode.Fast;
 
-        public override string displayName { get { return $"{(_isSelf ? "Transform (This)" : _owner)}: DOLocalRotate"; } }
+        public override string DisplayName { get { return $"{(_isSelf ? "Transform (This)" : _owner)}: DOLocalRotate"; } }
 
         protected override Tween GetTween(AnimationSequence animationSequence)
         {
             Transform owner = _isSelf ? animationSequence.transformCached : _owner;
 
-            float duration = _isSpeedBased ? Vector3.Angle(_value, owner.localEulerAngles) / _duration : _duration;
-            Vector3 start = _changeStartValue ? _valueStart : owner.localEulerAngles;
-            Vector3 end = _relative ? owner.localEulerAngles + _value : _value;
+            float duration = _isSpeedBased ? Vector3.Distance(_value, owner.localEulerAngles) / _duration : _duration;
 
-            Tween tween = owner.DOLocalRotate(end, duration, _rotateMode)
-                               .ChangeStartValue(start);
+            Tweener tween = owner.DOLocalRotate(_relative ? owner.localEulerAngles + _value : _value, duration, _rotateMode);
+
+            if (_changeStartValue)
+                tween.ChangeStartValue(_relative ? owner.localEulerAngles + _valueStart : _valueStart);
 
             return tween;
         }

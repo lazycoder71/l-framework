@@ -13,7 +13,7 @@ namespace LFramework
             Insert = 2,
         }
 
-        public abstract string displayName { get; }
+        public abstract string DisplayName { get; }
 
         public abstract void AddToSequence(AnimationSequence animationSequence);
     }

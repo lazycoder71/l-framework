@@ -11,7 +11,7 @@ namespace LFramework
 
         [SerializeField] private Color _value = Color.white;
 
-        public override string displayName { get { return $"{(_isSelf ? "SpriteRenderer (This)" : _owner)}: DOColor"; } }
+        public override string DisplayName { get { return $"{(_isSelf ? "SpriteRenderer (This)" : _owner)}: DOColor"; } }
 
         protected override Tween GetTween(AnimationSequence animationSequence)
         {

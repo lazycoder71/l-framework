@@ -5,18 +5,18 @@ namespace LFramework
 {
     public class AnimationSequenceStepTransformScale : AnimationSequenceStepTransform
     {
-        public override string displayName { get { return $"{(_isSelf ? "Transform (This)" : _owner)}: DOScale"; } }
+        public override string DisplayName { get { return $"{(_isSelf ? "Transform (This)" : _owner)}: DOScale"; } }
 
         protected override Tween GetTween(AnimationSequence animationSequence)
         {
             Transform owner = _isSelf ? animationSequence.transformCached : _owner;
 
             float duration = _isSpeedBased ? Vector3.Distance(_value, owner.localScale) / _duration : _duration;
-            Vector3 start = _changeStartValue ? _valueStart : owner.localScale;
-            Vector3 end = _relative ? owner.localScale + _value : _value;
 
-            Tween tween = owner.DOScale(end, duration)
-                               .ChangeStartValue(start);
+            Tweener tween = owner.DOScale(_relative ? owner.localScale + _value : _value, duration);
+
+            if (_changeStartValue)
+                tween.ChangeStartValue(_relative ? owner.localScale + _valueStart : _valueStart);
 
             return tween;
         }

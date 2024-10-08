@@ -7,17 +7,14 @@ namespace LFramework
 {
     public class AnimationSequenceStepCallback : AnimationSequenceStep
     {
-        [SerializeField]
-        private bool _isInserted;
+        [SerializeField] private bool _isInserted;
 
-        [SerializeField]
         [Min(0f), ShowIf("@_isInserted")]
-        private float _insertTime;
+        [SerializeField] private float _insertTime;
 
-        [SerializeField]
-        private UnityEvent _callback;
+        [SerializeField] private UnityEvent _callback;
 
-        public override string displayName { get { return "Callback"; } }
+        public override string DisplayName { get { return "Callback"; } }
 
         public override void AddToSequence(AnimationSequence animationSequence)
         {

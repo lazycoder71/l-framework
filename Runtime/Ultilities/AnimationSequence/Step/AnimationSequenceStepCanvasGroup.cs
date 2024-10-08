@@ -12,7 +12,7 @@ namespace LFramework
         [Range(0f, 1f)]
         [SerializeField] private float _alpha = 1.0f;
 
-        public override string displayName { get { return $"{(_isSelf ? "CanvasGroup (This)" : _owner)}: DOFade"; } }
+        public override string DisplayName { get { return $"{(_isSelf ? "CanvasGroup (This)" : _owner)}: DOFade"; } }
 
         protected override Tween GetTween(AnimationSequence animationSequence)
         {

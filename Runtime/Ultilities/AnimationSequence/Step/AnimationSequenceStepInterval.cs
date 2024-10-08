@@ -5,10 +5,9 @@ namespace LFramework
 {
     public class AnimationSequenceStepInterval : AnimationSequenceStep
     {
-        [SerializeField] 
-        private float _duration;
+        [SerializeField] private float _duration;
 
-        public override string displayName { get { return "Interval"; } }
+        public override string DisplayName { get { return "Interval"; } }
 
         public override void AddToSequence(AnimationSequence animationSequence)
         {
