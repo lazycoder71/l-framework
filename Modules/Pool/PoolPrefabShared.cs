@@ -21,6 +21,26 @@ namespace LFramework.Pool
             return Get(prefab).GetComponent<T>();
         }
 
+        public static GameObject Get(GameObject prefab, Transform parent)
+        {
+            GameObject result = Get(prefab);
+
+            result.transform.parent = parent;
+
+            return result;
+        }
+
+        public static GameObject Get(GameObject prefab, Vector3 position, Quaternion rotation, Transform parent = null)
+        {
+            GameObject result = Get(prefab);
+
+            result.transform.parent = parent;
+            result.transform.position = position;
+            result.transform.rotation = rotation;
+
+            return result;
+        }
+
         public static GameObject Get(GameObject prefab)
         {
             if (prefab == null)
@@ -45,7 +65,10 @@ namespace LFramework.Pool
             if (instance == null)
                 throw new ArgumentNullException(nameof(instance));
 
-            PoolPrefab pool = s_poolByInstance[instance];
+            s_poolByInstance.TryGetValue(instance, out PoolPrefab pool);
+
+            if (pool == null)
+                return;
 
             pool.Release(instance);
 
@@ -83,6 +106,14 @@ namespace LFramework.Pool
             s_poolByPrefab.TryGetValue(prefab, out var pool);
 
             return pool;
+        }
+
+        public static void ClearPool(GameObject prefab)
+        {
+            PoolPrefab pool = GetPool(prefab);
+
+            pool.Clear();
+            pool.Dispose();
         }
     }
 }
