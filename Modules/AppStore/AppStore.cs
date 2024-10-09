@@ -71,7 +71,7 @@ namespace LFramework.AppStore
         public static void Review(string appStoreID)
         {
             if (!UnityEngine.iOS.Device.RequestStoreReview())
-                DirectlyOpen(appStoreID);
+                OpenStore(appStoreID);
         }
 #else
         public static void OpenStore()
