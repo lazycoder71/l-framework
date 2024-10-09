@@ -6,11 +6,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-using System.Runtime.InteropServices.ComTypes;
 using UnityEngine;
 
 #if UNITY_IOS
-using System.Collections;
 using System.Runtime.InteropServices;
 #endif
 
@@ -45,40 +43,40 @@ namespace LFramework.Vibration
 #endif
 
 #if UNITY_ANDROID
-        public static AndroidJavaClass unityPlayer;
-        public static AndroidJavaObject currentActivity;
-        public static AndroidJavaObject vibrator;
-        public static AndroidJavaObject context;
+        private static AndroidJavaClass s_unityPlayer;
+        private static AndroidJavaObject s_currentActivity;
+        private static AndroidJavaObject s_vibrator;
+        private static AndroidJavaObject s_context;
 
-        public static AndroidJavaClass vibrationEffect;
+        private static AndroidJavaClass s_vibrationEffect;
 #endif
 
-        private static bool _initialized;
+        private static bool s_initialized;
 
         public static bool Enabled = false;
 
         public static void Init()
         {
-            if (_initialized)
+            if (s_initialized)
                 return;
 
 #if UNITY_ANDROID
 
             if (Application.isMobilePlatform)
             {
-                unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-                currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
-                vibrator = currentActivity.Call<AndroidJavaObject>("getSystemService", "vibrator");
-                context = currentActivity.Call<AndroidJavaObject>("getApplicationContext");
+                s_unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+                s_currentActivity = s_unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+                s_vibrator = s_currentActivity.Call<AndroidJavaObject>("getSystemService", "vibrator");
+                s_context = s_currentActivity.Call<AndroidJavaObject>("getApplicationContext");
 
                 if (AndroidVersion >= 26)
                 {
-                    vibrationEffect = new AndroidJavaClass("android.os.VibrationEffect");
+                    s_vibrationEffect = new AndroidJavaClass("android.os.VibrationEffect");
                 }
             }
 #endif
 
-            _initialized = true;
+            s_initialized = true;
         }
 
 #if UNITY_IOS
@@ -154,12 +152,12 @@ namespace LFramework.Vibration
 
             if (AndroidVersion >= 26)
             {
-                AndroidJavaObject createOneShot = vibrationEffect.CallStatic<AndroidJavaObject>("createOneShot", milliseconds, -1);
-                vibrator.Call("vibrate", createOneShot);
+                AndroidJavaObject createOneShot = s_vibrationEffect.CallStatic<AndroidJavaObject>("createOneShot", milliseconds, -1);
+                s_vibrator.Call("vibrate", createOneShot);
             }
             else
             {
-                vibrator.Call("vibrate", milliseconds);
+                s_vibrator.Call("vibrate", milliseconds);
             }
         }
 
@@ -174,12 +172,12 @@ namespace LFramework.Vibration
             if (AndroidVersion >= 26)
             {
                 //long[] amplitudes;
-                AndroidJavaObject createWaveform = vibrationEffect.CallStatic<AndroidJavaObject>("createWaveform", pattern, repeat);
-                vibrator.Call("vibrate", createWaveform);
+                AndroidJavaObject createWaveform = s_vibrationEffect.CallStatic<AndroidJavaObject>("createWaveform", pattern, repeat);
+                s_vibrator.Call("vibrate", createWaveform);
             }
             else
             {
-                vibrator.Call("vibrate", pattern, repeat);
+                s_vibrator.Call("vibrate", pattern, repeat);
             }
         }
 #endif
@@ -192,7 +190,7 @@ namespace LFramework.Vibration
             if (Application.isMobilePlatform)
             {
 #if UNITY_ANDROID
-                vibrator.Call("cancel");
+                s_vibrator.Call("cancel");
 #endif
             }
         }
@@ -205,7 +203,7 @@ namespace LFramework.Vibration
 
                 AndroidJavaClass contextClass = new AndroidJavaClass("android.content.Context");
                 string contextVibratorService = contextClass.GetStatic<string>("VIBRATOR_SERVICE");
-                AndroidJavaObject systemService = context.Call<AndroidJavaObject>("getSystemService", contextVibratorService);
+                AndroidJavaObject systemService = s_context.Call<AndroidJavaObject>("getSystemService", contextVibratorService);
                 if (systemService.Call<bool>("hasVibrator"))
                 {
                     return true;
