@@ -51,7 +51,7 @@ namespace LFramework.Vibration
         private static AndroidJavaClass s_vibrationEffect;
 #endif
 
-        private static bool s_initialized;
+        private static bool s_initialized = false;
 
         public static bool Enabled = false;
 

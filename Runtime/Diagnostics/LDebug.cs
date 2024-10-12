@@ -11,8 +11,8 @@ namespace LFramework
     /// </summary>
     public static class LDebug
     {
-        private static readonly float s_headerColorStepStart = 0.05f;
-        private static readonly float s_headerColorStep = 0.05f;
+        private static readonly float s_headerColorStepStart = 0.5f;
+        private static readonly float s_headerColorStep = 0.075f;
         private static int s_headerColorCount = 0;
         private static Dictionary<string, Color> s_headerColorDict = new Dictionary<string, Color>();
 

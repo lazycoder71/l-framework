@@ -1,7 +1,9 @@
 {
     "name": "LFramework.Vibration",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:066eba6989fe3dc4193e5b535868c168"
+    ],
     "includePlatforms": [
         "Android",
         "Editor",
