@@ -1,13 +1,13 @@
 #if UNITY_ANDROID
 
 using UnityEngine;
-using System.Diagnostics.CodeAnalysis;
 
 namespace LFramework.Vibration
 {
     /// <summary>
     /// Class for controlling Vibration on Android. Automatically initializes before scene is loaded.
     /// Original file: https://gist.github.com/ruzrobert/d98220a3b7f71ccc90403e041967c46b
+    /// Edited by lazycoder71
     /// </summary>
     public static class VibrationAndroid
     {
@@ -41,10 +41,6 @@ namespace LFramework.Vibration
         {
             if (_isInitialized)
                 return;
-
-            // Add APP VIBRATION PERMISSION to the Manifest
-            if (Application.isConsolePlatform)
-                Handheld.Vibrate();
 
             // Get Api Level
             using (AndroidJavaClass androidVersionClass = new AndroidJavaClass("android.os.Build$VERSION"))
@@ -88,7 +84,7 @@ namespace LFramework.Vibration
 
         #endregion
 
-        #region Vibrate Public
+        #region Functions -> Public
 
         /// <summary>
         /// Vibrate for Milliseconds, with Amplitude (if available).
@@ -196,42 +192,6 @@ namespace LFramework.Vibration
             VibrateEffectPredefined(effectId);
         }
 
-        #endregion
-
-        #region Public Properties & Controls
-
-        public static long[] ParsePattern(string pattern)
-        {
-            if (pattern == null)
-                return new long[0];
-
-            pattern = pattern.Trim();
-
-            string[] split = pattern.Split(',');
-
-            long[] timings = new long[split.Length];
-
-            for (int i = 0; i < split.Length; i++)
-            {
-                if (int.TryParse(split[i].Trim(), out int duration))
-                    timings[i] = duration < 0 ? 0 : duration;
-                else
-                    timings[i] = 0;
-            }
-
-            return timings;
-        }
-
-        /// <summary>
-        /// Returns Android Api Level
-        /// </summary>
-        public static int GetApiLevel() => _apiLevel;
-
-        /// <summary>
-        /// Returns Default Amplitude of device, or 0.
-        /// </summary>
-        public static int GetDefaultAmplitude() => _defaultAmplitude;
-
         /// <summary>
         /// Returns true if device has vibrator
         /// </summary>
@@ -259,10 +219,11 @@ namespace LFramework.Vibration
             if (HasVibrator())
                 _vibrator.Call("cancel");
         }
+
         #endregion
 
-        #region Vibrate Internal
-        #region Vibration Callers
+        #region Function -> Private
+
         private static void VibrateEffect(long milliseconds, int amplitude)
         {
             using (AndroidJavaObject effect = CreateEffect_OneShot(milliseconds, amplitude))
@@ -304,9 +265,7 @@ namespace LFramework.Vibration
                 _vibrator.Call("vibrate", effect);
             }
         }
-        #endregion
 
-        #region Vibration Effect
         /// <summary>
         /// Wrapper for public static VibrationEffect createOneShot (long milliseconds, int amplitude). API >= 26
         /// </summary>
@@ -338,10 +297,7 @@ namespace LFramework.Vibration
         {
             return _vibrationEffectClass.CallStatic<AndroidJavaObject>("createWaveform", timings, repeat);
         }
-        #endregion
-        #endregion
 
-        #region Internal
         private static void ClampAmplitudesArray(int[] amplitudes)
         {
             for (int i = 0; i < amplitudes.Length; i++)
@@ -349,14 +305,15 @@ namespace LFramework.Vibration
                 amplitudes[i] = Mathf.Clamp(amplitudes[i], 1, 255);
             }
         }
+
         #endregion
 
         public static class PredefinedEffect
         {
-            public static int EFFECT_CLICK;         // public static final int EFFECT_CLICK
-            public static int EFFECT_DOUBLE_CLICK;  // public static final int EFFECT_DOUBLE_CLICK
-            public static int EFFECT_HEAVY_CLICK;   // public static final int EFFECT_HEAVY_CLICK
-            public static int EFFECT_TICK;          // public static final int EFFECT_TICK
+            public static int EFFECT_CLICK;
+            public static int EFFECT_DOUBLE_CLICK;
+            public static int EFFECT_HEAVY_CLICK;
+            public static int EFFECT_TICK;
         }
     }
 }
