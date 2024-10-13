@@ -11,6 +11,23 @@ namespace LFramework.Vibration
     /// </summary>
     public static class VibrationAndroid
     {
+        private static readonly long _lightDuration = 20;
+        public static readonly long _mediumDuration = 40;
+        public static readonly long _heavyDuration = 80;
+
+        public static readonly int _lightAmplitude = 40;
+        public static readonly int _mediumAmplitude = 120;
+        public static readonly int _heavyAmplitude = 255;
+
+        private static readonly long[] _successPattern = { 0, _lightDuration, _lightDuration, _heavyDuration };
+        private static readonly int[] _successPatternAmplitude = { 0, _lightAmplitude, 0, _heavyAmplitude };
+
+        private static readonly long[] _warningPattern = { 0, _heavyDuration, _lightDuration, _mediumDuration };
+        private static readonly int[] _warningPatternAmplitude = { 0, _heavyAmplitude, 0, _mediumAmplitude };
+
+        private static readonly long[] _failurePattern = { 0, _mediumDuration, _lightDuration, _mediumDuration, _lightDuration, _heavyDuration, _lightDuration, _lightDuration };
+        private static readonly int[] _failurePatternAmplitude = { 0, _mediumAmplitude, 0, _mediumAmplitude, 0, _heavyAmplitude, 0, _lightAmplitude };
+
         // Initialization flag
         private static bool _isInitialized = false;
 
@@ -22,17 +39,11 @@ namespace LFramework.Vibration
         // Api level
         private static int _apiLevel = 1;
 
-        private static bool IsSupportVibrationEffect()
-        {
-            // Available only from Api >= 26
-            return _apiLevel >= 26;
-        }
+        // Available only from Api >= 26
+        private static bool _isSupportVibrationEffect { get { return _apiLevel >= 26; } }
 
-        private static bool IsSupportPredefinedEffect()
-        {
-            // Available only from Api >= 29
-            return _apiLevel >= 29;
-        }
+        // Available only from Api >= 29
+        private static bool _isSupportPredefinedEffect { get { return _apiLevel >= 29; } }
 
         #region Initialization
 
@@ -40,6 +51,9 @@ namespace LFramework.Vibration
         private static void Initialize()
         {
             if (_isInitialized)
+                return;
+
+            if (Application.isEditor)
                 return;
 
             // Get Api Level
@@ -57,19 +71,19 @@ namespace LFramework.Vibration
                     _vibrator = currentActivity.Call<AndroidJavaObject>("getSystemService", "vibrator");
 
                     // If device supports vibration effects, get corresponding class
-                    if (IsSupportVibrationEffect())
+                    if (_isSupportVibrationEffect)
                     {
                         _vibrationEffectClass = new AndroidJavaClass("android.os.VibrationEffect");
                         _defaultAmplitude = Mathf.Clamp(_vibrationEffectClass.GetStatic<int>("DEFAULT_AMPLITUDE"), 1, 255);
                     }
 
                     // If device supports predefined effects, get their IDs
-                    if (IsSupportPredefinedEffect())
+                    if (_isSupportPredefinedEffect)
                     {
-                        PredefinedEffect.EFFECT_CLICK = _vibrationEffectClass.GetStatic<int>("EFFECT_CLICK");
-                        PredefinedEffect.EFFECT_DOUBLE_CLICK = _vibrationEffectClass.GetStatic<int>("EFFECT_DOUBLE_CLICK");
-                        PredefinedEffect.EFFECT_HEAVY_CLICK = _vibrationEffectClass.GetStatic<int>("EFFECT_HEAVY_CLICK");
-                        PredefinedEffect.EFFECT_TICK = _vibrationEffectClass.GetStatic<int>("EFFECT_TICK");
+                        PredefinedEffect.CLICK = _vibrationEffectClass.GetStatic<int>("EFFECT_CLICK");
+                        PredefinedEffect.DOUBLE_CLICK = _vibrationEffectClass.GetStatic<int>("EFFECT_DOUBLE_CLICK");
+                        PredefinedEffect.HEAVY_CLICK = _vibrationEffectClass.GetStatic<int>("EFFECT_HEAVY_CLICK");
+                        PredefinedEffect.TICK = _vibrationEffectClass.GetStatic<int>("EFFECT_TICK");
                     }
                 }
             }
@@ -77,7 +91,7 @@ namespace LFramework.Vibration
             LDebug.Log(typeof(VibrationAndroid), $"Initialized" +
                 $"\nDevice has Vibrator = {HasVibrator()}" +
                 $"\nDevice support Amplitude Control = {HasAmplitudeControl()}" +
-                $"\nDevice support Predefined Effects = {IsSupportPredefinedEffect()}");
+                $"\nDevice support Predefined Effects = {_isSupportPredefinedEffect}");
 
             _isInitialized = true;
         }
@@ -85,6 +99,61 @@ namespace LFramework.Vibration
         #endregion
 
         #region Functions -> Public
+
+        public static void Vibrate(VibrationType type)
+        {
+            switch (type)
+            {
+                case VibrationType.Default:
+                    Handheld.Vibrate();
+                    break;
+
+                case VibrationType.ImpactLight:
+                    Vibrate(_lightDuration, _lightAmplitude);
+                    break;
+
+                case VibrationType.Rigid:
+                case VibrationType.ImpactMedium:
+                    Vibrate(_mediumDuration, _mediumAmplitude);
+                    break;
+
+                case VibrationType.ImpactHeavy:
+                    Vibrate(_heavyDuration, _heavyAmplitude);
+                    break;
+
+                case VibrationType.Success:
+                    Vibrate(_successPattern, _successPatternAmplitude);
+                    break;
+
+                case VibrationType.Failure:
+                    Vibrate(_failurePattern, _failurePatternAmplitude);
+                    break;
+
+                case VibrationType.Warning:
+                    Vibrate(_warningPattern, _warningPatternAmplitude);
+                    break;
+
+                case VibrationType.Tick:
+                    Vibrate(PredefinedEffect.TICK);
+                    break;
+
+                case VibrationType.ClickSingle:
+                    Vibrate(PredefinedEffect.CLICK);
+                    break;
+
+                case VibrationType.ClickDouble:
+                    Vibrate(PredefinedEffect.DOUBLE_CLICK);
+                    break;
+
+                case VibrationType.ClickHeavy:
+                    Vibrate(PredefinedEffect.HEAVY_CLICK);
+                    break;
+
+                default:
+                    LDebug.Log(typeof(VibrationAndroid), $"Undefined vibrate type {type}");
+                    break;
+            }
+        }
 
         /// <summary>
         /// Vibrate for Milliseconds, with Amplitude (if available).
@@ -102,7 +171,7 @@ namespace LFramework.Vibration
             if (cancel)
                 Cancel();
 
-            if (IsSupportVibrationEffect())
+            if (_isSupportVibrationEffect)
             {
                 // Validate amplitude
                 amplitude = Mathf.Clamp(amplitude, -1, 255);
@@ -158,7 +227,7 @@ namespace LFramework.Vibration
             if (cancel)
                 Cancel();
 
-            if (IsSupportVibrationEffect())
+            if (_isSupportVibrationEffect)
             {
                 if (amplitudes != null)
                     VibrateEffect(pattern, amplitudes, repeat);
@@ -183,7 +252,7 @@ namespace LFramework.Vibration
             if (!HasVibrator())
                 return;
 
-            if (!IsSupportPredefinedEffect())
+            if (!_isSupportPredefinedEffect)
                 return;
 
             if (cancel)
@@ -205,7 +274,7 @@ namespace LFramework.Vibration
         /// </summary>
         public static bool HasAmplitudeControl()
         {
-            if (HasVibrator() && IsSupportVibrationEffect())
+            if (HasVibrator() && _isSupportVibrationEffect)
                 return _vibrator.Call<bool>("hasAmplitudeControl"); // API 26+ specific
             else
                 return false; // no amplitude control below API level 26
@@ -310,10 +379,10 @@ namespace LFramework.Vibration
 
         public static class PredefinedEffect
         {
-            public static int EFFECT_CLICK;
-            public static int EFFECT_DOUBLE_CLICK;
-            public static int EFFECT_HEAVY_CLICK;
-            public static int EFFECT_TICK;
+            public static int CLICK;
+            public static int DOUBLE_CLICK;
+            public static int HEAVY_CLICK;
+            public static int TICK;
         }
     }
 }

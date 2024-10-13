@@ -90,9 +90,54 @@ namespace LFramework.Vibration
             return _HasVibrator();
         }
 
-        public static void Vibrate()
+        public static void Vibrate(VibrationType type)
         {
-            Handheld.Vibrate();
+            switch (type)
+            {
+                case VibrationType.Default:
+                    Handheld.Vibrate();
+                    break;
+
+                case VibrationType.Tick:
+                case VibrationType.ImpactLight:
+                    Vibrate(ImpactFeedbackStyle.Light);
+                    break;
+
+                case VibrationType.ImpactMedium:
+                    Vibrate(ImpactFeedbackStyle.Medium);
+                    break;
+
+                case VibrationType.ClickHeavy:
+                case VibrationType.ImpactHeavy:
+                    Vibrate(ImpactFeedbackStyle.Heavy);
+                    break;
+
+                case VibrationType.ClickDouble:
+                case VibrationType.Rigid:
+                    Vibrate(ImpactFeedbackStyle.Rigid);
+                    break;
+
+                case VibrationType.ClickSingle:
+                case VibrationType.Soft:
+                    Vibrate(ImpactFeedbackStyle.Soft);
+                    break;
+
+                case VibrationType.Success:
+                    Vibrate(NotificationFeedbackStyle.Success);
+                    break;
+
+                case VibrationType.Failure:
+                    Vibrate(NotificationFeedbackStyle.Error);
+                    break;
+
+                case VibrationType.Warning:
+                    Vibrate(NotificationFeedbackStyle.Warning);
+                    break;
+
+                default:
+                    LDebug.Log(typeof(VibrationIOS), $"Undefined vibrate type {type}");
+                    break;
+            }
         }
     }
 }
