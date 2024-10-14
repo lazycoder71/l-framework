@@ -98,7 +98,6 @@ namespace LFramework.Vibration
                     Handheld.Vibrate();
                     break;
 
-                case VibrationType.Tick:
                 case VibrationType.ImpactLight:
                     Vibrate(ImpactFeedbackStyle.Light);
                     break;
@@ -107,19 +106,8 @@ namespace LFramework.Vibration
                     Vibrate(ImpactFeedbackStyle.Medium);
                     break;
 
-                case VibrationType.ClickHeavy:
                 case VibrationType.ImpactHeavy:
                     Vibrate(ImpactFeedbackStyle.Heavy);
-                    break;
-
-                case VibrationType.ClickDouble:
-                case VibrationType.Rigid:
-                    Vibrate(ImpactFeedbackStyle.Rigid);
-                    break;
-
-                case VibrationType.ClickSingle:
-                case VibrationType.Soft:
-                    Vibrate(ImpactFeedbackStyle.Soft);
                     break;
 
                 case VibrationType.Success:

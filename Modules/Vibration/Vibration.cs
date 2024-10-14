@@ -1,10 +1,15 @@
-﻿using UnityEngine;
-
-namespace LFramework.Vibration
+﻿namespace LFramework.Vibration
 {
     public static class Vibration
     {
         public static bool Enabled = true;
+
+        public static void Init()
+        {
+#if UNITY_ANDROID
+            VibrationAndroid.Init();
+#endif
+        }
 
         public static void Vibrate(VibrationType type)
         {

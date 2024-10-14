@@ -12,16 +12,5 @@ namespace LFramework.Vibration
         Success,
         Failure,
         Warning,
-
-        // iOS
-        Rigid,
-        Soft,
-
-        // Android predefined patterns
-        ClickSingle,
-        ClickDouble,
-        ClickHeavy,
-
-        Tick,
     }
 }

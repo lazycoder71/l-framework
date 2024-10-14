@@ -42,18 +42,14 @@ namespace LFramework.Vibration
         // Available only from Api >= 26
         private static bool _isSupportVibrationEffect { get { return _apiLevel >= 26; } }
 
-        // Available only from Api >= 29
-        private static bool _isSupportPredefinedEffect { get { return _apiLevel >= 29; } }
-
         #region Initialization
 
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        private static void Initialize()
+        public static void Init()
         {
             if (_isInitialized)
                 return;
 
-            if (Application.isEditor)
+            if (Application.platform != RuntimePlatform.Android)
                 return;
 
             // Get Api Level
@@ -76,22 +72,13 @@ namespace LFramework.Vibration
                         _vibrationEffectClass = new AndroidJavaClass("android.os.VibrationEffect");
                         _defaultAmplitude = Mathf.Clamp(_vibrationEffectClass.GetStatic<int>("DEFAULT_AMPLITUDE"), 1, 255);
                     }
-
-                    // If device supports predefined effects, get their IDs
-                    if (_isSupportPredefinedEffect)
-                    {
-                        PredefinedEffect.CLICK = _vibrationEffectClass.GetStatic<int>("EFFECT_CLICK");
-                        PredefinedEffect.DOUBLE_CLICK = _vibrationEffectClass.GetStatic<int>("EFFECT_DOUBLE_CLICK");
-                        PredefinedEffect.HEAVY_CLICK = _vibrationEffectClass.GetStatic<int>("EFFECT_HEAVY_CLICK");
-                        PredefinedEffect.TICK = _vibrationEffectClass.GetStatic<int>("EFFECT_TICK");
-                    }
                 }
             }
 
             LDebug.Log(typeof(VibrationAndroid), $"Initialized" +
                 $"\nDevice has Vibrator = {HasVibrator()}" +
                 $"\nDevice support Amplitude Control = {HasAmplitudeControl()}" +
-                $"\nDevice support Predefined Effects = {_isSupportPredefinedEffect}");
+                $"\nDefault amplitude = {_defaultAmplitude}");
 
             _isInitialized = true;
         }
@@ -112,7 +99,6 @@ namespace LFramework.Vibration
                     Vibrate(_lightDuration, _lightAmplitude);
                     break;
 
-                case VibrationType.Rigid:
                 case VibrationType.ImpactMedium:
                     Vibrate(_mediumDuration, _mediumAmplitude);
                     break;
@@ -133,24 +119,8 @@ namespace LFramework.Vibration
                     Vibrate(_warningPattern, _warningPatternAmplitude);
                     break;
 
-                case VibrationType.Tick:
-                    Vibrate(PredefinedEffect.TICK);
-                    break;
-
-                case VibrationType.ClickSingle:
-                    Vibrate(PredefinedEffect.CLICK);
-                    break;
-
-                case VibrationType.ClickDouble:
-                    Vibrate(PredefinedEffect.DOUBLE_CLICK);
-                    break;
-
-                case VibrationType.ClickHeavy:
-                    Vibrate(PredefinedEffect.HEAVY_CLICK);
-                    break;
-
                 default:
-                    LDebug.Log(typeof(VibrationAndroid), $"Undefined vibrate type {type}");
+                    LDebug.Log(typeof(VibrationAndroid), $"Undefined vibration type {type}");
                     break;
             }
         }
@@ -160,10 +130,10 @@ namespace LFramework.Vibration
         /// If amplitude is -1, amplitude is Disabled. If -1, device DefaultAmplitude is used. Otherwise, values between 1-255 are allowed.
         /// If 'cancel' is true, Cancel() will be called automatically.
         /// </summary>
-        public static void Vibrate(long milliseconds, int amplitude = -1, bool cancel = false)
+        public static void Vibrate(long milliseconds, int amplitude = 0, bool cancel = false)
         {
             // Lazy initialize
-            Initialize();
+            Init();
 
             if (!HasVibrator())
                 return;
@@ -176,16 +146,13 @@ namespace LFramework.Vibration
                 // Validate amplitude
                 amplitude = Mathf.Clamp(amplitude, -1, 255);
 
-                // If -1, disable amplitude (use maximum amplitude)
-                if (amplitude == -1)
+                // If less -1 or don't have amplitude control, disable amplitude (use maximum amplitude)
+                if (amplitude <= -1 || !HasAmplitudeControl())
                     amplitude = 255;
 
                 // If 0, use device DefaultAmplitude
                 if (amplitude == 0)
                     amplitude = _defaultAmplitude;
-
-                // If amplitude is not supported, use 255; if amplitude is -1, use systems DefaultAmplitude. Otherwise use user-defined value.
-                amplitude = !HasAmplitudeControl() ? 255 : amplitude;
 
                 VibrateEffect(milliseconds, amplitude);
             }
@@ -204,7 +171,7 @@ namespace LFramework.Vibration
         public static void Vibrate(long[] pattern, int[] amplitudes = null, int repeat = -1, bool cancel = false)
         {
             // Lazy initialize
-            Initialize();
+            Init();
 
             if (!HasVibrator())
                 return;
@@ -238,27 +205,6 @@ namespace LFramework.Vibration
             {
                 VibrateLegacy(pattern, repeat);
             }
-        }
-
-        /// <summary>
-        /// Vibrate predefined effect (described in Vibration.PredefinedEffect). Available from Api Level >= 29.
-        /// If 'cancel' is true, Cancel() will be called automatically.
-        /// </summary>
-        public static void VibratePredefined(int effectId, bool cancel = false)
-        {
-            // Lazy initialize
-            Initialize();
-
-            if (!HasVibrator())
-                return;
-
-            if (!_isSupportPredefinedEffect)
-                return;
-
-            if (cancel)
-                Cancel();
-
-            VibrateEffectPredefined(effectId);
         }
 
         /// <summary>
@@ -376,14 +322,6 @@ namespace LFramework.Vibration
         }
 
         #endregion
-
-        public static class PredefinedEffect
-        {
-            public static int CLICK;
-            public static int DOUBLE_CLICK;
-            public static int HEAVY_CLICK;
-            public static int TICK;
-        }
     }
 }
 
