@@ -78,7 +78,7 @@ namespace LFramework
         {
             LCollectItem item = _config.spawnPrefab.Create(transformCached, false).GetComponent<LCollectItem>();
 
-            item.transformCached.localPosition = spawnPosition;
+            item.transform.localPosition = spawnPosition;
 
             item.Construct(_config, _destination);
         }

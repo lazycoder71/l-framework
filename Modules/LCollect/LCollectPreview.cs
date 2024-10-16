@@ -5,7 +5,7 @@ using Vertx.Debugging;
 namespace LFramework
 {
     [RequireComponent(typeof(RectTransform))]
-    public class LCollectPreview : MonoCached
+    public class LCollectPreview : MonoBehaviour
     {
         [Title("Reference")]
         [SerializeField, AssetsOnly] LCollectConfig _config;

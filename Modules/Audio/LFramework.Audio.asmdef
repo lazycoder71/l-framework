@@ -1,12 +1,11 @@
 {
-    "name": "LFramework.Editor",
-    "rootNamespace": "LFramework.Editor",
+    "name": "LFramework.Audio",
+    "rootNamespace": "LFramework.Audio",
     "references": [
-        "GUID:066eba6989fe3dc4193e5b535868c168"
+        "GUID:066eba6989fe3dc4193e5b535868c168",
+        "GUID:fc514ba76b6526f468e8b25c30130a1a"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

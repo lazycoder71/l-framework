@@ -9,7 +9,7 @@ namespace LFramework
 
         protected override Tween GetTween(LCollectItem item)
         {
-            return item.transformCached.DOScale(_value, _duration)
+            return item.transform.DOScale(_value, _duration)
                                        .SetEase(_ease);
         }
     }

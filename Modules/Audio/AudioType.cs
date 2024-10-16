@@ -1,4 +1,4 @@
-namespace LFramework
+namespace LFramework.Audio
 {
     [System.Serializable]
     public enum AudioType

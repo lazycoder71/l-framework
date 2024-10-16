@@ -8,20 +8,21 @@ namespace LFramework
     {
         [SerializeField] T _value;
 
-        public T value
+        public T Value
         {
-            get { return _value; }
+            get
+            {
+                return _value;
+            }
             set
             {
-                if (!_value.Equals(value))
-                {
-                    _value = value;
-                    eventValueChanged?.Invoke(_value);
-                }
+                _value = value;
+
+                EventValueChanged?.Invoke(_value);
             }
         }
 
-        public event Action<T> eventValueChanged;
+        public event Action<T> EventValueChanged;
 
         public LValue(T defaultValue)
         {

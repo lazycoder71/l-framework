@@ -20,12 +20,12 @@ namespace LFramework
             switch (_journey)
             {
                 case Journey.Spawn:
-                    posEnd = item.transformCached.localPosition;
+                    posEnd = item.transform.localPosition;
                     posStart = _startAtCenter ? Vector3.zero : posEnd + _startOffset * item.rectTransform.GetUnitPerPixel();
                     break;
                 case Journey.Return:
                     posEnd = item.destination.position;
-                    posStart = item.transformCached.position;
+                    posStart = item.transform.position;
                     break;
             }
 
@@ -37,7 +37,7 @@ namespace LFramework
                 points[1] = posStart + (posEnd - posStart).MultipliedBy(_points[0]);
                 points[2] = posStart + (posEnd - posStart).MultipliedBy(_points[1]);
 
-                return item.transformCached.DOPath(points, _duration, _pathType, PathMode.Sidescroller2D, 10, Color.red);
+                return item.transform.DOPath(points, _duration, _pathType, PathMode.Sidescroller2D, 10, Color.red);
             }
             else
             {
@@ -51,7 +51,7 @@ namespace LFramework
                     points[i + 1] = posStart + (posEnd - posStart).MultipliedBy(_points[i]);
                 }
 
-                return item.transformCached.DOPath(points, _duration, _pathType, PathMode.Full3D, 10, Color.red);
+                return item.transform.DOPath(points, _duration, _pathType, PathMode.Full3D, 10, Color.red);
             }
         }
 

@@ -86,7 +86,7 @@ namespace LFramework
             return assets;
         }
 
-        static void SaveAssetsDatabase()
+        private static void SaveAssetsDatabase()
         {
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();

@@ -1,12 +1,12 @@
 {
-    "name": "LFramework.Editor",
-    "rootNamespace": "LFramework.Editor",
+    "name": "LFramework.LCollect",
+    "rootNamespace": "LFramework.LCollect",
     "references": [
-        "GUID:066eba6989fe3dc4193e5b535868c168"
+        "GUID:066eba6989fe3dc4193e5b535868c168",
+        "GUID:d46639c9da3f5314d8ef10481df4dccb",
+        "GUID:d91d5ec20cf4bd541bb898f67497ca6d"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

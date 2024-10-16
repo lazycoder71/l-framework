@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace LFramework
 {
-    public class LCollectItem : MonoCached
+    public class LCollectItem : MonoBehaviour
     {
         Sequence _sequence;
 
@@ -50,7 +50,7 @@ namespace LFramework
 
         private void Destruct()
         {
-            Destroy(gameObjectCached);
+            Destroy(gameObject);
         }
     }
 }

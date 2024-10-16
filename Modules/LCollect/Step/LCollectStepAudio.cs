@@ -1,4 +1,5 @@
 using DG.Tweening;
+using LFramework.Audio;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -6,15 +7,15 @@ namespace LFramework
 {
     public class LCollectStepAudio : LCollectStep
     {
-        [SerializeField, HorizontalGroup]
-        private bool _isInserted;
+        [HorizontalGroup]
+        [SerializeField] private bool _isInserted;
 
         [HorizontalGroup]
-        [SerializeField, Min(0f), ShowIf("@_isInserted")]
+        [Min(0f), ShowIf("@_isInserted")]
+        [SerializeField]
         private float _insertTime;
 
-        [SerializeField]
-        private AudioConfig _audio;
+        [SerializeField] private AudioConfig _audio;
 
         public override string displayName { get { return "Audio"; } }
 
