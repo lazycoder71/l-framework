@@ -10,7 +10,7 @@ namespace LFramework.Audio
         public static LValue<float> VolumeMusic = new LValue<float>(1.0f);
         public static LValue<float> VolumeSound = new LValue<float>(1.0f);
 
-        private static List<AudioEntity> s_entities = new List<AudioEntity>();
+        private static List<AudioPlayer> s_players = new List<AudioPlayer>();
 
         [RuntimeInitializeOnLoadMethod]
         private static void InitOnStartup()
@@ -24,9 +24,9 @@ namespace LFramework.Audio
 
         private static void Volume_EventValueChanged(float volume)
         {
-            for (int i = 0; i < s_entities.Count; i++)
+            for (int i = 0; i < s_players.Count; i++)
             {
-                s_entities[i].UpdateVolume();
+                s_players[i].UpdateVolume();
             }
         }
 
@@ -34,22 +34,22 @@ namespace LFramework.Audio
 
         #region Function -> Public
 
-        public static void Register(AudioEntity entity)
+        public static void Register(AudioPlayer entity)
         {
-            s_entities.Add(entity);
+            s_players.Add(entity);
         }
 
-        public static void Unregister(AudioEntity entity)
+        public static void Unregister(AudioPlayer entity)
         {
-            s_entities.Remove(entity);
+            s_players.Remove(entity);
         }
 
-        public static AudioEntity Play(AudioConfig config, bool isLoop = false)
+        public static AudioPlayer Play(AudioConfig config, bool isLoop = false)
         {
             if (config == null)
                 throw new ArgumentNullException(nameof(config));
 
-            AudioEntity audioEntity = AudioEntityPool.Get();
+            AudioPlayer audioEntity = AudioPlayerPool.Get();
 
             audioEntity.Play(config, isLoop: isLoop);
 
@@ -61,11 +61,11 @@ namespace LFramework.Audio
             if (config == null)
                 throw new ArgumentNullException(nameof(config));
 
-            for (int i = 0; i < s_entities.Count; i++)
+            for (int i = 0; i < s_players.Count; i++)
             {
-                if (s_entities[i].Config == config)
+                if (s_players[i].Config == config)
                 {
-                    s_entities[i].Stop();
+                    s_players[i].Stop();
 
                     if (!isAll)
                         break;
@@ -75,19 +75,19 @@ namespace LFramework.Audio
 
         public static void StopAll()
         {
-            for (int i = 0; i < s_entities.Count; i++)
+            for (int i = 0; i < s_players.Count; i++)
             {
-                s_entities[i].Stop();
+                s_players[i].Stop();
             }
         }
 
-        public static AudioEntity Find(AudioConfig config)
+        public static AudioPlayer Find(AudioConfig config)
         {
-            for (int i = 0; i < s_entities.Count; i++)
+            for (int i = 0; i < s_players.Count; i++)
             {
-                if (s_entities[i].Config == config)
+                if (s_players[i].Config == config)
                 {
-                    return s_entities[i];
+                    return s_players[i];
                 }
             }
 

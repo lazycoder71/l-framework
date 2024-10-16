@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace LFramework.Audio
 {
-    public class AudioEntity : MonoBase
+    public class AudioPlayer : MonoBase
     {
         private AudioConfig _config;
 
@@ -66,7 +66,7 @@ namespace LFramework.Audio
             _audioSource.Play();
         }
 
-        public AudioEntity BindTo(Transform target)
+        public AudioPlayer BindTo(Transform target)
         {
             _bindTarget = target;
             _bind = true;
@@ -74,14 +74,14 @@ namespace LFramework.Audio
             return this;
         }
 
-        public AudioEntity SetPitch(float pitch)
+        public AudioPlayer SetPitch(float pitch)
         {
             _audioSource.pitch = pitch;
 
             return this;
         }
 
-        public AudioEntity FadeIn(float duration, Ease ease = Ease.InSine)
+        public AudioPlayer FadeIn(float duration, Ease ease = Ease.InSine)
         {
             if (_config == null)
                 return null;
@@ -96,7 +96,7 @@ namespace LFramework.Audio
             return this;
         }
 
-        public AudioEntity FadeOut(float duration, Ease ease = Ease.OutSine)
+        public AudioPlayer FadeOut(float duration, Ease ease = Ease.InSine)
         {
             if (_config == null)
                 return null;
@@ -124,7 +124,7 @@ namespace LFramework.Audio
 
             _config = null;
 
-            AudioEntityPool.Release(this);
+            AudioPlayerPool.Release(this);
         }
 
         public void UpdateVolume()

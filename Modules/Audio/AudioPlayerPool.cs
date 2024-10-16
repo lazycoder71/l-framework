@@ -3,22 +3,22 @@ using UnityEngine.Pool;
 
 namespace LFramework.Audio
 {
-    public class AudioEntityPool
+    public class AudioPlayerPool
     {
-        private static ObjectPool<AudioEntity> s_pool;
+        private static ObjectPool<AudioPlayer> s_pool;
 
         #region Function -> Public
 
-        public static void Release(AudioEntity audioScript)
+        public static void Release(AudioPlayer audioScript)
         {
             s_pool.Release(audioScript);
         }
 
-        public static AudioEntity Get()
+        public static AudioPlayer Get()
         {
             InitPool();
 
-            AudioEntity audio = null;
+            AudioPlayer audio = null;
 
             while (audio == null)
                 audio = s_pool.Get();
@@ -35,11 +35,11 @@ namespace LFramework.Audio
             if (s_pool != null)
                 return;
 
-            s_pool = new ObjectPool<AudioEntity>(
+            s_pool = new ObjectPool<AudioPlayer>(
                 () =>
                 {
                     // Create object with audio script + audio source
-                    AudioEntity audio = new GameObject(typeof(AudioEntity).ToString(), typeof(AudioSource)).AddComponent<AudioEntity>();
+                    AudioPlayer audio = new GameObject(typeof(AudioPlayer).ToString(), typeof(AudioSource)).AddComponent<AudioPlayer>();
 
                     // Audio should not stop when scene changed
                     Object.DontDestroyOnLoad(audio.GameObjectCached);
