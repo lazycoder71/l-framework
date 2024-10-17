@@ -8,6 +8,7 @@ namespace LFramework.Audio
     {
         [SerializeField] private AudioClip _clip;
         [SerializeField] private AudioType _type;
+        
         [Range(0f, 1f)]
         [SerializeField] private float _volumeScale = 1f;
         [SerializeField] private bool _is3D;
