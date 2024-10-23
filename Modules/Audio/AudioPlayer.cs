@@ -18,9 +18,13 @@ namespace LFramework.Audio
         // Internal volume scale, affected by config volume scale and audio settings volume scale
         private float _volume = 1.0f;
 
+        private float _playTime;
+
         public AudioConfig Config { get { return _config; } }
 
         public AudioSource AudioSource { get { return _audioSource; } }
+
+        public float PlayTime { get { return _playTime; } }
 
         #region MonoBehaviour
 
@@ -161,6 +165,8 @@ namespace LFramework.Audio
             _audioSource.maxDistance = config.Distance.y;
             _audioSource.spatialBlend = config.Is3D ? 1.0f : 0f;
             _audioSource.pitch = config.PitchVariation ? config.PitchVariationRange.RandomWithin() : 1.0f;
+
+            _playTime = Time.time;
 
             UpdateVolume();
         }

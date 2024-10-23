@@ -26,9 +26,9 @@ namespace LFramework
             // Setup collect object
             LCollect collect = objCollect.AddComponent<LCollect>();
 
-            collect.transformCached.SetParent(destination.transformCached.parent, false);
-            collect.transformCached.SetAsLastSibling();
-            collect.transformCached.position = spawnPosition;
+            collect.TransformCached.SetParent(destination.TransformCached.parent, false);
+            collect.TransformCached.SetAsLastSibling();
+            collect.TransformCached.position = spawnPosition;
 
             collect.Construct(config, destination, count, onComplete);
         }

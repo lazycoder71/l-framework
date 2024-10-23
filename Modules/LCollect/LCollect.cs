@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace LFramework
 {
-    public class LCollect : MonoCached
+    public class LCollect : MonoBase
     {
         LCollectConfig _config;
 
@@ -61,7 +61,7 @@ namespace LFramework
 
         private void CheckEmpty()
         {
-            if (transformCached.childCount == 0)
+            if (TransformCached.childCount == 0)
                 Destruct();
         }
 
@@ -71,12 +71,12 @@ namespace LFramework
 
             _onComplete?.Invoke();
 
-            Destroy(gameObjectCached);
+            Destroy(GameObjectCached);
         }
 
         private void Spawn(Vector3 spawnPosition)
         {
-            LCollectItem item = _config.spawnPrefab.Create(transformCached, false).GetComponent<LCollectItem>();
+            LCollectItem item = _config.spawnPrefab.Create(TransformCached, false).GetComponent<LCollectItem>();
 
             item.transform.localPosition = spawnPosition;
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace LFramework
 {
-    public class LCollectDestination : MonoCached
+    public class LCollectDestination : MonoBase
     {
         [Title("Reference")]
         [SerializeField] Transform _target;
@@ -21,15 +21,19 @@ namespace LFramework
 
         public LCollectConfig config { get { return _config; } }
 
-        public Vector3 position { get { return _target == null ? transformCached.position : _target.position; } }
+        public Vector3 position { get { return _target == null ? TransformCached.position : _target.position; } }
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
+
             LCollectDestinationHelper.Push(this);
         }
 
-        private void OnDisable()
+        protected override void OnDisable()
         {
+            base.OnDisable();
+
             LCollectDestinationHelper.Pop(this);
         }
 
