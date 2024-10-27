@@ -2,6 +2,7 @@ using DG.Tweening;
 
 namespace LFramework.View
 {
+    [System.Serializable]
     public abstract class ViewExtra 
     {
         public abstract string DisplayName { get; }
