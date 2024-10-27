@@ -7,7 +7,7 @@ namespace LFramework
     {
         [SerializeField] float _duration;
 
-        public override string displayName { get { return "Interval"; } }
+        public override string DisplayName { get { return "Interval"; } }
 
         public override void Apply(LCollectItem item)
         {

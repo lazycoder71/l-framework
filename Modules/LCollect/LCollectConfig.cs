@@ -95,7 +95,7 @@ namespace LFramework
 
         private void BeginDrawListElement(int index)
         {
-            Sirenix.Utilities.Editor.SirenixEditorGUI.BeginBox(_steps[index].displayName);
+            Sirenix.Utilities.Editor.SirenixEditorGUI.BeginBox(_steps[index].DisplayName);
         }
 
         private void EndDrawListElement(int index)

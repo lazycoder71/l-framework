@@ -5,7 +5,7 @@ namespace LFramework
 {
     public class LCollectStepActionMoveStraight : LCollectStepActionMove
     {
-        public override string displayName { get { return $"Move Straight ({_journey})"; } }
+        public override string DisplayName { get { return $"Move Straight ({_journey})"; } }
 
         protected override Tween GetTween(LCollectItem item)
         {

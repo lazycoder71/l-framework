@@ -10,7 +10,7 @@ namespace LFramework
         [ValidateInput("CheckPoints", "Path Type: Cubic Bezier - Control points must be 2")]
         [SerializeField] Vector3[] _points;
 
-        public override string displayName { get { return "Move Path"; } }
+        public override string DisplayName { get { return "Move Path"; } }
 
         protected override Tween GetTween(LCollectItem item)
         {

@@ -37,7 +37,7 @@ namespace LFramework
         [ShowIf("@_loopTime != 0"), HorizontalGroup("Loop"), LabelWidth(75)]
         private LoopType _loopType = LoopType.Restart;
 
-        public override string displayName { get { return this.ToString(); } }
+        public override string DisplayName { get { return this.ToString(); } }
 
         public override void Apply(LCollectItem item)
         {

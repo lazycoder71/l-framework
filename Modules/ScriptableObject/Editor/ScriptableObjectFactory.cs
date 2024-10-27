@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
@@ -14,7 +15,20 @@ namespace LFramework.ScriptableObjects.Editor
         [MenuItem("Assets/Create/Scriptable Object", false, 0)]
         public static void CreateAssembly()
         {
-            Create("Assembly-CSharp", "LFramework", "Game");
+            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+
+            List<string> result = new List<string>();
+
+            for (int i = 0; i < assemblies.Length; i++)
+            {
+                if(assemblies[i].FullName.Contains("LFramework") )
+                    result.Add(assemblies[i].GetName().Name);
+            }
+
+            result.Add("Assembly-CSharp");
+            result.Add("Game");
+
+            Create(result.ToArray());
         }
 
         public static void Create(params string[] assemblyNames)

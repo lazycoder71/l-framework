@@ -7,6 +7,8 @@ namespace LFramework
     {
         [SerializeField] Vector3 _value = Vector3.one;
 
+        public override string DisplayName { get { return "Scale"; } }
+
         protected override Tween GetTween(LCollectItem item)
         {
             return item.transform.DOScale(_value, _duration)

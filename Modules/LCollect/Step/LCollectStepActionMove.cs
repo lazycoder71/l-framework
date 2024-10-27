@@ -23,6 +23,8 @@ namespace LFramework
         [ShowIf("@_journey == Journey.Spawn && !_startAtCenter")]
         [SerializeField] protected Vector3 _startOffset;
 
+        public override string DisplayName { get { return "Move"; } }
+
         protected override Tween GetTween(LCollectItem item)
         {
             switch (_journey)

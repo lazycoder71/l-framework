@@ -17,7 +17,7 @@ namespace LFramework
 
         [SerializeField] private AudioConfig _audio;
 
-        public override string displayName { get { return "Audio"; } }
+        public override string DisplayName { get { return "Audio"; } }
 
         public override void Apply(LCollectItem item)
         {
