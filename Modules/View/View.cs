@@ -27,21 +27,21 @@ namespace LFramework.View
         [SerializeField] private ViewTransitionEntity[] _transitionEntities;
 
         [FoldoutGroup("Event", Expanded = false)]
-        [SerializeField] private UnityEvent _eventOpenStart;
+        [SerializeField] private UnityEvent _onOpenStart;
         [FoldoutGroup("Event")]
-        [SerializeField] private UnityEvent _eventOpenEnd;
+        [SerializeField] private UnityEvent _onOpenEnd;
         [FoldoutGroup("Event")]
-        [SerializeField] private UnityEvent _eventCloseStart;
+        [SerializeField] private UnityEvent _onCloseStart;
         [FoldoutGroup("Event")]
-        [SerializeField] private UnityEvent _eventCloseEnd;
+        [SerializeField] private UnityEvent _onCloseEnd;
         [FoldoutGroup("Event")]
-        [SerializeField] private UnityEvent _eventRevealStart;
+        [SerializeField] private UnityEvent _onRevealStart;
         [FoldoutGroup("Event")]
-        [SerializeField] private UnityEvent _eventRevealEnd;
+        [SerializeField] private UnityEvent _onRevealEnd;
         [FoldoutGroup("Event")]
-        [SerializeField] private UnityEvent _eventHideStart;
+        [SerializeField] private UnityEvent _onHideStart;
         [FoldoutGroup("Event")]
-        [SerializeField] private UnityEvent _eventHideEnd;
+        [SerializeField] private UnityEvent _onHideEnd;
 
         private CancelToken _cancelToken = new CancelToken();
 
@@ -53,14 +53,14 @@ namespace LFramework.View
 
         public bool Interactable { get { return _canvasGroup.interactable; } set { _canvasGroup.interactable = value; } }
 
-        public UnityEvent EventOpenStart { get { return _eventOpenStart; } }
-        public UnityEvent EventOpenEnd { get { return _eventOpenEnd; } }
-        public UnityEvent EventCloseStart { get { return _eventCloseStart; } }
-        public UnityEvent EventCloseEnd { get { return _eventCloseEnd; } }
-        public UnityEvent EventRevealStart { get { return _eventRevealStart; } }
-        public UnityEvent EventRevealEnd { get { return _eventRevealEnd; } }
-        public UnityEvent EventHideStart { get { return _eventHideStart; } }
-        public UnityEvent EventHideEnd { get { return _eventHideEnd; } }
+        public UnityEvent OnOpenStart { get { return _onOpenStart; } }
+        public UnityEvent OnOpenEnd { get { return _onOpenEnd; } }
+        public UnityEvent OnCloseStart { get { return _onCloseStart; } }
+        public UnityEvent OnCloseEnd { get { return _onCloseEnd; } }
+        public UnityEvent OnRevealStart { get { return _onRevealStart; } }
+        public UnityEvent OnRevealEnd { get { return _onRevealEnd; } }
+        public UnityEvent OnHideStart { get { return _onHideStart; } }
+        public UnityEvent OnHideEnd { get { return _onHideEnd; } }
 
         #region MonoBehaviour
 
@@ -131,9 +131,9 @@ namespace LFramework.View
 
             // Open start callback
             if (isReveal)
-                _eventRevealStart?.Invoke();
+                _onRevealStart?.Invoke();
             else
-                _eventOpenStart?.Invoke();
+                _onOpenStart?.Invoke();
 
             // Active object when open (in case it hidden before)
             GameObjectCached.SetActive(true);
@@ -157,9 +157,9 @@ namespace LFramework.View
 
             // Open end callback
             if (isReveal)
-                _eventRevealEnd?.Invoke();
+                _onRevealEnd?.Invoke();
             else
-                _eventOpenEnd?.Invoke();
+                _onOpenEnd?.Invoke();
 
             _canvasGroup.interactable = true;
         }
@@ -173,9 +173,9 @@ namespace LFramework.View
 
             // Close start callback
             if (isHiding)
-                _eventHideStart?.Invoke();
+                _onHideStart?.Invoke();
             else
-                _eventCloseStart?.Invoke();
+                _onCloseStart?.Invoke();
 
             _canvasGroup.interactable = false;
 
@@ -195,13 +195,13 @@ namespace LFramework.View
 
             if (isHiding)
             {
-                _eventHideEnd?.Invoke();
+                _onHideEnd?.Invoke();
 
                 GameObjectCached.SetActive(false);
             }
             else
             {
-                _eventCloseEnd?.Invoke();
+                _onCloseEnd?.Invoke();
             }
         }
 

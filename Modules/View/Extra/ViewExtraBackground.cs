@@ -17,7 +17,7 @@ namespace LFramework.View
 
         protected override Tween GetTween(View view, float duration)
         {
-            view.EventCloseEnd.AddListener(() =>
+            view.OnCloseEnd.AddListener(() =>
             {
                 Object.Destroy(_objBG);
             });

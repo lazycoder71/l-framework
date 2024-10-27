@@ -77,8 +77,8 @@ namespace LFramework.View
             BlockTopView();
 
             // Handle view callback
-            view.EventCloseStart.AddListener(PopTopView);
-            view.EventCloseEnd.AddListener(() =>
+            view.OnCloseStart.AddListener(PopTopView);
+            view.OnCloseEnd.AddListener(() =>
             {
                 Destroy(view.GameObjectCached);
 
@@ -114,7 +114,7 @@ namespace LFramework.View
             view.GameObjectCached.SetActive(false);
 
             // Release asset when view closed
-            view.EventCloseEnd.AddListener(() => { handle.Release(); });
+            view.OnCloseEnd.AddListener(() => { handle.Release(); });
 
             OpenView(view);
 
