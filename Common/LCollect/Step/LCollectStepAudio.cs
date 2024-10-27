@@ -1,3 +1,5 @@
+using DG.Tweening;
+using LFramework.Audio;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -13,16 +15,16 @@ namespace LFramework
         [SerializeField]
         private float _insertTime;
 
-        //[SerializeField] private AudioConfig _audio;
+        [SerializeField] private AudioConfig _audio;
 
         public override string DisplayName { get { return "Audio"; } }
 
         public override void Apply(LCollectItem item)
         {
-            //if (_isInserted)
-            //    item.sequence.InsertCallback(_insertTime, () => { AudioManager.Play(_audio); });
-            //else
-            //    item.sequence.AppendCallback(() => { AudioManager.Play(_audio); });
+            if (_isInserted)
+                item.sequence.InsertCallback(_insertTime, () => { AudioManager.Play(_audio); });
+            else
+                item.sequence.AppendCallback(() => { AudioManager.Play(_audio); });
         }
     }
 }
