@@ -1,8 +1,7 @@
 {
-    "name": "LFramework.AnimationSequence",
+    "name": "LFramework.AnimationSequence.Editor",
     "rootNamespace": "",
     "references": [
-        "GUID:fa20145557d22bc48b7dfc5db5909c09",
         "GUID:066eba6989fe3dc4193e5b535868c168"
     ],
     "includePlatforms": [],
