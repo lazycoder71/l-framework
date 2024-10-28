@@ -29,7 +29,7 @@ namespace LFramework.AnimationSequence
         {
             Transform owner = _isSelf ? animationSequence.Transform : _owner;
 
-            return owner.DORotate(owner.localEulerAngles, 0.0f);
+            return owner.DOLocalRotate(owner.localEulerAngles, 0.0f);
         }
     }
 }

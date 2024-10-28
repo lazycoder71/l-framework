@@ -174,12 +174,12 @@ namespace LFramework.AnimationSequence
         [Button(Name = "", Icon = SdfIconType.PlayFill)]
         public void Play()
         {
+            InitSequence();
+
 #if UNITY_EDITOR
             if (!Application.isPlaying)
             {
                 _sequence?.Restart();
-
-                InitSequence();
 
                 DG.DOTweenEditor.DOTweenEditorPreview.PrepareTweenForPreview(_sequence);
                 DG.DOTweenEditor.DOTweenEditorPreview.Start();
@@ -187,11 +187,14 @@ namespace LFramework.AnimationSequence
                 return;
             }
 #endif
+
             _sequence?.Play();
         }
 
         public void Restart()
         {
+            InitSequence();
+
             _sequence?.Restart();
         }
 
