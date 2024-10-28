@@ -1,6 +1,6 @@
 using System;
 
-namespace LFramework
+namespace LFramework.AnimationSequence
 {
     [Serializable]
     public abstract class AnimationSequenceStep

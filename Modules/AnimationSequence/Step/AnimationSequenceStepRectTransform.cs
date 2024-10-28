@@ -1,7 +1,7 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace LFramework
+namespace LFramework.AnimationSequence
 {
     public abstract class AnimationSequenceStepRectTransform : AnimationSequenceStepAction<RectTransform>
     {

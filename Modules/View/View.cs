@@ -19,10 +19,6 @@ namespace LFramework.View
 
         [SerializeField] private bool _hideOnBlock = false;
 
-        [FoldoutGroup("Extra", Expanded = false)]
-        [ListDrawerSettings(ListElementLabelName = "DisplayName")]
-        [SerializeReference] private ViewExtra[] _extras = new ViewExtra[0];
-
         [FoldoutGroup("Transition", Expanded = false)]
         [SerializeField] private ViewTransitionEntity[] _transitionEntities;
 
@@ -105,14 +101,19 @@ namespace LFramework.View
             _sequence?.Kill();
             _sequence = DOTween.Sequence();
 
-            if (_extras.IsNullOrEmpty() && _transitionEntities.IsNullOrEmpty())
+            ViewExtra[] extras = GetComponents<ViewExtra>();
+
+            if (extras.IsNullOrEmpty() && _transitionEntities.IsNullOrEmpty())
             {
                 _sequence.AppendInterval(1.0f);
             }
             else
             {
-                for (int i = 0; i < _extras.Length; i++)
-                    _extras[i].Apply(this);
+                if (extras != null)
+                {
+                    for (int i = 0; i < extras.Length; i++)
+                        extras[i].Apply(this);
+                }
 
                 for (int i = 0; i < _transitionEntities.Length; i++)
                     _transitionEntities[i].Apply(this);

@@ -6,7 +6,7 @@ namespace LFramework.Data
     {
         static T s_instance;
 
-        public static T instance
+        public static T Instance
         {
             get
             {
@@ -28,8 +28,6 @@ namespace LFramework.Data
         {
             MonoCallback.Instance.EventApplicationPause += MonoCallback_ApplicationOnPause;
             MonoCallback.Instance.EventApplicationQuit += MonoCallback_ApplicationOnQuit;
-
-            LDataBlockHelper.eventDelete += LDataBlockHelper_EventDelete;
         }
 
         private void MonoCallback_ApplicationOnQuit()
@@ -50,7 +48,7 @@ namespace LFramework.Data
 
         public static void Save()
         {
-            DataHelper.SaveToDevice(instance, typeof(T).ToString());
+            DataHelper.SaveToDevice(Instance, typeof(T).ToString());
         }
 
         public static void Delete()
@@ -58,18 +56,6 @@ namespace LFramework.Data
             s_instance = null;
 
             DataHelper.DeleteInDevice(typeof(T).ToString());
-        }
-    }
-
-    public class LDataBlockHelper
-    {
-        public static event Action eventDelete;
-
-        public static void ClearDeviceData()
-        {
-            eventDelete?.Invoke();
-
-            DataHelper.DeleteAllInDevice();
         }
     }
 }

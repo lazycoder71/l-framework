@@ -1,12 +1,11 @@
 using DG.Tweening;
+using UnityEngine;
 
 namespace LFramework.View
 {
     [System.Serializable]
-    public abstract class ViewExtra 
+    public abstract class ViewExtra : MonoBehaviour
     {
-        public abstract string DisplayName { get; }
-
         public void Apply(View view)
         {
             Tween tween = GetTween(view, 1.0f);

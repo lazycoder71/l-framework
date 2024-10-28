@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-namespace LFramework
+namespace LFramework.AnimationSequence
 {
     public class AnimationSequenceStepRectTransformAnchorPos3D : AnimationSequenceStepRectTransform
     {

@@ -56,13 +56,13 @@ namespace LFramework
         {
             _spawnSamplePositions = new List<Vector3>();
 
-            LUtilsHaltonSequence.Reset();
+            UtilsHaltonSequence.Reset();
 
             while (_spawnSamplePositions.Count < _spawnSampleCount)
             {
-                LUtilsHaltonSequence.Increment(true, true, false);
+                UtilsHaltonSequence.Increment(true, true, false);
 
-                Vector3 position = new Vector3(-_spawnSampleRadius, -_spawnSampleRadius) + (LUtilsHaltonSequence.currentPosition * _spawnSampleRadius * 2.0f);
+                Vector3 position = new Vector3(-_spawnSampleRadius, -_spawnSampleRadius) + (UtilsHaltonSequence.currentPosition * _spawnSampleRadius * 2.0f);
 
                 if (Vector3.Distance(Vector3.zero, position) > _spawnSampleRadius)
                     continue;

@@ -1,9 +1,7 @@
 using LFramework.ScriptableObjects;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace LFramework
+namespace LFramework.SceneLoader
 {
     public class SceneLoaderSOS : ScriptableObjectSingleton<SceneLoaderSOS>
     {

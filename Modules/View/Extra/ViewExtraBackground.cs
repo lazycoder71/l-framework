@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,13 +8,12 @@ namespace LFramework.View
     [System.Serializable]
     public class ViewExtraBackground : ViewExtra
     {
+        [Title("Config")]
         [SerializeField] private bool _closeOnClick = true;
         [SerializeField] private Sprite _sprite;
         [SerializeField] private Color _color = new Color(0f, 0f, 0f, 0.8f);
 
         private GameObject _objBG;
-
-        public override string DisplayName { get { return "Background"; } }
 
         protected override Tween GetTween(View view, float duration)
         {

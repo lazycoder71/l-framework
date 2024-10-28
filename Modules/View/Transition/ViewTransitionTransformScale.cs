@@ -5,7 +5,7 @@ namespace LFramework.View
 {
     public class ViewTransitionTransformScale : ViewTransitionTransform
     {
-        public override string DisplayName { get { return "RectTransform Scale"; } }
+        public override string DisplayName { get { return "Transform Scale"; } }
 
         public override Tween GetTween(ViewTransitionEntity entity, float duration)
         {

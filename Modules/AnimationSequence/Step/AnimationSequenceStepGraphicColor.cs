@@ -3,7 +3,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace LFramework
+namespace LFramework.AnimationSequence
 {
     public class AnimationSequenceStepGraphicColor : AnimationSequenceStepAction<Graphic>
     {

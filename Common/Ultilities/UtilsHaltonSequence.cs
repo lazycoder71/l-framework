@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace LFramework
 {
-    public static class LUtilsHaltonSequence
+    public static class UtilsHaltonSequence
     {
         public static Vector3 currentPosition = Vector3.zero;
 
