@@ -21,13 +21,13 @@ namespace LFramework.SceneLoader
 
         [SerializeField] private Behaviour _behaviour;
 
-        [HideIf("@_loadType == LoadType.Reload")]
+        [HideIf("@_behaviour == Behaviour.Reload")]
         [SerializeField] private SceneType _sceneType;
 
-        [HideIf("@_loadType == LoadType.Reload || _sceneType == SceneType.String")]
+        [HideIf("@_behaviour == Behaviour.Reload || _sceneType == SceneType.String")]
         [SerializeField] private int _sceneBuildIndex;
 
-        [HideIf("@_loadType == LoadType.Reload || _sceneType == SceneType.BuildIndex")]
+        [HideIf("@_behaviour == Behaviour.Reload || _sceneType == SceneType.BuildIndex")]
         [SerializeField] private string _sceneName;
 
         public override void Button_OnClick()
