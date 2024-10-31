@@ -11,8 +11,8 @@ namespace LFramework.AnimationSequence
         [SerializeField] private Color _valueStart = Color.white;
 
         [SerializeField] private Color _value = Color.white;
-        
-        public override string DisplayName { get { return $"{(_isSelf ? "Graphic (This)" : _owner)}: DOColor"; } }
+
+        public override string DisplayName { get { return $"{(_isSelf ? "Graphic (This)" : _owner.name)}: DOColor"; } }
 
         protected override Tween GetTween(AnimationSequence animationSequence)
         {

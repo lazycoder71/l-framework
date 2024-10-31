@@ -88,15 +88,9 @@ namespace LFramework.AnimationSequence
             }
         }
 
-        protected virtual Tween GetTween(AnimationSequence animationSequence)
-        {
-            return null;
-        }
+        protected abstract Tween GetTween(AnimationSequence animationSequence);
 
-        protected virtual Tween GetResetTween(AnimationSequence animationSequence)
-        {
-            return null;
-        }
+        protected abstract Tween GetResetTween(AnimationSequence animationSequence);
 
         [HorizontalGroup("Owner")]
         [ShowIf("@_isSelf == true")]

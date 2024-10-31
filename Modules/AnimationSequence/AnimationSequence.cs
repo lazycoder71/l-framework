@@ -26,7 +26,7 @@ namespace LFramework.AnimationSequence
 
         [Title("Steps")]
         [ListDrawerSettings(ShowIndexLabels = false, OnBeginListElementGUI = "BeginDrawListElement", OnEndListElementGUI = "EndDrawListElement", AddCopiesLastElement = true)]
-        [SerializeReference] AnimationSequenceStep[] _steps = new AnimationSequenceStep[0];
+        [SerializeReference] private AnimationSequenceStep[] _steps = new AnimationSequenceStep[0];
 
         [Title("Settings")]
         [SerializeField] private bool _isAutoKill = true;
@@ -44,10 +44,10 @@ namespace LFramework.AnimationSequence
         [HorizontalGroup("Update")]
         [InlineButton("@_isIndependentUpdate = true", Label = "Timescale Based", ShowIf = ("@_isIndependentUpdate == false"))]
         [InlineButton("@_isIndependentUpdate = false", Label = "Independent Update", ShowIf = ("@_isIndependentUpdate == true"))]
-        [SerializeField] protected UpdateType _updateType = UpdateType.Normal;
+        [SerializeField] private UpdateType _updateType = UpdateType.Normal;
 
         [HideInInspector]
-        [SerializeField] protected bool _isIndependentUpdate = false;
+        [SerializeField] private bool _isIndependentUpdate = false;
 
         [SerializeField] private float _delay;
 
