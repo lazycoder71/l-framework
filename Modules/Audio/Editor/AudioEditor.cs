@@ -1,3 +1,4 @@
+using LFramework.ScriptableObjects;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -18,14 +19,14 @@ namespace LFramework.Audio.Editor
 
                 AudioClip clip = (AudioClip)s;
 
-                //AudioConfig config = ScriptableObjectHelper.CreateAsset<AudioConfig>(Path.GetDirectoryName(assetPath), clip.name);
+                AudioConfig config = ScriptableObjectHelper.CreateAsset<AudioConfig>(Path.GetDirectoryName(assetPath), clip.name);
 
-                //if (config == null)
-                //    continue;
+                if (config == null)
+                    continue;
 
-                //config.Clip = clip;
+                config.Clip = clip;
 
-                //ScriptableObjectHelper.SaveAsset(config);
+                ScriptableObjectHelper.SaveAsset(config);
             }
         }
     }
