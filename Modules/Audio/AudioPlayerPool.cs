@@ -46,8 +46,8 @@ namespace LFramework.Audio
 
                     return audio;
                 },
-                (audio) => { audio.GameObjectCached.SetActive(true); },
-                (audio) => { audio.GameObjectCached.SetActive(false); },
+                (audio) => { if (audio != null) audio.GameObjectCached.SetActive(true); },
+                (audio) => { if (audio != null) audio.GameObjectCached.SetActive(false); },
                 (audio) => { },
 #if UNITY_EDITOR
                 true); // Keep heavy check on editor
