@@ -78,6 +78,20 @@ namespace LFramework.Audio
             return this;
         }
 
+        public AudioPlayer SetPosition(Vector3 position)
+        {
+            TransformCached.position = position;
+
+            return this;
+        }
+
+        public AudioPlayer SetLocalPosition(Vector3 localPosition)
+        {
+            TransformCached.localPosition = localPosition;
+
+            return this;
+        }
+
         public AudioPlayer SetPitch(float pitch)
         {
             _audioSource.pitch = pitch;
@@ -87,9 +101,6 @@ namespace LFramework.Audio
 
         public AudioPlayer FadeIn(float duration, Ease ease = Ease.InSine)
         {
-            if (_config == null)
-                return null;
-
             if (!_audioSource.loop)
                 Mathf.Min(duration, _audioSource.clip.length - _audioSource.time);
 
@@ -102,9 +113,6 @@ namespace LFramework.Audio
 
         public AudioPlayer FadeOut(float duration, Ease ease = Ease.InSine)
         {
-            if (_config == null)
-                return null;
-
             if (!_audioSource.loop)
                 Mathf.Min(duration, _audioSource.clip.length - _audioSource.time);
 
@@ -118,6 +126,7 @@ namespace LFramework.Audio
 
         public void Stop()
         {
+            // Prevent calling stop when this audio player already in pool
             if (_config == null)
                 return;
 
@@ -133,6 +142,7 @@ namespace LFramework.Audio
 
         public void UpdateVolume()
         {
+            // Can't update volume if there is no config
             if (_config == null)
                 return;
 
@@ -159,6 +169,7 @@ namespace LFramework.Audio
             // Reset volume
             _volume = 1.0f;
 
+            // Setup Audio Source
             _audioSource.clip = config.Clip;
             _audioSource.loop = loop;
             _audioSource.minDistance = config.Distance.x;

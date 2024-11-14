@@ -51,7 +51,7 @@ namespace LFramework.Audio
 
             AudioPlayer audioEntity = AudioPlayerPool.Get();
 
-            audioEntity.Play(config, isLoop: isLoop);
+            audioEntity.Play(config, isLoop);
 
             return audioEntity;
         }
