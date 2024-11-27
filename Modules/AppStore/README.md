@@ -18,6 +18,11 @@ public class RateExample : MonoBehaviour
             AppStore.Review();
 #endif
         }
+		
+		public void OpenStore()
+		{
+			AppStore.OpenStore();
+		}
 }
 ```
 

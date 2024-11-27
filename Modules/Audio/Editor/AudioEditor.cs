@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace LFramework.Audio.Editor
 {
-    public class AudioEditor : MonoBehaviour
+    public static class AudioEditor 
     {
         [MenuItem("LFramework/Audio/Create config from audio file")]
         private static void CreateConfig()
