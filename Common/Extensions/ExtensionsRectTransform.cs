@@ -39,13 +39,16 @@ namespace LFramework
             rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x + x, rectTransform.anchoredPosition.y + y);
         }
 
-        public static void StretchByParent(this RectTransform rectTransform)
+        public static void Fill(this RectTransform rectTransform)
         {
-            rectTransform.anchoredPosition3D = Vector3.zero;
+            rectTransform.localPosition = Vector3.zero;
             rectTransform.anchorMin = Vector2.zero;
             rectTransform.anchorMax = Vector2.one;
             rectTransform.offsetMin = Vector2.zero;
             rectTransform.offsetMax = Vector2.zero;
+            rectTransform.pivot = new Vector2(0.5f, 0.5f);
+            rectTransform.rotation = Quaternion.identity;
+            rectTransform.localScale = Vector3.one;
         }
 
         public static float GetPixelPerUnit(this RectTransform rectTransform)
@@ -64,6 +67,13 @@ namespace LFramework
             rectTransform.GetWorldCorners(corners);
 
             return (corners[2].x - corners[0].x) / rectTransform.rect.width;
+        }
+
+        public static Vector3 ToWorldPosition(this RectTransform rectTransform, Camera camera = null)
+        {
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTransform, rectTransform.position, camera, out var local);
+            var world = rectTransform.TransformPoint(new Vector3(local.x, local.y));
+            return world;
         }
     }
 }

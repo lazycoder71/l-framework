@@ -44,7 +44,7 @@ namespace LFramework.View
             rect.SetSiblingIndex(view.transform.GetSiblingIndex());
             rect.SetScale(1.0f);
 
-            rect.StretchByParent();
+            rect.Fill();
 
             _objBG.AddComponent<Image>();
 

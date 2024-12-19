@@ -386,6 +386,35 @@ namespace LFramework
             }
         }
 
+        public static void SetLayersRecursively(this Transform transform, int layerIndex)
+        {
+            transform.gameObject.layer = layerIndex;
+            foreach (Transform child in transform)
+            {
+                child.SetLayersRecursively(layerIndex);
+            }
+        }
+
+        public static void SetLayersRecursively(this Transform transform, string layerName)
+        {
+            transform.gameObject.layer = LayerMask.NameToLayer(layerName);
+            foreach (Transform child in transform)
+            {
+                child.SetLayersRecursively(layerName);
+            }
+        }
+
+        #endregion
+
+        #region Utilities
+
+        public static Vector2 GetUIPosition(this Transform transform, Camera camera = null)
+        {
+            var world = transform.TransformPoint(Vector3.zero);
+
+            return RectTransformUtility.WorldToScreenPoint(camera, world);
+        }
+
         #endregion
     }
 }

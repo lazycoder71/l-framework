@@ -87,7 +87,7 @@ namespace LFramework.View
             _transitionEntities = GetComponentsInChildren<ViewTransitionEntity>(true);
 
             RectTransform rectTransform = GetComponent<RectTransform>();
-            rectTransform.StretchByParent();
+            rectTransform.Fill();
 
             UnityEditor.EditorUtility.SetDirty(gameObject);
         }
